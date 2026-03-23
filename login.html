@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión — GROPESTAMPADOS.UY Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-md px-6">
+    <!-- Logo -->
+    <div class="text-center mb-10">
+      <div class="flex items-baseline justify-center gap-1 mb-2">
+        <span class="text-3xl font-black brand-gradient">GROP</span>
+        <span class="text-3xl font-black text-white">ESTAMPADOS</span>
+        <span class="text-sm font-bold text-gray-500">.UY</span>
+      </div>
+      <p class="text-gray-500 text-sm">Panel de Administración</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-8 text-center">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5" style="background:rgba(4,155,122,0.12);border:1px solid rgba(4,155,122,0.3)">
+        <svg class="w-7 h-7 text-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#049B7A"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+      <h1 class="text-xl font-bold mb-2">Acceso Administrador</h1>
+      <p class="text-gray-500 text-sm mb-8">Iniciá sesión con tu cuenta autorizada para gestionar el catálogo</p>
+
+      <button id="login-btn" class="btn-primary w-full justify-center !py-3.5">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+        Iniciar Sesión
+      </button>
+
+      <p id="login-error" class="text-red-400 text-xs mt-4 hidden">
+        No tenés permisos de administrador.
+      </p>
+    </div>
+
+    <p class="text-center text-gray-700 text-xs mt-6">
+      <a href="/" class="hover:text-gray-400 transition-colors">← Volver al catálogo</a>
+    </p>
+  </div>
+
+  <script>
+    const netlifyIdentity = window.netlifyIdentity;
+
+    netlifyIdentity.on("init", (user) => {
+      if (user) {
+        // Ya tiene sesión activa, ir directo al admin
+        window.location.replace("/admin.html");
+      }
+    });
+
+    netlifyIdentity.on("login", (user) => {
+      netlifyIdentity.close();
+      window.location.replace("/admin.html");
+    });
+
+    netlifyIdentity.init();
+
+    document.getElementById("login-btn").addEventListener("click", () => {
+      netlifyIdentity.open("login");
+    });
+  </script>
+</body>
+</html>

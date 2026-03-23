@@ -1,0 +1,49 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+# Redirect API calls to serverless functions
+[[redirects]]
+  from = "/api/get-products"
+  to = "/.netlify/functions/get-products"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/save-products"
+  to = "/.netlify/functions/save-products"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/submit-review"
+  to = "/.netlify/functions/submit-review"
+  status = 200
+  force = true
+
+# Block /admin.html — redirect to login if no valid JWT with admin role
+[[redirects]]
+  from = "/admin.html"
+  to = "/login.html"
+  status = 302
+  force = false
+  conditions = {Role = ["!admin"]}
+
+# Role-based: allow if admin
+[[redirects]]
+  from = "/admin.html"
+  to = "/admin.html"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"]}
+
+# Global security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
