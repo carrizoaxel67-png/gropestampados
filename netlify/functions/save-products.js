@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { neon } = require('@neondatabase/serverless');
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,45 +8,20 @@ const corsHeaders = {
 };
 
 exports.handler = async (event) => {
-  // Handle CORS preflight
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers: corsHeaders, body: "" };
-  }
+  if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: corsHeaders, body: "" };
+  if (event.httpMethod !== "POST") return { statusCode: 405, headers: corsHeaders, body: JSON.stringify({ error: "Method not allowed" }) };
 
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
-
-  // Verify Netlify Identity JWT with admin role
   const authHeader = event.headers["authorization"] || event.headers["Authorization"] || "";
   const token = authHeader.replace("Bearer ", "").trim();
 
-  if (!token) {
-    return {
-      statusCode: 401,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: "Unauthorized: No token" }),
-    };
-  }
-
+  if (!token) return { statusCode: 401, headers: corsHeaders, body: JSON.stringify({ error: "Unauthorized" }) };
+  
   try {
     const payloadB64 = token.split(".")[1];
-    if (!payloadB64) throw new Error("Invalid token format");
-
-    // Solo verificamos que el JWT es válido (cualquier usuario logueado de
-    // Netlify Identity es admin, ya que el registro es "Invite Only").
+    if (!payloadB64) throw new Error("Invalid token");
     JSON.parse(Buffer.from(payloadB64, "base64").toString("utf-8"));
-
-  } catch (err) {
-    return {
-      statusCode: 401,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: "Unauthorized: Invalid token" }),
-    };
+  } catch (e) {
+    return { statusCode: 401, headers: corsHeaders, body: JSON.stringify({ error: "Unauthorized signature" }) };
   }
 
   try {
@@ -56,28 +31,36 @@ exports.handler = async (event) => {
       return {
         statusCode: 400,
         headers: corsHeaders,
-        body: JSON.stringify({ error: "Invalid data format: must contain products and categories arrays" }),
+        body: JSON.stringify({ error: "Invalid data format" }),
       };
     }
-
     if (!data.reviews || !Array.isArray(data.reviews)) {
       data.reviews = [];
     }
 
-    const store = getStore("catalog");
-    await store.set("products", JSON.stringify(data));
+    const dbUrl = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
+    if (!dbUrl) throw new Error("Neon Database URL missing");
+    
+    const sql = neon(dbUrl);
 
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify({ success: true, count: data.products.length }),
-    };
+    // Asegurar tabla
+    await sql`
+      CREATE TABLE IF NOT EXISTS store_table (
+        id VARCHAR(50) PRIMARY KEY,
+        data JSONB
+      );
+    `;
+
+    // UPSERT (Insert or Update si ya existe)
+    await sql`
+      INSERT INTO store_table (id, data)
+      VALUES ('catalog', ${JSON.stringify(data)}::jsonb)
+      ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data;
+    `;
+
+    return { statusCode: 200, headers: corsHeaders, body: JSON.stringify({ success: true, count: data.products.length }) };
   } catch (err) {
-    console.error("save-products error:", err);
-    return {
-      statusCode: 500,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: "Internal Server Error" }),
-    };
+    console.error("Neon DB Error save-products:", err);
+    return { statusCode: 500, headers: corsHeaders, body: JSON.stringify({ error: "DB Error", detail: err.message }) };
   }
 };

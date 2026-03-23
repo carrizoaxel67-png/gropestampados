@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { neon } = require('@neondatabase/serverless');
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,40 +8,52 @@ const corsHeaders = {
 };
 
 exports.handler = async (event) => {
-  // Handle CORS preflight
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers: corsHeaders, body: "" };
   }
 
   try {
-    const store = getStore("catalog");
-    const data = await store.get("products", { type: "json" });
+    const dbUrl = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
+    if (!dbUrl) throw new Error("Neon Database URL is not configured in Netlify Envs");
     
-    // Si data no existe (o es array por la version anterior), lo adaptamos
-    let result = { products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [] };
+    // Conectar a Neon Serverless
+    const sql = neon(dbUrl);
+
+    // Asegurar tabla
+    await sql`
+      CREATE TABLE IF NOT EXISTS store_table (
+        id VARCHAR(50) PRIMARY KEY,
+        data JSONB
+      );
+    `;
+
+    // Fetch records
+    const result = await sql`SELECT data FROM store_table WHERE id = 'catalog'`;
+    let catalogData = result.length > 0 ? result[0].data : null;
+
+    let finalData = { products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [] };
     
-    if (data) {
-      if (Array.isArray(data)) {
-        // Migración automática de old format a new format
-        result.products = data;
+    if (catalogData) {
+      if (Array.isArray(catalogData)) {
+        finalData.products = catalogData;
       } else {
-        result.products = data.products || [];
-        result.categories = data.categories || result.categories;
-        result.reviews = data.reviews || [];
+        finalData.products = catalogData.products || [];
+        finalData.categories = catalogData.categories || finalData.categories;
+        finalData.reviews = catalogData.reviews || [];
       }
     }
 
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify(result),
+      body: JSON.stringify(finalData),
     };
   } catch (err) {
-    console.error("get-products error:", err);
+    console.error("Neon DB error get-products:", err);
     return {
-      statusCode: 200,
+      statusCode: 200, // Devolvemos 200 con arrays vacíos para que no rompa el frontend
       headers: corsHeaders,
-      body: JSON.stringify({ products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [] }),
+      body: JSON.stringify({ products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [], _error: err.message }),
     };
   }
 };
