@@ -307,7 +307,10 @@
         <a href="https://wa.me/59897116015" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#25d366]/70 hover:text-[#25d366] hover:border-[#25d366]/50 transition-all">WA</a>
       </div>
 
-      <p id="secret-admin-trigger" class="text-[10px] uppercase tracking-widest text-[#4a4a62] mt-8 cursor-default select-none touch-manipulation">© 2025 GROPESTAMPADOS.UY · Todos los derechos reservados.</p>
+      <p class="text-[10px] uppercase tracking-widest text-[#4a4a62] mt-8">
+        © 2025 GROPESTAMPADOS.UY · Todos los derechos reservados. 
+      </p>
+      <a href="admin.html" class="text-[10px] text-gray-500 hover:text-white transition-colors uppercase tracking-widest mt-2">Acceso Admin</a>
     </div>
   </footer>
 
@@ -409,18 +412,6 @@ function closeMobileMenu(){
   if(menu) menu.style.maxHeight = '0px';
 }
 window.closeMobileMenu = closeMobileMenu;
-
-// Admin Secret Trigger (5 quick taps on Copyright)
-let adminC = 0;
-let adminTimer;
-document.getElementById('secret-admin-trigger')?.addEventListener('click', () => {
-  adminC++;
-  clearTimeout(adminTimer);
-  if(adminC >= 5) {
-    window.location.href = 'admin.html';
-  }
-  adminTimer = setTimeout(() => { adminC = 0; }, 1000);
-});
 </script>
 
 <script src="/assets/js/public.js"></script>
