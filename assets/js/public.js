@@ -22,65 +22,47 @@ const STATUS_CFG = {
 // ── Demo products shown when API is empty ─────────────────
 const DEMO_PRODUCTS = [
   {
-    id:"d1", name:"Remera Básica Unisex",
-    description:"100% algodón. Talle XS al 3XL. Estampado con tu logo o diseño. Disponible en todos los colores.",
-    price:590, stock:50, category:"Remeras", status:"casa",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>👕</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23049B7A' font-family='sans-serif' font-weight='bold'>REMERA BÁSICA</text></svg>"
+    id:"d1", name:"Remera Oversize Anime Kuro",
+    description:"Algodón pesado 100%. Estampado DTF ultra resistente. Corte streetwear. Ideal para fans del shonen.",
+    price:990, stock:15, category:"Anime", status:"casa",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🔥</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23BFFF00' font-family='sans-serif' font-weight='bold'>ANIME OVERSIZE</text></svg>"
   },
   {
-    id:"d2", name:"Canguro Personalizado",
-    description:"Algodón premium. Estampado en frente y espalda. Por mayor a partir de 6 unidades.",
-    price:960, stock:20, category:"Canguros", status:"pocas",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🦘</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23f97316' font-family='sans-serif' font-weight='bold'>CANGURO CUSTOM</text></svg>"
+    id:"d2", name:"Hoodie Básico Streetwear",
+    description:"Canguro de frisa invisible. Ajuste holgado, capucha doble. Tu logo / diseño bordado o en DTF.",
+    price:1450, stock:20, category:"Canguros", status:"disponible",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🦘</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%238A2BE2' font-family='sans-serif' font-weight='bold'>HOODIE STREETWEAR</text></svg>"
   },
   {
-    id:"d3", name:"Polo Manga Corta",
-    description:"Piqué 100% algodón. Talle XS al 3XL. Ideal para uniformes y empresas. Envío gratis.",
-    price:880, stock:30, category:"Remeras", status:"disponible",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>👔</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%2322c55e' font-family='sans-serif' font-weight='bold'>POLO PREMIUM</text></svg>"
+    id:"d3", name:"Remera Sublimada Minimalista",
+    description:"Spun premium tacto algodón. Diseños aesthetic o geométricos incorporados en la tela.",
+    price:650, stock:30, category:"Remeras", status:"disponible",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>👕</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23FF00FF' font-family='sans-serif' font-weight='bold'>REMERA AESTHETIC</text></svg>"
   },
   {
-    id:"d4", name:"Gorro Trucker Tu Logo",
-    description:"Frente rígido, malla trasera. Bordado o sublimado. Por mayor a partir de 10u.",
+    id:"d4", name:"Gorro Trucker Custom",
+    description:"Visera curva, red plástica atrás. Estampa frontal. Ideal egresados, empresas o bandas.",
     price:450, stock:45, category:"Gorros", status:"disponible",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🧢</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%2306b6d4' font-family='sans-serif' font-weight='bold'>GORRO CUSTOM</text></svg>"
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🧢</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%2306b6d4' font-family='sans-serif' font-weight='bold'>TRUCKER CUSTOM</text></svg>"
   },
   {
-    id:"d5", name:"Taza Sublimada 300ml",
-    description:"Sublimación full wrap. Tu foto, diseño o logo. El regalo ideal para profesores y equipos.",
-    price:320, stock:100, category:"Sublimados", status:"disponible",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>☕</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23a78bfa' font-family='sans-serif' font-weight='bold'>TAZA SUBLIMADA</text></svg>"
+    id:"d5", name:"Taza Mágica Anime/Juegos",
+    description:"Taza negra que revela el diseño al verter líquido caliente. ¡Personalizable al 100%!",
+    price:500, stock:5, category:"Tazas", status:"pocas",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>☕</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23BFFF00' font-family='sans-serif' font-weight='bold'>TAZA MÁGICA</text></svg>"
   },
   {
-    id:"d6", name:"Kit Regalo Profe",
-    description:"Taza + lapicera sublimada + caramaño. Set listo para regalar. Caja incluida.",
-    price:950, stock:15, category:"Regalos", status:"casa",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🎁</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23049B7A' font-family='sans-serif' font-weight='bold'>KIT REGALO</text></svg>"
+    id:"d6", name:"Azulejo Sublimado 20x20",
+    description:"Azulejo cerámico de alto brillo con soporte. Arte musical, portadas de discos o fotos.",
+    price:350, stock:50, category:"Sublimados", status:"casa",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🖼️</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%238A2BE2' font-family='sans-serif' font-weight='bold'>AZULEJO DECORATIVO</text></svg>"
   },
   {
-    id:"d7", name:"Caramaño 650ml",
-    description:"Aluminio sublimado. Tu foto o diseño en alta resolución. Colores y personajes. Por mayor.",
-    price:480, stock:0, category:"Sublimados", status:"sin-stock",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🥤</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23ef4444' font-family='sans-serif' font-weight='bold'>CARAMAÑO</text></svg>"
-  },
-  {
-    id:"d8", name:"Remera DTF Full Print",
-    description:"Estampado DTF de alta definición. Colores vibrantes, lavado resistente. Ideal para diseños complejos.",
-    price:750, stock:8, category:"Remeras", status:"pocas",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🎨</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23f97316' font-family='sans-serif' font-weight='bold'>DTF FULL PRINT</text></svg>"
-  },
-  {
-    id:"d9", name:"Buzo Sublimado Full",
-    description:"Tela 100% poliéster sublimable. Diseño en todo el cuerpo. Por encargue, consultar plazos.",
-    price:1400, stock:0, category:"Canguros", status:"encargue",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🧥</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%2306b6d4' font-family='sans-serif' font-weight='bold'>BUZO SUBLIMADO</text></svg>"
-  },
-  {
-    id:"d10", name:"Delantal con Bolsillo",
-    description:"Sublimado full color. Reglamentario. Ideal para profesionales y regalos corporativos.",
-    price:600, stock:25, category:"Regalos", status:"disponible",
-    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🍳</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%2322c55e' font-family='sans-serif' font-weight='bold'>DELANTAL</text></svg>"
-  },
+    id:"d7", name:"Conjunto Urbano (Buzo + Remera)",
+    description:"Pack Streetwear. Hacela como tú quieras. Descuento llevando ambas prendas.",
+    price:2100, stock:0, originalPrice: 2440, category:"Streetwear", status:"encargue",
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' style='background:%230f0f1a'><text x='50%' y='45%' text-anchor='middle' dominant-baseline='middle' font-size='72' font-family='sans-serif'>🛹</text><text x='50%' y='68%' text-anchor='middle' dominant-baseline='middle' font-size='14' fill='%23FF00FF' font-family='sans-serif' font-weight='bold'>PACK URBANO</text></svg>"
+  }
 ];
 
 // ── State ─────────────────────────────────────────────────
@@ -406,7 +388,7 @@ window.renderReviews = function(reviews) {
           </div>
           <div class="flex flex-col">
             <h4 class="font-bold text-white text-lg leading-tight">${esc(r.name)}</h4>
-            <span class="text-[10px] text-mint drop-shadow-[0_0_5px_rgba(157,255,0,0.5)] tracking-[0.2em] mt-0.5">${stars}</span>
+            <span class="text-[10px] text-mint drop-shadow-[0_0_5px_rgba(191, 255, 0,0.5)] tracking-[0.2em] mt-0.5">${stars}</span>
           </div>
         </div>
         

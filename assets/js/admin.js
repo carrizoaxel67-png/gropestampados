@@ -481,8 +481,8 @@ function showToast(msg, type = "success") {
     toast.style.borderColor = "rgba(239,68,68,0.3)";
     toast.style.color = "#ef4444";
   } else {
-    toast.style.borderColor = "rgba(157,255,0,0.3)";
-    toast.style.color = "#9dff00";
+    toast.style.borderColor = "rgba(191, 255, 0,0.3)";
+    toast.style.color = "#BFFF00";
   }
 
   // Anim in
@@ -775,3 +775,175 @@ window.toggleReviewStatus = async function(id) {
   renderReviews();
   await saveProducts();
 };
+
+// ════════════════════════════════════════════════════════════
+// CALCULADORA PRO — IVA, Flete, Margen, Precio Final
+// ════════════════════════════════════════════════════════════
+(function initCalcPro() {
+  const ids = ['tc-base','tc-flete','tc-iva','tc-margin','tc-extra','tc-units'];
+  
+  function fmtUYU(n) {
+    return '$' + Math.round(n).toLocaleString('es-UY');
+  }
+  
+  function calcPro() {
+    const base   = parseFloat(document.getElementById('tc-base')?.value)   || 0;
+    const flete  = parseFloat(document.getElementById('tc-flete')?.value)  || 0;
+    const ivaPct = parseFloat(document.getElementById('tc-iva')?.value)    ?? 22;
+    const margin = parseFloat(document.getElementById('tc-margin')?.value) ?? 40;
+    const extra  = parseFloat(document.getElementById('tc-extra')?.value)  || 0;
+    const units  = Math.max(1, parseInt(document.getElementById('tc-units')?.value) || 1);
+
+    // Prorrateo por unidad
+    const fleteUnit  = flete / units;
+    const extraUnit  = extra / units;
+    const costoUnit  = base + fleteUnit + extraUnit;
+
+    // IVA sobre el costo total
+    const ivaMonto   = costoUnit * (ivaPct / 100);
+    const costoConIva = costoUnit + ivaMonto;
+
+    // Precio de venta con markup sobre el costo con IVA
+    const precioFinal = costoConIva * (1 + margin / 100);
+    const ganancia    = precioFinal - costoConIva;
+
+    // Actualizar IVA label dinámico
+    const ivaRow = document.querySelector('#tc-r-iva')?.closest('div');
+    if (ivaRow) {
+      const label = ivaRow.querySelector('span:first-child');
+      if (label) label.textContent = `+ IVA (${ivaPct}%)`;
+    }
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    set('tc-r-base',      fmtUYU(base));
+    set('tc-r-flete',     fmtUYU(fleteUnit));
+    set('tc-r-extra',     fmtUYU(extraUnit));
+    set('tc-r-costounit', fmtUYU(costoUnit));
+    set('tc-r-iva',       fmtUYU(ivaMonto));
+    set('tc-r-costoiva',  fmtUYU(costoConIva));
+    set('tc-r-profit',    fmtUYU(ganancia));
+    set('tc-r-final',     fmtUYU(precioFinal));
+  }
+
+  // Bind events una vez que el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    ids.forEach(id => {
+      document.getElementById(id)?.addEventListener('input', calcPro);
+    });
+    calcPro(); // Calcular con valores por defecto
+  });
+})();
+
+// ════════════════════════════════════════════════════════════
+// CONVERSOR DE DIVISAS — Tiempo Real
+// API: Open Exchange Rates (free, no key required para 1 base)
+// Fallback: exchangerate.host
+// ════════════════════════════════════════════════════════════
+;(function initConverter() {
+  let rates = {};         // { USD: 1, UYU: 39.5, EUR: 0.92, ... }
+  let baseRates = {};     // rates en UYU como base
+  let lastFetch = 0;
+
+  const CURRENCIES = ['UYU','USD','EUR','BRL','JPY','GBP','ARS'];
+
+  async function fetchRates() {
+    try {
+      // Usamos Frankfurt API (open source, sin key)
+      const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=UYU,EUR,BRL,JPY,GBP,ARS');
+      if (!res.ok) throw new Error('Frankfurt API error');
+      const data = await res.json();
+
+      // data.rates = { UYU: 39.5, EUR: 0.92, ... } — base USD
+      rates = { USD: 1, ...data.rates };
+      
+      // Convertir todo a base UYU
+      const usdToUyu = rates['UYU'] || 39;
+      baseRates['USD'] = usdToUyu;
+      baseRates['UYU'] = 1;
+      baseRates['EUR'] = usdToUyu / (rates['EUR'] || 1);
+      baseRates['BRL'] = usdToUyu / (rates['BRL'] || 6);
+      baseRates['JPY'] = usdToUyu / (rates['JPY'] || 150);
+      baseRates['GBP'] = usdToUyu / (rates['GBP'] || 0.79);
+      baseRates['ARS'] = usdToUyu / (rates['ARS'] || 1000);
+
+      lastFetch = Date.now();
+      const now = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
+      const el = document.getElementById('conv-last-update');
+      if (el) el.textContent = `Actualizado a las ${now} · Fuente: Frankfurter API`;
+
+      const statusEl = document.getElementById('conv-status');
+      if (statusEl) {
+        statusEl.className = 'text-[10px] px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full font-bold uppercase tracking-wider';
+        statusEl.textContent = '⬤ En Vivo';
+      }
+
+      convertAll();
+    } catch (e) {
+      const statusEl = document.getElementById('conv-status');
+      if (statusEl) {
+        statusEl.className = 'text-[10px] px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full font-bold uppercase tracking-wider';
+        statusEl.textContent = '⬤ Offline';
+      }
+      // Fallback con tasas aproximadas
+      baseRates = { UYU: 1, USD: 39.5, EUR: 43, BRL: 7.8, JPY: 0.27, GBP: 50, ARS: 0.042 };
+      const el = document.getElementById('conv-last-update');
+      if (el) el.textContent = 'Datos aproximados (sin conexión a API)';
+      convertAll();
+    }
+  }
+
+  function convertAll() {
+    if (!Object.keys(baseRates).length) return;
+    const amount = parseFloat(document.getElementById('conv-amount')?.value) || 0;
+    const from   = document.getElementById('conv-from')?.value || 'USD';
+
+    // Convertir amount de la moneda origen a UYU primero
+    const amountInUYU = amount * (baseRates[from] || 1);
+
+    CURRENCIES.forEach(currency => {
+      const el = document.getElementById(`conv-${currency}`);
+      if (!el) return;
+
+      if (currency === from) {
+        el.textContent = currency === 'JPY' || currency === 'ARS'
+          ? amount.toLocaleString('es-UY', { maximumFractionDigits: 0 })
+          : amount.toLocaleString('es-UY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        el.style.opacity = '0.4';
+        return;
+      }
+
+      el.style.opacity = '1';
+      const converted = amountInUYU / (baseRates[currency] || 1);
+
+      // Formatear según moneda
+      let formatted;
+      if (currency === 'JPY') {
+        formatted = '¥' + Math.round(converted).toLocaleString('es-UY');
+      } else if (currency === 'ARS') {
+        formatted = '$' + Math.round(converted).toLocaleString('es-UY');
+      } else if (currency === 'UYU') {
+        formatted = '$' + converted.toLocaleString('es-UY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        const symbols = { USD: 'US$', EUR: '€', BRL: 'R$', GBP: '£' };
+        formatted = (symbols[currency] || '') + converted.toLocaleString('es-UY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      el.textContent = formatted;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('conv-amount')?.addEventListener('input', convertAll);
+    document.getElementById('conv-from')?.addEventListener('change', convertAll);
+
+    // Fetch inmediato
+    fetchRates();
+
+    // Actualizar rates cada 5 minutos
+    setInterval(fetchRates, 5 * 60 * 1000);
+  });
+})();
+

@@ -7,18 +7,18 @@
 
 /* ── Variables ─────────────────────────────────────────── */
 :root {
-  --mint:        #9DFF00;
+  --mint:        #BFFF00;
   --mint-light:  #C4FF4D;
-  --mint-glow:   rgba(157, 255, 0, 0.35);
-  --purple:      #9000FF;
-  --purple-mid:  #A633FF;
-  --purple-glow: rgba(144, 0, 255, 0.5);
+  --mint-glow:   rgba(191, 255, 0, 0.35);
+  --purple:      #8A2BE2;
+  --purple-mid:  #FF00FF;
+  --purple-glow: rgba(138, 43, 226, 0.5);
   --bg:          #080810;
   --bg-card:     #0f0f1a;
   --bg-surface:  #13131f;
   --bg-glass:    rgba(15, 15, 26, 0.7);
   --border:      rgba(255,255,255,0.07);
-  --border-mint: rgba(157, 255, 0, 0.35);
+  --border-mint: rgba(191, 255, 0, 0.35);
   --text:        #f4f4f8;
   --text-sec:    #8b8ba8;
   --text-dim:    #4a4a62;
@@ -61,7 +61,7 @@ body {
 }
 
 .text-glow {
-  text-shadow: 0 0 30px rgba(4,155,122,0.5);
+  text-shadow: 0 0 30px rgba(191,255,0,0.5);
 }
 
 /* ── Ambient BG Canvas ──────────────────────────────────── */
@@ -177,8 +177,8 @@ body {
 }
 .search-input:focus {
   border-color: var(--mint);
-  background: rgba(4,155,122,0.06);
-  box-shadow: 0 0 0 3px rgba(4,155,122,0.12);
+  background: rgba(191,255,0,0.06);
+  box-shadow: 0 0 0 3px rgba(191,255,0,0.12);
 }
 .search-input::placeholder { color: var(--text-dim); }
 
@@ -195,8 +195,8 @@ body {
   gap: 6px;
   padding: 5px 14px 5px 8px;
   border-radius: 30px;
-  background: rgba(4,155,122,0.08);
-  border: 1px solid rgba(4,155,122,0.25);
+  background: rgba(191,255,0,0.08);
+  border: 1px solid rgba(191,255,0,0.25);
   color: var(--mint-light);
   font-size: 11px;
   font-weight: 700;
@@ -329,8 +329,8 @@ body {
 
 .product-card:hover {
   transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(4,155,122,0.2);
-  border-color: rgba(4,155,122,0.4);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(191,255,0,0.2);
+  border-color: rgba(191,255,0,0.4);
 }
 
 .product-card:hover .card-img { transform: scale(1.04); }
@@ -338,13 +338,13 @@ body {
 /* Status-based styles */
 .product-card.status-casa {
   border-color: var(--mint);
-  box-shadow: 0 0 0 1px var(--mint), 0 0 30px rgba(4,155,122,0.2);
+  box-shadow: 0 0 0 1px var(--mint), 0 0 30px rgba(191,255,0,0.2);
   animation: card-glow 3s ease-in-out infinite;
 }
 
 @keyframes card-glow {
-  0%,100% { box-shadow: 0 0 0 1px var(--mint), 0 0 20px rgba(4,155,122,0.15); }
-  50%      { box-shadow: 0 0 0 1px var(--mint-light), 0 0 40px rgba(4,155,122,0.4); }
+  0%,100% { box-shadow: 0 0 0 1px var(--mint), 0 0 20px rgba(191,255,0,0.15); }
+  50%      { box-shadow: 0 0 0 1px var(--mint-light), 0 0 40px rgba(191,255,0,0.4); }
 }
 
 .product-card.status-sin-stock .card-img { filter: grayscale(80%) brightness(0.5); }
@@ -394,7 +394,7 @@ body {
   line-height: 1.5;
 }
 
-.badge-casa          { background: rgba(4,155,122,0.85);   color: #fff; box-shadow: 0 0 12px rgba(4,155,122,0.6); }
+.badge-casa          { background: rgba(191,255,0,0.85);   color: #fff; box-shadow: 0 0 12px rgba(191,255,0,0.6); }
 .badge-pocas         { background: rgba(245,124,0,0.85);   color: #fff; }
 .badge-disponible    { background: rgba(34,197,94,0.8);    color: #fff; }
 .badge-encargue      { background: rgba(6,182,212,0.8);    color: #fff; }
@@ -480,22 +480,22 @@ body {
   color: #fff;
   padding: 13px 28px;
   font-size: 14px;
-  box-shadow: 0 4px 20px rgba(4,155,122,0.35);
+  box-shadow: 0 4px 20px rgba(191,255,0,0.35);
 }
-.btn-mint:hover { background: var(--mint-light); box-shadow: 0 8px 28px rgba(4,155,122,0.5); }
+.btn-mint:hover { background: var(--mint-light); box-shadow: 0 8px 28px rgba(191,255,0,0.5); }
 
 .btn-outline-mint {
-  background: rgba(4,155,122,0.1);
+  background: rgba(191,255,0,0.1);
   color: var(--mint-light);
-  border: 1px solid rgba(4,155,122,0.4);
+  border: 1px solid rgba(191,255,0,0.4);
   padding: 13px 24px;
   font-size: 14px;
 }
 .btn-outline-mint:hover { 
-  background: rgba(4,155,122,0.2); 
+  background: rgba(191,255,0,0.2); 
   border-color: var(--mint-light);
   color: #fff;
-  box-shadow: 0 0 15px rgba(4,155,122,0.3);
+  box-shadow: 0 0 15px rgba(191,255,0,0.3);
 }
 
 .btn-outline {
@@ -673,7 +673,7 @@ body {
 /* ── Loader ─────────────────────────────────────────────── */
 .spinner {
   width: 40px; height: 40px;
-  border: 3px solid rgba(4,155,122,0.15);
+  border: 3px solid rgba(191,255,0,0.15);
   border-top-color: var(--mint);
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
@@ -691,16 +691,16 @@ body {
 }
 
 .feature-card:hover {
-  background: rgba(4,155,122,0.05);
-  border-color: rgba(4,155,122,0.2);
+  background: rgba(191,255,0,0.05);
+  border-color: rgba(191,255,0,0.2);
   transform: translateY(-3px);
 }
 
 .feature-icon {
   width: 44px; height: 44px;
   border-radius: 12px;
-  background: rgba(4,155,122,0.1);
-  border: 1px solid rgba(4,155,122,0.2);
+  background: rgba(191,255,0,0.1);
+  border: 1px solid rgba(191,255,0,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -764,8 +764,8 @@ body {
 
 .admin-input:focus {
   border-color: var(--mint);
-  box-shadow: 0 0 0 3px rgba(4,155,122,0.12);
-  background: rgba(4,155,122,0.04);
+  box-shadow: 0 0 0 3px rgba(191,255,0,0.12);
+  background: rgba(191,255,0,0.04);
 }
 
 .admin-input::placeholder { color: var(--text-dim); }
@@ -792,7 +792,7 @@ body {
   background: var(--bg-card);
   transition: border-color 0.2s;
 }
-.product-row:hover { border-color: rgba(4,155,122,0.25); }
+.product-row:hover { border-color: rgba(191,255,0,0.25); }
 
 .btn-danger {
   background: rgba(239,68,68,0.08);
@@ -820,7 +820,7 @@ body {
   position: relative;
   overflow: hidden;
 }
-.image-upload-area:hover { border-color: var(--mint); background: rgba(4,155,122,0.04); }
+.image-upload-area:hover { border-color: var(--mint); background: rgba(191,255,0,0.04); }
 
 .image-preview { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; }
 
@@ -828,7 +828,7 @@ body {
 .footer {
   border-top: 1px solid var(--border);
   padding: 48px 0;
-  background: linear-gradient(to top, rgba(4,155,122,0.03), transparent);
+  background: linear-gradient(to top, rgba(191,255,0,0.03), transparent);
 }
 
 /* ── Utility ─────────────────────────────────────────────── */
