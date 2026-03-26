@@ -852,28 +852,27 @@ window.toggleReviewStatus = async function(id) {
 
   async function fetchRates() {
     try {
-      // Usamos Frankfurt API (open source, sin key)
-      const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=UYU,EUR,BRL,JPY,GBP,ARS');
-      if (!res.ok) throw new Error('Frankfurt API error');
+      // Usamos ExchangeRate-API open endpoint (sin limite ni key)
+      const res = await fetch('https://open.er-api.com/v6/latest/USD');
+      if (!res.ok) throw new Error('API error');
       const data = await res.json();
 
-      // data.rates = { UYU: 39.5, EUR: 0.92, ... } — base USD
       rates = { USD: 1, ...data.rates };
       
       // Convertir todo a base UYU
-      const usdToUyu = rates['UYU'] || 39;
+      const usdToUyu = rates['UYU'] || 39.5;
       baseRates['USD'] = usdToUyu;
       baseRates['UYU'] = 1;
-      baseRates['EUR'] = usdToUyu / (rates['EUR'] || 1);
-      baseRates['BRL'] = usdToUyu / (rates['BRL'] || 6);
-      baseRates['JPY'] = usdToUyu / (rates['JPY'] || 150);
+      baseRates['EUR'] = usdToUyu / (rates['EUR'] || 0.92);
+      baseRates['BRL'] = usdToUyu / (rates['BRL'] || 5.1);
+      baseRates['JPY'] = usdToUyu / (rates['JPY'] || 151);
       baseRates['GBP'] = usdToUyu / (rates['GBP'] || 0.79);
       baseRates['ARS'] = usdToUyu / (rates['ARS'] || 1000);
 
       lastFetch = Date.now();
       const now = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
       const el = document.getElementById('conv-last-update');
-      if (el) el.textContent = `Actualizado a las ${now} · Fuente: Frankfurter API`;
+      if (el) el.textContent = `Actualizado a las ${now}`;
 
       const statusEl = document.getElementById('conv-status');
       if (statusEl) {
