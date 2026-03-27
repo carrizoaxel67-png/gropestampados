@@ -186,7 +186,7 @@
       </header>
 
       <!-- Scrollable Area -->
-      <div class="flex-1 overflow-y-auto w-full relative pb-24 md:pb-8" id="main-scroll-area">
+      <div class="flex-1 overflow-y-auto overflow-x-hidden w-full relative pb-32 sm:pb-36 lg:pb-8" id="main-scroll-area">
         
         <!-- Loading -->
         <div id="admin-loader" class="absolute inset-0 z-50 flex items-center justify-center bg-[#0a0a0a] transition-opacity duration-300">
@@ -508,27 +508,29 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- MOBILE BOTTOM NAV (ESTILO IOS)                      -->
   <!-- ─────────────────────────────────────────────────── -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0b0b14]/95 backdrop-blur-3xl border-t border-white/5 flex justify-around pb-6 pt-3 px-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.8)]">
-    <button class="mobile-tab admin-tab active flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint" data-target="tab-products">
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#080810]/90 backdrop-blur-2xl border-t border-[#1f1f1f] flex justify-around items-end pb-7 pt-3 px-2 z-40 shadow-[0_-20px_40px_rgba(0,0,0,0.6)]">
+    <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mint/20 to-transparent"></div>
+    
+    <button class="mobile-tab admin-tab active flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-products">
       <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-      <span class="text-[10px] font-bold tracking-wide">Stock</span>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Stock</span>
     </button>
-    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint" data-target="tab-categories">
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-categories">
       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-      <span class="text-[10px] font-bold tracking-wide">Tipos</span>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Tipos</span>
     </button>
-    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint" data-target="tab-tools">
-      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-      <span class="text-[10px] font-bold tracking-wide">Calc</span>
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-tools">
+      <svg class="w-6 h-6 mb-1 outline-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Calc</span>
     </button>
-    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint" data-target="tab-converter">
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-converter">
       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 6l9-4 9 4v12l-9 4-9-4V6z"/></svg>
-      <span class="text-[10px] font-bold tracking-wide">Divisas</span>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Divisas</span>
     </button>
-    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint relative" data-target="tab-encargos">
-      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      <span class="text-[10px] font-bold tracking-wide">Encargos</span>
-      <span id="enc-badge-mob" class="absolute top-1 right-3 text-[9px] font-black bg-mint text-[#080810] rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint relative" data-target="tab-encargos">
+      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Pedidos</span>
+      <span id="enc-badge-mob" class="absolute top-0 right-2 text-[8px] font-black bg-mint text-[#080810] shadow-sm rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
     </button>
   </nav>
 
