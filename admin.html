@@ -149,6 +149,11 @@
           <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l9-4 9 4v12l-9 4-9-4V6z"/></svg>
           <span class="font-medium text-sm text-gray-400">Divisas</span>
         </button>
+        <button class="admin-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-encargos">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          <span class="font-medium text-sm text-gray-400">Encargos</span>
+          <span id="enc-badge-side" class="ml-auto text-[10px] font-black bg-mint/20 text-mint border border-mint/30 rounded-full px-2 py-0.5 hidden">0</span>
+        </button>
       </nav>
 
       <div class="px-6 py-4 border-t border-[#1a1a1a]">
@@ -462,6 +467,38 @@
           </div>
 
         </div>
+
+          <!-- ─── TAB: ENCARGOS ─── -->
+          <div id="tab-encargos" class="tab-content hidden animate-fade-in">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <div>
+                <h2 class="text-2xl md:text-3xl font-black tracking-tight mb-1">Encargos Personalizados</h2>
+                <p class="text-gray-500 text-sm">Pedidos de personalización recibidos desde el sitio.</p>
+              </div>
+              <button onclick="if(confirm('¿Borrar todos los encargos? Esta acción no se puede deshacer.')){localStorage.removeItem('grop_encargos');renderEncargos();}" class="text-red-400 hover:text-red-300 text-xs font-bold bg-red-400/10 border border-red-400/20 px-4 py-2 rounded-xl transition-colors">Borrar todos</button>
+            </div>
+
+            <!-- Filtros de estado -->
+            <div class="flex flex-wrap gap-2 mb-6" id="enc-filter-group">
+              <button class="enc-filter-btn active text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all" data-estado="todos" style="background:rgba(191,255,0,0.1);color:#BFFF00;border-color:rgba(191,255,0,0.3);">Todos</button>
+              <button class="enc-filter-btn text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border border-[#2a2a2a] bg-[#111] text-gray-400 transition-all" data-estado="nuevo">🔵 Nuevos</button>
+              <button class="enc-filter-btn text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border border-[#2a2a2a] bg-[#111] text-gray-400 transition-all" data-estado="presupuestado">🟡 Presupuestado</button>
+              <button class="enc-filter-btn text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border border-[#2a2a2a] bg-[#111] text-gray-400 transition-all" data-estado="produccion">🟠 En producción</button>
+              <button class="enc-filter-btn text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border border-[#2a2a2a] bg-[#111] text-gray-400 transition-all" data-estado="entregado">✅ Entregado</button>
+            </div>
+
+            <!-- Lista de encargos -->
+            <div id="encargos-list" class="flex flex-col gap-4">
+              <!-- JS render -->
+            </div>
+            <div id="enc-empty" class="hidden text-center py-20">
+              <p class="text-4xl mb-4">📋</p>
+              <p class="text-lg font-bold text-gray-500">No hay encargos aún.</p>
+              <p class="text-sm text-gray-600 mt-2">Cuando un cliente complete el formulario de personalización aparecerán aquí.</p>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </main>
@@ -487,6 +524,11 @@
     <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint" data-target="tab-converter">
       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 6l9-4 9 4v12l-9 4-9-4V6z"/></svg>
       <span class="text-[10px] font-bold tracking-wide">Divisas</span>
+    </button>
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-400 data-[active=true]:text-mint relative" data-target="tab-encargos">
+      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span class="text-[10px] font-bold tracking-wide">Encargos</span>
+      <span id="enc-badge-mob" class="absolute top-1 right-3 text-[9px] font-black bg-mint text-[#080810] rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
     </button>
   </nav>
 
@@ -635,5 +677,139 @@
   </div>
 
   <!-- ─── SCRIPTS ─── -->
+  <script>
+  // ───────────────────────────────────────────────────────────
+  // SISTEMA DE ENCARGOS PERSONALIZADOS — Admin
+  // ───────────────────────────────────────────────────────────
+  const ENC_STATUS_CFG = {
+    nuevo:         { label: '🔵 Nuevo',         color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.3)' },
+    presupuestado: { label: '🟡 Presupuestado', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.3)' },
+    produccion:    { label: '🟠 En producción', color: '#f97316', bg: 'rgba(249,115,22,0.1)',  border: 'rgba(249,115,22,0.3)' },
+    entregado:     { label: '✅ Entregado',     color: '#BFFF00', bg: 'rgba(191,255,0,0.1)',   border: 'rgba(191,255,0,0.3)' },
+  };
+
+  let encCurrentFilter = 'todos';
+
+  function getEncargos() {
+    return JSON.parse(localStorage.getItem('grop_encargos') || '[]');
+  }
+
+  function saveEncargos(arr) {
+    localStorage.setItem('grop_encargos', JSON.stringify(arr));
+  }
+
+  function updateEncBadges() {
+    const enc = getEncargos();
+    const nuevos = enc.filter(e => e.estado === 'nuevo').length;
+    ['enc-badge-side', 'enc-badge-mob'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (nuevos > 0) { el.textContent = nuevos; el.classList.remove('hidden'); }
+      else { el.classList.add('hidden'); }
+    });
+  }
+
+  function setEncEstado(id, estado) {
+    const enc = getEncargos();
+    const idx = enc.findIndex(e => e.id === id);
+    if (idx >= 0) { enc[idx].estado = estado; saveEncargos(enc); }
+    renderEncargos();
+  }
+  window.setEncEstado = setEncEstado;
+
+  function renderEncargos() {
+    const list = document.getElementById('encargos-list');
+    const empty = document.getElementById('enc-empty');
+    if (!list) return;
+    updateEncBadges();
+
+    const enc = getEncargos();
+    const filtered = encCurrentFilter === 'todos' ? enc : enc.filter(e => e.estado === encCurrentFilter);
+
+    if (filtered.length === 0) {
+      list.innerHTML = '';
+      empty?.classList.remove('hidden');
+      return;
+    }
+    empty?.classList.add('hidden');
+
+    list.innerHTML = filtered.map(e => {
+      const cfg = ENC_STATUS_CFG[e.estado] || ENC_STATUS_CFG.nuevo;
+      const fecha = e.fecha ? new Date(e.fecha).toLocaleString('es-UY', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+      const waMsg = encodeURIComponent(
+        `Hola ${e.nombre}! Te contactamos de GROPESTAMPADOS.UY sobre tu encargo de *${e.producto}*. 👕`
+      );
+      const waURL = e.telefono
+        ? `https://wa.me/${e.telefono.replace(/\D/g, '')}?text=${waMsg}`
+        : `https://wa.me/59897116015?text=${waMsg}`;
+
+      return `
+        <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden;">
+          <!-- Header de la tarjeta -->
+          <div style="padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-bottom:1px solid #1a1a1a;">
+            <div>
+              <p style="color:white;font-weight:900;font-size:15px;margin:0;">${escA(e.nombre)}</p>
+              <p style="color:#6b7280;font-size:11px;margin:2px 0 0;">${escA(e.producto)} · ${fecha}</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};">${cfg.label}</span>
+              ${e.telefono ? `<a href="${waURL}" target="_blank" style="background:#25d366;color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:10px;text-decoration:none;">WhatsApp</a>` : ''}
+            </div>
+          </div>
+          <!-- Detalle -->
+          <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+            ${encField('Prenda', e.producto)}
+            ${encField('Talle', e.talle)}
+            ${encField('Color', e.color)}
+            ${encField('Técnica', e.tecnica)}
+            ${encField('Posición', e.posiciones)}
+            ${encField('Cantidad', e.cantidad + ' ud.')}
+            ${encField('Diseño propio', e.diseño)}
+            ${e.notas ? encField('Notas', e.notas) : ''}
+          </div>
+          <!-- Cambiar estado -->
+          <div style="padding:12px 20px;border-top:1px solid #1a1a1a;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <span style="color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-right:4px;">Estado:</span>
+            ${Object.entries(ENC_STATUS_CFG).map(([key, v]) =>
+              `<button onclick="setEncEstado('${e.id}','${key}')" style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:999px;cursor:pointer;border:1px solid;transition:all 0.15s;${e.estado===key ? `background:${v.bg};color:${v.color};border-color:${v.border}` : 'background:transparent;color:#4b5563;border-color:#333'}">${v.label}</button>`
+            ).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  window.renderEncargos = renderEncargos;
+
+  function encField(label, val) {
+    if (!val) return '';
+    return `<div style="background:#0a0a0a;border-radius:10px;padding:10px 12px;border:1px solid #1a1a1a;">
+      <span style="color:#6b7280;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:2px;">${label}</span>
+      <span style="color:white;font-size:13px;font-weight:600;">${escA(String(val))}</span>
+    </div>`;
+  }
+
+  function escA(str) {
+    const d = document.createElement('div'); d.textContent = str ?? ''; return d.innerHTML;
+  }
+
+  // Filtros de estado encargos
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.enc-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        encCurrentFilter = btn.dataset.estado;
+        document.querySelectorAll('.enc-filter-btn').forEach(b => {
+          b.style.background = '#111'; b.style.color = '#9ca3af'; b.style.borderColor = '#2a2a2a';
+        });
+        btn.style.background = 'rgba(191,255,0,0.1)'; btn.style.color = '#BFFF00'; btn.style.borderColor = 'rgba(191,255,0,0.3)';
+        renderEncargos();
+      });
+    });
+    // Cargar encargos cuando se active el tab
+    document.querySelectorAll('[data-target="tab-encargos"]').forEach(btn => {
+      btn.addEventListener('click', () => setTimeout(renderEncargos, 50));
+    });
+    updateEncBadges();
+  });
+  </script>
   <script src="/assets/js/admin.js"></script>
 </body>

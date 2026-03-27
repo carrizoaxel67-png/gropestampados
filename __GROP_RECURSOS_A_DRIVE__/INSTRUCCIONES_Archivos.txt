@@ -1,0 +1,14 @@
+# Recursos de Identidad GROPESTAMPADOS.UY
+
+Esta carpeta ha sido preparada automáticamente para que la subas directamente a G-Drive o se la mandes al impresor/diseñador en alta calidad sin perderte entre los archivos.
+
+## Contenido:
+1. `1_Logo_Principal_Neon.png`: Logo maestro (gradiente verde-violeta-magenta). Para redes, perfil, fondos oscuros, y pantalla. (Uso digital + DTF full color).
+2. `2_Variante_Dark_On_White.png`: Logo sin gradiente (totalmente negro) adaptado a fondos blancos absolutos. (Uso imprenta monocromática, impresiones láser, facturación, y vinilo negro).
+3. `3_Variante_White_On_Dark.png`: Logo completamente blanco sin fondo, diseñado para fondos negros. (Típico uso en estampar en remeras base negra monocromática).
+4. `4_Navidad.png`: Variante limit-edition generada para temporada de fiestas.
+5. `5_Banner_IG.png`: Formato vertical 9:16 para stories / promociones.
+6. `6_Manual_de_Marca_Grop.pdf`: Folio en PDF del Kit oficial.
+
+Subí esta carpeta a Google Drive y compártela.
+¡Éxito total en las ventas! 👽🚀
