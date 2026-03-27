@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Personalizar | GROPESTAMPADOS.UY</title>
+  <meta name="theme-color" content="#080810">
+  
+  <!-- Tailwind & Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { mint: '#BFFF00', purp: '#8A2BE2', magenta: '#FF00FF' },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            cursive: ['"Dancing Script"', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    .option-card {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-card:hover { border-color: rgba(191,255,0,0.5); transform: translateY(-2px); }
+    .option-card.selected {
+      background: rgba(191,255,0,0.1);
+      border-color: #BFFF00;
+      color: #BFFF00;
+      box-shadow: 0 4px 20px rgba(191,255,0,0.15);
+    }
+    .option-card.selected .icon { filter: drop-shadow(0 0 8px rgba(191,255,0,0.4)); }
+    .option-card.selected .title { color: #BFFF00; }
+  </style>
+</head>
+<body class="bg-[#080810] text-gray-300 font-sans antialiased selection:bg-mint selection:text-[#080810] min-h-screen flex flex-col relative">
+
+  <!-- Ambient bg -->
+  <div class="fixed inset-0 z-0 opacity-30 pointer-events-none" style="background:radial-gradient(circle at 50% 0%, rgba(191,255,0,0.1) 0%, transparent 50%); mix-blend-mode:screen;"></div>
+
+  <!-- Header simple -->
+  <header class="navbar flex justify-center sticky top-0 z-50 border-b border-white/10 bg-[#080810]/90 backdrop-blur-xl">
+    <div class="w-full max-w-7xl px-4 h-20 flex items-center justify-between">
+      <a href="/" class="flex flex-col justify-center group" aria-label="Volver">
+        <span class="font-sans font-black text-[2.2rem] tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-br from-mint via-purp to-magenta">grop</span>
+        <span class="-mt-1 ml-5 text-[1.2rem] font-cursive font-bold text-mint tracking-wide lowercase">Estampados</span>
+      </a>
+      <a href="/" class="text-sm font-bold text-gray-400 hover:text-white flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Volver al inicio
+      </a>
+    </div>
+  </header>
+
+  <!-- Principal -->
+  <main class="flex-1 relative z-10 w-full max-w-3xl mx-auto px-4 py-12 md:py-20">
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center justify-center mb-4 text-4xl">✨</div>
+      <h1 class="font-display text-4xl md:text-6xl text-white tracking-widest uppercase mb-4 text-glow">Creá tu estilo</h1>
+      <p class="text-gray-400 max-w-xl mx-auto text-sm md:text-base leading-relaxed">Elegí el producto y contanos tu idea. Nosotros lo diseñamos y estampamos para vos con la mejor calidad.</p>
+    </div>
+
+    <div class="bg-[#0d0d18] border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+      <!-- Glow superior interno -->
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-mint to-transparent opacity-30"></div>
+
+      <form id="editor-form" class="flex flex-col gap-10">
+
+        <!-- 1. PRODUCTO -->
+        <section>
+          <h2 class="text-xs font-black text-white/50 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+            <span class="text-mint">1.</span> ¿Qué querés personalizar?
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <!-- Remera -->
+            <label class="option-card flex flex-col items-center justify-center gap-2">
+              <input type="radio" name="producto" value="Remera" class="hidden" required>
+              <span class="icon text-3xl transition-all">👕</span>
+              <span class="title text-xs font-bold text-gray-300 transition-colors uppercase tracking-wider">Remera</span>
+            </label>
+            <!-- Canguro / Buzo -->
+            <label class="option-card flex flex-col items-center justify-center gap-2">
+              <input type="radio" name="producto" value="Canguro / Buzo" class="hidden">
+              <span class="icon text-3xl transition-all">🧥</span>
+              <span class="title text-xs font-bold text-gray-300 transition-colors uppercase tracking-wider">Canguro</span>
+            </label>
+            <!-- Taza -->
+            <label class="option-card flex flex-col items-center justify-center gap-2">
+              <input type="radio" name="producto" value="Taza" class="hidden">
+              <span class="icon text-3xl transition-all">☕</span>
+              <span class="title text-xs font-bold text-gray-300 transition-colors uppercase tracking-wider">Taza</span>
+            </label>
+            <!-- Gorra -->
+            <label class="option-card flex flex-col items-center justify-center gap-2">
+              <input type="radio" name="producto" value="Gorra" class="hidden">
+              <span class="icon text-3xl transition-all">🧢</span>
+              <span class="title text-xs font-bold text-gray-300 transition-colors uppercase tracking-wider">Gorra</span>
+            </label>
+            <!-- Otro -->
+            <label class="option-card flex flex-col items-center justify-center gap-2 sm:col-span-4" id="btn-otro">
+              <input type="radio" name="producto" value="Otro" class="hidden">
+              <span class="icon text-xl transition-all">📦</span>
+              <span class="title text-xs font-bold text-gray-300 transition-colors uppercase tracking-wider">Otro producto (Mochila, mousepad, etc.)</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 2. DETALLES (Color, Talle, Cantidad) -->
+        <section class="bg-black/30 rounded-2xl p-6 border border-white/5 space-y-5">
+          <h2 class="text-xs font-black text-white/50 uppercase tracking-[0.2em] flex items-center gap-3">
+            <span class="text-mint">2.</span> Detalles de la prenda / objeto
+          </h2>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Color dominante *</label>
+              <input type="text" id="color" required placeholder="Ej: Negro, Blanco..." class="w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-mint transition-colors placeholder:text-gray-700">
+            </div>
+            
+            <div id="talle-box">
+              <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Talle (si aplica)</label>
+              <select id="talle" class="w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-mint transition-colors appearance-none cursor-pointer">
+                <option value="No aplica">No aplica</option>
+                <option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option><option value="XXL">XXL</option><option value="Único">Único</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Cantidad *</label>
+              <div class="flex items-center bg-[#111] border border-[#2a2a2a] rounded-xl overflow-hidden h-11">
+                <button type="button" onclick="changeQty(-1)" class="w-12 h-full text-gray-500 hover:text-white hover:bg-white/5 transition-colors grid place-items-center text-lg">−</button>
+                <input type="number" id="cantidad" value="1" min="1" required class="flex-1 bg-transparent text-mint font-black text-center text-lg outline-none w-full hide-spin">
+                <button type="button" onclick="changeQty(1)" class="w-12 h-full text-gray-500 hover:text-white hover:bg-white/5 transition-colors grid place-items-center text-lg">+</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. DISEÑO / IDEA -->
+        <section>
+          <h2 class="text-xs font-black text-white/50 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+            <span class="text-mint">3.</span> Tu Diseño / Idea
+          </h2>
+          
+          <div class="space-y-4">
+            <textarea id="idea" rows="4" required placeholder="Explicanos tu idea: &#10;1. Qué diseño querés (logo, foto, texto, etc.)&#10;2. En qué posición (Frente, Espalda, ambos...)&#10;3. Cualquier otro detalle para que quede perfecto." class="w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-4 text-sm text-white focus:outline-none focus:border-mint transition-colors placeholder:text-gray-600 resize-y min-h-[120px]"></textarea>
+
+            <div class="flex items-center gap-3 bg-mint/5 border border-mint/20 rounded-xl p-4">
+              <span class="text-2xl">🖼️</span>
+              <div class="text-[11px] text-gray-400 leading-relaxed">
+                <strong class="text-mint block mb-1">¿Tenés una imagen, foto o logo?</strong>
+                Al tocar "Enviar Pedido" se abrirá WhatsApp. <strong class="text-white">Allí podrás enviarnos el archivo directamente.</strong> ¡Nosotros lo adaptamos por vos!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. DATOS -->
+        <section>
+          <h2 class="text-xs font-black text-white/50 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+            <span class="text-mint">4.</span> Datos de contacto
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" id="nombre" required placeholder="Tu nombre *" class="w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-mint transition-colors placeholder:text-gray-700">
+            <input type="tel" id="telefono" placeholder="WhatsApp / Celular *" required class="w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-mint transition-colors placeholder:text-gray-700">
+          </div>
+        </section>
+
+        <hr class="border-white/10">
+
+        <!-- SUBMIT -->
+        <button type="submit" class="w-full group bg-mint hover:bg-mint-l text-[#080810] font-black text-base md:text-lg rounded-2xl py-5 px-6 shadow-[0_0_30px_rgba(191,255,0,0.25)] hover:shadow-[0_0_40px_rgba(191,255,0,0.4)] transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 uppercase tracking-widest">
+          <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviar pedido por WhatsApp
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // Manejo de opción de producto visuales
+    const radios = document.querySelectorAll('input[name="producto"]');
+    const cards = document.querySelectorAll('.option-card');
+    const talleSelect = document.getElementById('talle');
+    const talleBox = document.getElementById('talle-box');
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        cards.forEach(c => c.classList.remove('selected'));
+        if(e.target.checked) e.target.closest('.option-card').classList.add('selected');
+        
+        // Ocultar talle si es Taza/Gorra
+        const val = e.target.value;
+        if (val === 'Taza' || val === 'Gorra') {
+          talleBox.style.opacity = '0.4';
+          talleSelect.value = 'No aplica';
+          talleSelect.disabled = true;
+        } else {
+          talleBox.style.opacity = '1';
+          talleSelect.disabled = false;
+        }
+      });
+    });
+
+    // Cambiar cantidad
+    function changeQty(delta) {
+      const inp = document.getElementById('cantidad');
+      const val = Math.max(1, parseInt(inp.value) + delta || 1);
+      inp.value = val;
+    }
+
+    // Submit a WhatsApp + Guardar en Encargos Panel Admin
+    document.getElementById('editor-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const prodRadio = document.querySelector('input[name="producto"]:checked');
+      if (!prodRadio) { alert('Seleccioná qué producto querés personalizar.'); return; }
+
+      const producto = prodRadio.value;
+      const color = document.getElementById('color').value.trim();
+      const talle = document.getElementById('talle').value;
+      const cantidad = parseInt(document.getElementById('cantidad').value) || 1;
+      const idea = document.getElementById('idea').value.trim();
+      const nombre = document.getElementById('nombre').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+
+      // Formatear mensaje WS
+      const msgLines = [
+        `🛒 *NUEVO PEDIDO PERSONALIZADO*`,
+        ``,
+        `👤 *Cliente:* ${nombre} - ${telefono}`,
+        ``,
+        `🎁 *Producto:* ${producto}`,
+        `🎨 *Color:* ${color}`,
+        talle !== 'No aplica' ? `📐 *Talle:* ${talle}` : null,
+        `📦 *Cantidad:* ${cantidad} u.`,
+        ``,
+        `🧠 *Idea / Diseño:*`,
+        idea,
+        ``,
+        `_(Enviado desde el editor web de gropestampados.uy)_`
+      ].filter(Boolean);
+
+      const ts = Date.now();
+      const encargoObj = {
+        id: 'enc_' + ts,
+        fecha: new Date().toISOString(),
+        producto: producto,
+        nombre: nombre,
+        telefono: telefono,
+        talle: talle,
+        color: color,
+        tecnica: 'A definir s/ diseño',
+        posiciones: 'Varias (ver nota)',
+        cantidad: cantidad,
+        diseño: 'Enviado o redactado por cliente',
+        notas: idea,
+        estado: 'nuevo'
+      };
+
+      try {
+        const arr = JSON.parse(localStorage.getItem('grop_encargos') || '[]');
+        arr.unshift(encargoObj);
+        localStorage.setItem('grop_encargos', JSON.stringify(arr));
+      } catch (err) { console.error('Error guardando en panel admin:', err); }
+
+      const wsURL = `https://wa.me/59897116015?text=${encodeURIComponent(msgLines.join('\n'))}`;
+      window.location.href = wsURL;
+    });
+
+    // Estilos extra para input number sin flechas en webkit
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .hide-spin::-webkit-inner-spin-button, .hide-spin::-webkit-outer-spin-button {
+        -webkit-appearance: none; margin: 0;
+      }
+      .hide-spin { -moz-appearance: textfield; }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
