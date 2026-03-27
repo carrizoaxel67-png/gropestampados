@@ -110,7 +110,7 @@
 <body class="bg-[#0a0a0a] text-white overflow-hidden" style="display:none">
 
   <!-- APP CONTAINER -->
-  <div class="flex h-screen w-full">
+  <div class="flex h-[100dvh] w-full">
 
     <!-- ─── SIDEBAR (Desktop) ─── -->
     <aside class="hidden md:flex flex-col w-64 border-r border-[#1a1a1a] bg-[#0d0d0d] z-20 shrink-0">
@@ -186,7 +186,7 @@
       </header>
 
       <!-- Scrollable Area -->
-      <div class="flex-1 overflow-y-auto overflow-x-hidden w-full relative pb-32 sm:pb-36 lg:pb-8" id="main-scroll-area">
+      <div class="flex-1 overflow-y-auto overflow-x-hidden w-full relative" id="main-scroll-area">
         
         <!-- Loading -->
         <div id="admin-loader" class="absolute inset-0 z-50 flex items-center justify-center bg-[#0a0a0a] transition-opacity duration-300">
@@ -499,6 +499,9 @@
           </div>
 
         </div>
+        
+        <!-- ESPACIADOR FÍSICO MÓVIL (Fuerza el scroll más allá de la navbar nativa y app navbar) -->
+        <div class="h-36 sm:h-40 md:h-12 w-full shrink-0"></div>
       </div>
 
     </main>
