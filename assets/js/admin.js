@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GROPESTAMPADOS.UY — Admin JS
  * Netlify Identity RBAC, Canvas WebP compression, CRUD, authenticated save
  */
@@ -20,10 +20,10 @@
 })();
 
 const STATUS_OPTIONS = [
-  { value: "pocas",         label: "🟠 Pocas Unidades" },
-  { value: "disponible",    label: "🟢 Disponible" },
-  { value: "encargue",      label: "🔵 Por Encargue" },
-  { value: "sin-stock",     label: "🔴 Sin Stock" },
+  { value: "pocas",         label: "[naranja] Pocas Unidades" },
+  { value: "disponible",    label: "[verde] Disponible" },
+  { value: "encargue",      label: "[azul] Por Encargue" },
+  { value: "sin-stock",     label: "[rojo] Sin Stock" },
   { value: "no-disponible", label: "⚫ No Disponible" },
 ];
 
@@ -124,7 +124,7 @@ async function loadProducts() {
     data = await res.json();
   } catch (e) {
     console.error('loadProducts [network] error:', e);
-    showToast("⚠️ No se pudo conectar. Reintentá en unos segundos.", "error");
+    showToast("No se pudo conectar. Reintentá en unos segundos.", "error");
     if (products.length === 0) {
       products = DEMO_PRODUCTS_SEED;
       try { renderCategories(); renderList(); renderReviews(); } catch(_) {}
@@ -202,7 +202,7 @@ async function saveProducts(silent = false) {
     
     if (sizeMB > 5.5) {
       if(!silent) showLoading(false);
-      showToast(`⚠️ Demasiado peso (${sizeMB}MB). Achica fotos o elimina productos obsoletos.`, "error");
+      showToast(`Atencion: Demasiado peso (${sizeMB}MB). Achica fotos o elimina productos obsoletos.`, "error");
       return;
     }
     
@@ -280,7 +280,7 @@ function renderList() {
     const statusLabel = STATUS_OPTIONS.find(s => s.value === p.status)?.label ?? p.status;
     const imgHTML = p.image
       ? `<img src="${p.image}" class="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover bg-[#050505] border border-[#1a1a1a] shadow-inner shrink-0" alt="">`
-      : `<div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center text-3xl bg-[#111] border border-[#1a1a1a] shrink-0">👕</div>`;
+      : `<div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center text-3xl bg-[#111] border border-[#1a1a1a] shrink-0">[ropa]</div>`;
 
     return `
     <div class="bg-[#111] rounded-3xl p-4 md:p-5 flex flex-col gap-4 border border-[#2a2a2a] hover:border-[#3a3a3a] transition-all shadow-xl relative overflow-hidden group">
@@ -439,7 +439,7 @@ productForm?.addEventListener("submit", async (e) => {
   };
 
   if (!product.name) {
-    showToast("⚠️ El nombre es obligatorio", "error");
+    showToast("! El nombre es obligatorio", "error");
     return;
   }
 
@@ -528,7 +528,7 @@ function showToast(msg, type = "success") {
   if (!toast || !msgEl || !iconEl) return;
 
   msgEl.textContent = msg;
-  iconEl.innerHTML = type === "error" ? "❌" : "✨";
+  iconEl.innerHTML = type === "error" ? "Error:" : "✨";
   
   if (type === "error") {
     toast.style.borderColor = "rgba(239,68,68,0.3)";
@@ -702,13 +702,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ─── Visual Settings Logic ─────────────────────────────────
 const BLOCK_DEFS = {
-  hero: { icon: '🦸', label: 'Títulos y Portada' },
-  servicios: { icon: '🛠️', label: 'Servicios' },
-  proceso: { icon: '⚙️', label: 'Pasos de Trabajo' },
-  catalog: { icon: '🛍️', label: 'Tienda de Productos' },
-  reviews: { icon: '⭐', label: 'Testimonios' },
-  image_banner: { icon: '🖼️', label: 'Banner Ancho (Imagen)' },
-  rich_text: { icon: '📝', label: 'Párrafo o Título Libre' }
+  hero: { icon: '[hero]', label: 'Títulos y Portada' },
+  servicios: { icon: '[servicios]', label: 'Servicios' },
+  proceso: { icon: '[proceso]', label: 'Pasos de Trabajo' },
+  catalog: { icon: '[catalogo]', label: 'Tienda de Productos' },
+  reviews: { icon: '[resenas]', label: 'Testimonios' },
+  image_banner: { icon: '[imagen]', label: 'Banner Ancho (Imagen)' },
+  rich_text: { icon: '[texto]', label: 'Párrafo o Título Libre' }
 };
 
 let currentEditingSectionIndex = -1;
@@ -817,7 +817,7 @@ function renderPageBuilder() {
   }
 
   c.innerHTML = visualConfig.sections.map((sec, i) => {
-    const def = BLOCK_DEFS[sec.type] || { icon: '📄', label: 'Desconocido' };
+    const def = BLOCK_DEFS[sec.type] || { icon: '[doc]', label: 'Desconocido' };
     const isV = sec.visible !== false;
     return `
     <div class="flex flex-col gap-2 bg-[#0a0a0a] border border-[#1a1a1a] rounded-2xl p-3 transition-all ${isV ? '' : 'opacity-50 grayscale'}">
@@ -827,13 +827,13 @@ function renderPageBuilder() {
         <span class="text-sm font-bold text-white flex-1 truncate">${def.label}</span>
         
         <div class="flex items-center gap-1 shrink-0">
-          <button onclick="moveBuilderSec(${i},-1)" ${i===0?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===0?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">↑</button>
-          <button onclick="moveBuilderSec(${i},1)"  ${i===visualConfig.sections.length-1?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===visualConfig.sections.length-1?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">↓</button>
+          <button onclick="moveBuilderSec(${i},-1)" ${i===0?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===0?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">^</button>
+          <button onclick="moveBuilderSec(${i},1)"  ${i===visualConfig.sections.length-1?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===visualConfig.sections.length-1?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">v</button>
           <button onclick="toggleBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${isV?'bg-mint/10 text-mint':'bg-white/5 text-gray-600'} hover:scale-110" title="${isV?'Ocultar':'Mostrar'}">
-            ${isV?'👁️':'🙈'}
+            ${isV?'ver':'ocultar'}
           </button>
-          <button onclick="deleteBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-red-500/10 text-red-500 hover:bg-red-500/20" title="Eliminar">🗑️</button>
-          <button onclick="editBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" title="Editar Contenido">✍️</button>
+          <button onclick="deleteBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-red-500/10 text-red-500 hover:bg-red-500/20" title="Eliminar"></button>
+          <button onclick="editBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" title="Editar Contenido"></button>
         </div>
       </div>
     </div>`;
@@ -911,8 +911,8 @@ window.editBuilderSec = function(i) {
     `;
     const itemsContainer = document.getElementById('b-svc-items');
     const items = c.items && c.items.length ? c.items : [
-      {icon: '🖨️', title: 'Servicio 1', desc: 'Descripción'},
-      {icon: '☕', title: 'Servicio 2', desc: 'Descripción'}
+      {icon: '[impr]️', title: 'Servicio 1', desc: 'Descripción'},
+      {icon: '[cafe]', title: 'Servicio 2', desc: 'Descripción'}
     ];
     items.forEach((it, idx) => {
         itemsContainer.innerHTML += `
@@ -1093,9 +1093,9 @@ function collectVisualConfigFromUI() {
 function updateThemeIconPreview(theme) {
   const iconMap = {
     'none': '✨',
-    'halloween': '🎃',
-    'xmas': '🎄',
-    'valentines': '💖'
+    'halloween': '[halloween]',
+    'xmas': '[navidad]',
+    'valentines': '[corazon]'
   };
   const iconEl = document.getElementById('v-theme-icon');
   if(iconEl) iconEl.textContent = iconMap[theme] || '✨';
@@ -1125,7 +1125,7 @@ function compressFaviconImage(file) {
       if (pFav) pFav.src = b64; if (vw) vw.classList.remove('hidden');
       if (vh) vh.classList.add('hidden'); if (vc) vc.classList.remove('hidden');
       setFavicon(b64);
-      showToast('✅ Favicon actualizado y guardado localmente');
+      showToast('OK: Favicon actualizado y guardado localmente');
     };
     img.src = ev.target.result;
   };
@@ -1264,7 +1264,7 @@ window.renderReviews = function() {
     html += `<div class="col-span-full mb-2 border-b border-[#2a2a2a] pb-2"><h3 class="text-xl font-bold text-yellow-500">⏳ Pendientes de Aprobación</h3><p class="text-xs text-gray-500">Estas reseñas fueron enviadas por clientes y esperan tu revisión.</p></div>`;
     
     html += pendingReviews.map(r => {
-      const starString = "⭐".repeat(r.stars) || "⭐";
+      const starString = "[resenas]".repeat(r.stars) || "[resenas]";
       return `
         <div class="bg-yellow-500/5 border border-yellow-500/30 rounded-2xl p-5 flex flex-col gap-3 relative transition-colors shadow-lg">
           <div class="flex justify-between items-start">
@@ -1294,13 +1294,13 @@ window.renderReviews = function() {
   }
 
   // Sección: Ya Publicadas
-  html += `<div class="col-span-full mb-2 border-b border-[#2a2a2a] pb-2"><h3 class="text-xl font-bold text-mint">✅ Visibles en la Web</h3><p class="text-xs text-gray-500">Reseñas que todo el público puede ver.</p></div>`;
+  html += `<div class="col-span-full mb-2 border-b border-[#2a2a2a] pb-2"><h3 class="text-xl font-bold text-mint">OK: Visibles en la Web</h3><p class="text-xs text-gray-500">Reseñas que todo el público puede ver.</p></div>`;
   
   if (approvedReviews.length === 0) {
     html += `<div class="col-span-full py-8 text-center text-gray-500 text-sm border-2 border-dashed border-[#1a1a1a] rounded-xl flex flex-col items-center justify-center">Aún no hay reseñas aprobadas.</div>`;
   } else {
     html += approvedReviews.map(r => {
-      const starString = "⭐".repeat(r.stars) || "⭐";
+      const starString = "[resenas]".repeat(r.stars) || "[resenas]";
       return `
         <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5 flex flex-col gap-3 relative transition-colors shadow-lg opacity-80 hover:opacity-100">
           <div class="flex justify-between items-start">
@@ -1361,7 +1361,7 @@ window.toggleReviewStatus = async function(id) {
   
   if (rev.status === "pending") {
     rev.status = "approved";
-    showToast("Reseña Aprobada ✅");
+    showToast("Reseña Aprobada OK:");
   } else {
     rev.status = "pending";
     showToast("Reseña Ocultada (Pendiente)", "error");
@@ -1472,7 +1472,7 @@ window.toggleReviewStatus = async function(id) {
       const statusEl = document.getElementById('conv-status');
       if (statusEl) {
         statusEl.className = 'text-[10px] px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full font-bold uppercase tracking-wider';
-        statusEl.textContent = '⬤ En Vivo';
+        statusEl.textContent = '* En Vivo';
       }
 
       convertAll();
@@ -1480,7 +1480,7 @@ window.toggleReviewStatus = async function(id) {
       const statusEl = document.getElementById('conv-status');
       if (statusEl) {
         statusEl.className = 'text-[10px] px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full font-bold uppercase tracking-wider';
-        statusEl.textContent = '⬤ Offline';
+        statusEl.textContent = '* Offline';
       }
       // Fallback con tasas aproximadas
       baseRates = { UYU: 1, USD: 39.5, EUR: 43, BRL: 7.8, JPY: 0.27, GBP: 50, ARS: 0.042 };
@@ -1540,4 +1540,5 @@ window.toggleReviewStatus = async function(id) {
     setInterval(fetchRates, 5 * 60 * 1000);
   });
 })();
+
 
