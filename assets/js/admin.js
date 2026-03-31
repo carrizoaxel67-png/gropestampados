@@ -655,27 +655,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ─── Visual Settings Logic ─────────────────────────────────
 const BLOCK_DEFS = {
-  hero: { icon: '🦸', label: 'Hero Portada' },
+  hero: { icon: '🦸', label: 'Títulos y Portada' },
   servicios: { icon: '🛠️', label: 'Servicios' },
-  proceso: { icon: '⚙️', label: 'Proceso' },
-  catalog: { icon: '🛍️', label: 'Catálogo Grid' },
+  proceso: { icon: '⚙️', label: 'Pasos de Trabajo' },
+  catalog: { icon: '🛍️', label: 'Tienda de Productos' },
   reviews: { icon: '⭐', label: 'Testimonios' },
-  image_banner: { icon: '🖼️', label: 'Banner Imagen' },
-  rich_text: { icon: '📝', label: 'Texto Libre' }
+  image_banner: { icon: '🖼️', label: 'Banner Ancho (Imagen)' },
+  rich_text: { icon: '📝', label: 'Párrafo o Título Libre' }
 };
 
 let currentEditingSectionIndex = -1;
 
 function syncVisualUI() {
-  // Logo
-  setVal('v-logo-main', visualConfig.logoPrimary || 'grop');
-  setVal('v-logo-sub',  visualConfig.logoSubtext  || 'Estampados');
-
-  const mode = visualConfig.logoMode || 'text';
-  const modeInp = document.getElementById('logo-mode-' + mode);
-  if (modeInp) modeInp.checked = true;
-  syncLogoModeUI(mode);
-
+  // Logo image only
   if (visualConfig.logoImage) {
     const pi = document.getElementById('logo-img-preview-img');
     const pw = document.getElementById('logo-img-preview');
@@ -705,11 +697,16 @@ function syncVisualUI() {
   setVal('v-whatsapp', visualConfig.whatsapp || '59897116015');
   setVal('v-footer-copyright', (visualConfig.footer || {}).copyright || '');
 
+  // Theme
+  setVal('v-active-theme', visualConfig.activeTheme || 'none');
+  updateThemeIconPreview(visualConfig.activeTheme || 'none');
+
   // Builder
   initBuilderData();
   renderPageBuilder();
   updateVisualPreviewDOM();
   
+  // Favicon Sync
   if (visualConfig.favicon) {
     const pFav = document.getElementById('fav-img-preview-img');
     const vw = document.getElementById('fav-img-preview');
@@ -963,15 +960,26 @@ document.getElementById('save-section-editor').addEventListener('click', () => {
 });
 
 // Create Block Logic
-document.getElementById('add-section-btn').addEventListener('click', () => {
-    document.getElementById('section-picker-modal').classList.remove('hidden');
-});
-document.getElementById('close-section-picker').addEventListener('click', () => {
-    document.getElementById('section-picker-modal').classList.add('hidden');
-});
-document.getElementById('close-section-editor').addEventListener('click', () => {
-    document.getElementById('section-editor-modal').classList.add('hidden');
-});
+const addSecBtn = document.getElementById('add-section-btn');
+if(addSecBtn) {
+    addSecBtn.addEventListener('click', () => {
+        document.getElementById('section-picker-modal').classList.remove('hidden');
+    });
+}
+
+const closeSecPicker = document.getElementById('close-section-picker');
+if(closeSecPicker) {
+    closeSecPicker.addEventListener('click', () => {
+        document.getElementById('section-picker-modal').classList.add('hidden');
+    });
+}
+
+const closeSecEditor = document.getElementById('close-section-editor');
+if(closeSecEditor) {
+    closeSecEditor.addEventListener('click', () => {
+        document.getElementById('section-editor-modal').classList.add('hidden');
+    });
+}
 
 document.querySelectorAll('.add-type-btn').forEach(btn => {
    btn.addEventListener('click', () => {
@@ -995,17 +1003,11 @@ function updateVisualPreviewDOM() {
 
   // Logo preview
   const pImg  = document.getElementById('preview-logo-img');
-  const pWrap = document.getElementById('preview-logo-text-wrap');
-  if (visualConfig.logoMode === 'image' && visualConfig.logoImage) {
+  
+  if (visualConfig.logoImage) {
     if (pImg)  { pImg.src = visualConfig.logoImage; pImg.classList.remove('hidden'); }
-    if (pWrap)   pWrap.classList.add('hidden');
   } else {
     if (pImg)    pImg.classList.add('hidden');
-    if (pWrap)   pWrap.classList.remove('hidden');
-    const mainEl = document.getElementById('preview-logo-main');
-    const subEl  = document.getElementById('preview-logo-sub');
-    if (mainEl) { mainEl.textContent = visualConfig.logoPrimary || 'grop'; mainEl.style.backgroundImage = `linear-gradient(to bottom right,${m},${p},${mag})`; }
-    if (subEl)  { subEl.textContent  = visualConfig.logoSubtext  || 'Estampados'; subEl.style.color = m; }
   }
 
   const pc = document.getElementById('preview-container');
@@ -1025,14 +1027,20 @@ function collectVisualConfigFromUI() {
   visualConfig.magenta = document.getElementById('v-color-magenta')?.value || visualConfig.magenta;
   visualConfig.bg      = document.getElementById('v-color-bg')?.value      || visualConfig.bg;
 
-  const modeEl = document.querySelector('input[name="logo-mode"]:checked');
-  if (modeEl) visualConfig.logoMode = modeEl.value;
-
-  visualConfig.logoPrimary = document.getElementById('v-logo-main')?.value || visualConfig.logoPrimary;
-  visualConfig.logoSubtext = document.getElementById('v-logo-sub')?.value  || visualConfig.logoSubtext;
-  
   visualConfig.footer = { copyright: document.getElementById('v-footer-copyright')?.value || '' };
   visualConfig.whatsapp = document.getElementById('v-whatsapp')?.value || visualConfig.whatsapp;
+  visualConfig.activeTheme = document.getElementById('v-active-theme')?.value || 'none';
+}
+
+function updateThemeIconPreview(theme) {
+  const iconMap = {
+    'none': '✨',
+    'halloween': '🎃',
+    'xmas': '🎄',
+    'valentines': '💖'
+  };
+  const iconEl = document.getElementById('v-theme-icon');
+  if(iconEl) iconEl.textContent = iconMap[theme] || '✨';
 }
 
 function compressFaviconImage(file) {
@@ -1130,17 +1138,6 @@ function initVisualLivePreview() {
     setFavicon('/favicon.ico');
   });
 
-  // Logo mode cards
-  document.querySelectorAll('.logo-mode-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const inp = card.querySelector('input[name="logo-mode"]');
-      if (inp) inp.checked = true;
-      visualConfig.logoMode = card.dataset.mode;
-      syncLogoModeUI(card.dataset.mode);
-      updateVisualPreviewDOM();
-    });
-  });
-
   // Logo image upload
   const la = document.getElementById('logo-upload-area');
   const li = document.getElementById('logo-img-input');
@@ -1159,16 +1156,18 @@ function initVisualLivePreview() {
     updateVisualPreviewDOM();
   });
 
-  // Text logo live
-  document.getElementById('v-logo-main')?.addEventListener('input', e => { visualConfig.logoPrimary = e.target.value; updateVisualPreviewDOM(); });
-  document.getElementById('v-logo-sub')?.addEventListener('input',  e => { visualConfig.logoSubtext  = e.target.value; updateVisualPreviewDOM(); });
-
   // Colors live
   ['mint','purp','magenta','bg'].forEach(id => {
     document.getElementById('v-color-' + id)?.addEventListener('input', e => {
       visualConfig[id] = e.target.value;
       syncVisualUI();
     });
+  });
+
+  // Theme Live
+  document.getElementById('v-active-theme')?.addEventListener('change', e => {
+    visualConfig.activeTheme = e.target.value;
+    updateThemeIconPreview(e.target.value);
   });
 
   // Save

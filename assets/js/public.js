@@ -206,8 +206,26 @@ function renderProducts(){
       ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg z-10">-${p.discount}%</span>`
       : "";
 
+    // Sticker por temática
+    let themeSticker = '';
+    const activeTheme = window._visualActiveTheme || 'none';
+    if(activeTheme === 'halloween') {
+      const stickers = ['🕸️', '🕷️', '👀', '🦇', '🎃', '🍬'];
+      const icon = stickers[i % stickers.length];
+      themeSticker = `<div class="absolute -top-3 -left-3 text-4xl transform -rotate-12 z-20 drop-shadow-xl select-none pointer-events-none">${icon}</div>`;
+    } else if (activeTheme === 'xmas') {
+      const stickers = ['🎅', '🎄', '🎁', '🧣', '🍪', '❄️'];
+      const icon = stickers[i % stickers.length];
+      themeSticker = `<div class="absolute -top-3 -left-3 text-4xl transform -rotate-12 z-20 drop-shadow-xl select-none pointer-events-none">${icon}</div>`;
+    } else if (activeTheme === 'valentines') {
+      const stickers = ['💖', '💌', '🧸', '🌹', '💕', '💘'];
+      const icon = stickers[i % stickers.length];
+      themeSticker = `<div class="absolute -top-3 -left-3 text-4xl transform -rotate-12 z-20 drop-shadow-xl select-none pointer-events-none opacity-90">${icon}</div>`;
+    }
+
     card.innerHTML = `
       <div class="card-img-wrap relative">
+        ${themeSticker}
         ${imgContent}
         <span class="status-badge ${cfg.badge}">${shortLabel}</span>
         ${discountBadge}
@@ -364,6 +382,152 @@ function applyPublicVisualConfig(v) {
       document.title = `${v.logoPrimary} ${v.logoSubtext||''} — Catálogo Exclusivo`;
     }
   }
+
+  // Dynamic progressive enhancement for sections
+  if (v.sections) {
+    applyDynamicSections(v.sections);
+  }
+
+  // Theme Decor
+  const activeTheme = v.activeTheme || 'none';
+  window._visualActiveTheme = activeTheme; // Export for renderProducts
+  applyFestiveTheme(activeTheme);
+}
+
+function applyFestiveTheme(theme) {
+  // Clear old decor
+  document.querySelectorAll('.theme-decor').forEach(el => el.remove());
+  if (theme === 'none') return;
+
+  const body = document.body;
+  
+  if (theme === 'halloween') {
+    // Tela de araña esquina superior derecha
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed top-0 right-0 z-50 text-7xl select-none pointer-events-none opacity-40">🕸️</div>');
+    // Fantasma y calabaza esquina inferior izquierda
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed bottom-4 left-4 z-50 text-5xl select-none pointer-events-none opacity-80 animate-pulse">🎃</div>');
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed top-20 left-10 z-50 text-4xl select-none pointer-events-none opacity-30 animate-bounce">👻</div>');
+  } 
+  else if (theme === 'xmas') {
+    // Estrellas y Papá Noel
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed top-2 right-4 z-50 text-5xl select-none pointer-events-none opacity-90">🎅</div>');
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed bottom-4 left-4 z-50 text-5xl select-none pointer-events-none opacity-80 text-white">☃️</div>');
+    
+    // Nieve CSS Effect
+    const snowDiv = document.createElement('div');
+    snowDiv.className = 'theme-decor fixed inset-0 z-0 pointer-events-none overflow-hidden';
+    let snow = '';
+    for(let i=0; i<20; i++) {
+        let left = Math.random() * 100;
+        let animDuration = 5 + Math.random() * 10;
+        let animDelay = Math.random() * 5;
+        let size = 10 + Math.random() * 15;
+        snow += `<div style="position:absolute; top:-50px; left:${left}%; font-size:${size}px; animation: snowAnim ${animDuration}s linear ${animDelay}s infinite; opacity: 0.3;">❄️</div>`;
+    }
+    snowDiv.innerHTML = snow;
+    body.appendChild(snowDiv);
+    
+    // Add keyframes if not exists
+    if(!document.getElementById('theme-xmas-style')) {
+        const style = document.createElement('style');
+        style.id = 'theme-xmas-style';
+        style.innerHTML = `@keyframes snowAnim { 0% { transform: translateY(-50px) rotate(0deg); opacity: 0.6; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }`;
+        document.head.appendChild(style);
+    }
+  }
+  else if (theme === 'valentines') {
+    // Corazones
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed top-4 right-8 z-50 text-5xl select-none pointer-events-none opacity-80 animate-pulse">💘</div>');
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed bottom-4 left-4 z-50 text-5xl select-none pointer-events-none opacity-90">🧸</div>');
+    body.insertAdjacentHTML('beforeend', '<div class="theme-decor fixed top-32 left-8 z-50 text-6xl select-none pointer-events-none opacity-20">💖</div>');
+  }
+}
+
+
+function applyDynamicSections(sections) {
+  if(!Array.isArray(sections)) return;
+  const container = document.querySelector('.page-content');
+  const footer = document.querySelector('footer');
+  if(!container || !footer) return;
+
+  const existingEls = {};
+  document.querySelectorAll('section[data-builder-id]').forEach(el => {
+    existingEls[el.dataset.builderId] = el;
+  });
+
+  sections.forEach((sec) => {
+    let el = existingEls[sec.id] || existingEls[sec.type];
+
+    if(sec.visible === false) {
+      if(el) el.style.display = 'none';
+      return;
+    }
+
+    if(!el) {
+      el = document.createElement('section');
+      el.id = sec.id;
+      el.dataset.builderId = sec.id;
+      el.className = "py-24 relative border-y border-white/5 bg-[#080810]";
+      existingEls[sec.id] = el;
+    }
+
+    // Reorder just by placing it before footer
+    container.insertBefore(el, footer);
+    el.style.display = '';
+
+    const c = sec.config || {};
+    
+    // Type specific updates
+    if(sec.type === 'hero') {
+      if(c.title && document.getElementById('g-b-hero-title')) document.getElementById('g-b-hero-title').innerHTML = esc(c.title).replace(/\n/g, '<br>');
+      if(c.subtitle && document.getElementById('g-b-hero-sub')) document.getElementById('g-b-hero-sub').textContent = c.subtitle;
+      if(c.primaryBtnText && document.getElementById('g-b-hero-cta1')) document.getElementById('g-b-hero-cta1').innerHTML = '✨ ' + esc(c.primaryBtnText);
+      if(c.secondaryBtnText && document.getElementById('g-b-hero-cta2')) document.getElementById('g-b-hero-cta2').textContent = c.secondaryBtnText;
+    } else if (sec.type === 'servicios') {
+      if(c.title && document.getElementById('g-b-svc-title')) document.getElementById('g-b-svc-title').textContent = c.title;
+      if(Array.isArray(c.items) && document.getElementById('g-b-svc-items')) {
+        document.getElementById('g-b-svc-items').innerHTML = c.items.map((item, i) => `
+          <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-[#049B7A]/40 transition-colors reveal delay-${i*100}">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#049B7A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+            <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">${esc(item.icon||'✨')}</div>
+            <h4 class="text-lg font-bold text-white mb-3">${esc(item.title)}</h4>
+            <p class="text-[13px] text-[#8b8ba8] leading-relaxed">${esc(item.desc)}</p>
+          </div>
+        `).join('');
+      }
+    } else if (sec.type === 'proceso') {
+      if(c.title && document.getElementById('g-b-proc-title')) document.getElementById('g-b-proc-title').textContent = c.title;
+      if(Array.isArray(c.steps) && document.getElementById('g-b-proc-steps')) {
+        document.getElementById('g-b-proc-steps').innerHTML = `
+          <div class="hidden lg:block absolute top-[28px] left-[12.5%] right-[12.5%] h-px bg-white/10"></div>
+          ${c.steps.map((item, i) => `
+          <div class="relative flex flex-col items-center text-center">
+            <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 shadow-[0_0_20px_rgba(191,255,0,0.2)] mb-6">${i+1}</div>
+            <h4 class="text-white font-bold mb-2">${esc(item.title)}</h4>
+            <p class="text-xs text-[#8b8ba8] px-4">${esc(item.desc)}</p>
+          </div>
+          `).join('')}
+        `;
+      }
+    } else if (sec.type === 'image_banner') {
+      el.className = "py-0 w-full";
+      const src = c.src || 'https://via.placeholder.com/1920x600/111/fff?text=Banner';
+      let linkWrapStart = c.link ? `<a href="${esc(c.link)}" target="_blank">` : '';
+      let linkWrapEnd = c.link ? `</a>` : '';
+      el.innerHTML = `
+        ${linkWrapStart}
+        <img src="${src}" alt="Banner" class="w-full h-auto object-cover max-h-[600px] border-y border-white/5">
+        ${linkWrapEnd}
+      `;
+    } else if (sec.type === 'rich_text') {
+      el.innerHTML = `
+        <div class="max-w-4xl mx-auto px-4 py-8 text-center">
+          ${c.title ? `<h3 class="font-display text-4xl mb-4 text-white">${esc(c.title)}</h3>` : ''}
+          ${c.text ? `<div class="text-[#8b8ba8] whitespace-pre-line leading-relaxed text-lg">${esc(c.text)}</div>` : ''}
+        </div>
+      `;
+    }
+  });
 }
 
 function renderDynamicCategories(cats) {

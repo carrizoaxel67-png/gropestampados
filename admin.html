@@ -141,6 +141,10 @@
       </div>
       
       <nav class="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+        <button class="admin-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-guide">
+          <span class="text-xl opacity-70">📖</span>
+          <span class="font-medium text-sm text-gray-400">Guía de Uso</span>
+        </button>
         <button class="admin-tab active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-products">
           <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
           <span class="font-medium text-sm text-gray-400">Catálogo</span>
@@ -215,6 +219,54 @@
 
         <div class="mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 max-w-6xl">
           
+          <!-- ─── TAB: GUIDE ─── -->
+          <div id="tab-guide" class="tab-content hidden animate-fade-in">
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight mb-1">📖 Guía Rápida</h2>
+            <p class="text-gray-500 text-sm mb-8">Información útil para manejar toda la web sin problemas.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-mint mb-2 flex items-center gap-2"><span>📦</span> Stock / Inventario</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  Acá subís la ropa o tazas. Poner el stock en <strong>0</strong> hace que el producto aparezca como agotado automáticamente en la tienda.<br><br>
+                  Los cambios que hacés acá se ven en tiempo real en la tienda para todos los clientes. ¡Asegurate de poner siempre una imagen para que quede lindo!
+                </p>
+              </div>
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-blue-400 mb-2 flex items-center gap-2"><span>🎨</span> Editor de Diseño / Constructor</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  Esta es la parte más poderosa. En <span class="text-white">Diseño</span> podés cambiar los colores principales, y modificar los títulos de la portada mediante el "Constructor".<br><br>
+                  Podés ocultar secciones enteras tocando el icono de <strong>"Ojito"</strong> o cambiar todo el texto haciendo clic en el lápiz que dice <strong>"Editar Contenido"</strong>.
+                </p>
+              </div>
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-yellow-500 mb-2 flex items-center gap-2"><span>⭐</span> Testimonios</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  Acá manejás las reseñas que te dejan. Si querés cargar testimonios viejos de Facebook o Google, podés tocar <strong>"Nueva Reseña"</strong> y copiarlos.<br><br>
+                  Los clientes podrán dejar reseñas reales en la página que te llegarán a la sección "Pendientes".
+                </p>
+              </div>
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-orange-400 mb-2 flex items-center gap-2"><span>🧮</span> Calculadora Pro</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  Usala cuando te pidan un presupuesto especial. Ponés cuánto te sale fabricar, marcás tu porcentaje de ganancia esperado, y el sistema te tira el <strong>Precio de Venta Final</strong> (sumando IVA y envíos automáticamente). Es privada, ¡los clientes no la ven!
+                </p>
+              </div>
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-magenta mb-2 flex items-center gap-2"><span>💱</span> Divisas / Conversor</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  Se actualiza en vivo mediante internet. Si vas a comprar insumos en dólares (USD), ponés el número acá y te calcula al instante cuánto es en Pesos Uruguayos para que no pierdas dinero calculando mal.
+                </p>
+              </div>
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-2xl p-5">
+                <h3 class="font-black text-green-400 mb-2 flex items-center gap-2"><span>💬</span> WhatsApp</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                  En la pestaña <em>Diseño > Contacto</em> podés poner tu número (Ej: 59897116015). Eso cambia literalmente <strong>todos los botones de la web</strong> para que, cuando el cliente toque "Encargar" o el globito de chat flotante, se le abra tu WhatsApp directo.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <!-- ─── TAB: PRODUCTS ─── -->
           <div id="tab-products" class="tab-content block">
             
@@ -293,53 +345,22 @@
             <div id="vtab-logo" class="vtab-content">
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 flex flex-col gap-5">
-                  <h3 class="text-base font-black text-white">🖼️ Tipo de Logo</h3>
-                  <div class="flex gap-3">
-                    <label class="logo-mode-card flex-1 flex flex-col items-center gap-2 p-4 rounded-2xl border cursor-pointer transition-all" data-mode="text">
-                      <input type="radio" name="logo-mode" value="text" id="logo-mode-text" class="hidden">
-                      <span class="text-2xl">✏️</span>
-                      <span class="text-xs font-black text-gray-400 uppercase tracking-wider">Texto</span>
-                    </label>
-                    <label class="logo-mode-card flex-1 flex flex-col items-center gap-2 p-4 rounded-2xl border cursor-pointer transition-all" data-mode="image">
-                      <input type="radio" name="logo-mode" value="image" id="logo-mode-image" class="hidden">
-                      <span class="text-2xl">🖼️</span>
-                      <span class="text-xs font-black text-gray-400 uppercase tracking-wider">Imagen</span>
-                    </label>
-                  </div>
-                  <!-- Text logo -->
-                  <div id="logo-text-fields" class="flex flex-col gap-4">
-                    <div>
-                      <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Nombre Principal</label>
-                      <input type="text" id="v-logo-main" class="admin-input !bg-[#0a0a0a] !py-3.5" placeholder="grop">
-                    </div>
-                    <div>
-                      <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Subtítulo (Cursiva)</label>
-                      <input type="text" id="v-logo-sub" class="admin-input !bg-[#0a0a0a] !py-3.5" placeholder="Estampados">
-                    </div>
-                  </div>
-                  <!-- Image logo -->
-                  <div id="logo-image-fields" class="hidden flex flex-col gap-3">
-                    <div id="logo-upload-area" class="border-2 border-dashed border-[#2a2a2a] bg-[#0a0a0a] hover:border-mint/50 transition-colors cursor-pointer rounded-2xl overflow-hidden relative min-h-[110px] flex flex-col items-center justify-center gap-2 p-5">
+                  <h3 class="text-base font-black text-white">🖼️ Logo de la Empresa</h3>
+                  <p class="text-[11px] text-gray-500 leading-relaxed">Sube el logotipo principal. Te recomendamos subir una imagen en formato PNG con fondo invisible para que se adapte perfecto al color de tu web.</p>
+                  
+                  <div id="logo-image-fields" class="flex flex-col gap-3">
+                    <div id="logo-upload-area" class="border-2 border-dashed border-[#2a2a2a] bg-[#0a0a0a] hover:border-mint/50 transition-colors cursor-pointer rounded-2xl overflow-hidden relative min-h-[140px] flex flex-col items-center justify-center gap-2 p-5">
                       <div id="logo-img-preview" class="w-full flex justify-center hidden">
-                        <img id="logo-img-preview-img" src="" alt="" class="max-h-20 object-contain rounded-xl">
+                        <img id="logo-img-preview-img" src="" alt="" class="max-h-24 object-contain rounded-xl">
                       </div>
                       <div id="logo-img-placeholder" class="flex flex-col items-center gap-2 text-center">
                         <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <span class="text-sm font-bold text-gray-300">Subir Logo</span>
-                        <span class="text-[10px] text-gray-600">PNG con fondo transparente recomendado</span>
+                        <span class="text-sm font-bold text-gray-300">Toca para subir un Logo</span>
+                        <span class="text-[10px] text-gray-600">Archivos permitidos: PNG, JPG, WebP</span>
                       </div>
                       <input type="file" id="logo-img-input" accept="image/*" class="hidden">
                     </div>
                     <button id="logo-img-clear" class="hidden text-xs text-red-400 font-bold py-2 border border-red-400/20 rounded-xl transition-colors hover:bg-red-400/10">🗑️ Quitar imagen</button>
-                  </div>
-                </div>
-                <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 flex flex-col gap-4">
-                  <h3 class="text-base font-black text-white">💡 Tips de Logo</h3>
-                  <div class="space-y-3 text-[11px] text-gray-500 leading-relaxed">
-                    <p>• <strong class="text-gray-300">Texto:</strong> El nombre y subtítulo se muestran con el gradiente de colores configurado.</p>
-                    <p>• <strong class="text-gray-300">Imagen:</strong> Usá PNG con fondo transparente para mejor resultado.</p>
-                    <p>• <strong class="text-gray-300">Tamaño:</strong> Mínimo 300px de ancho. Se comprime automáticamente.</p>
-                    <p>• <strong class="text-gray-300">Formatos:</strong> PNG, JPG, SVG, WebP.</p>
                   </div>
                 </div>
                 <!-- FAVICON SECTION -->
@@ -364,8 +385,26 @@
 
             <!-- SUB-TAB: COLORS -->
             <div id="vtab-colors" class="vtab-content hidden">
-              <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 md:p-8 flex flex-col gap-6">
-                <h3 class="text-base font-black text-white">🎨 Paleta de Colores</h3>
+              <div class="flex flex-col gap-6">
+                <!-- Tema Festivo -->
+                <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 md:p-8 flex flex-col gap-4">
+                   <div class="flex items-center justify-between">
+                     <div>
+                       <h3 class="text-base font-black text-white mb-1">🎉 Temática Festiva (Stickers)</h3>
+                       <p class="text-[11px] text-gray-500 leading-relaxed">Añade decoración estacional automática a la web y a los productos.</p>
+                     </div>
+                     <span class="text-3xl animate-bounce" id="v-theme-icon">✨</span>
+                   </div>
+                   <select id="v-active-theme" class="admin-input !bg-[#050505] !border-[#2a2a2a] text-sm font-bold text-white uppercase tracking-wider h-12">
+                     <option value="none">🚫 Sin temática (Por defecto)</option>
+                     <option value="halloween">🎃 Halloween (Telas de araña y Fantasmas)</option>
+                     <option value="xmas">🎄 Navidad (Nieve y Gorritos)</option>
+                     <option value="valentines">💖 San Valentín (Corazones)</option>
+                   </select>
+                </div>
+
+                <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 md:p-8 flex flex-col gap-6">
+                  <h3 class="text-base font-black text-white">🎨 Paleta de Colores</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Principal (Mint/Acento)</label>
@@ -400,6 +439,7 @@
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
 
@@ -452,26 +492,26 @@
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="section-types-grid">
                    <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="hero">
-                     <span class="text-3xl">🦸</span><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Hero Portada</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="servicios">
-                     <span class="text-3xl">🛠️</span><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Servicios</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="proceso">
-                     <span class="text-3xl">⚙️</span><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Pasos/Proceso</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="catalog">
-                     <span class="text-3xl">🛍️</span><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Catálogo Grid</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="reviews">
-                     <span class="text-3xl">⭐</span><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Testimonios</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-blue-500/20 bg-blue-500/5 hover:border-blue-400 hover:bg-blue-400/10 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="image_banner">
-                     <span class="text-3xl">🖼️</span><span class="text-xs font-bold uppercase tracking-wider text-blue-400">Banner Imagen</span>
-                   </button>
-                   <button class="add-type-btn p-4 border border-magenta/20 bg-magenta/5 hover:border-magenta hover:bg-magenta/10 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="rich_text">
-                     <span class="text-3xl">📝</span><span class="text-xs font-bold uppercase tracking-wider text-magenta">Texto Libre</span>
-                   </button>
+                      <span class="text-3xl">🦸</span><span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 text-center">Titulos y Portada</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="servicios">
+                      <span class="text-3xl">🛠️</span><span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 text-center">Servicios</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="proceso">
+                      <span class="text-3xl">⚙️</span><span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 text-center">Pasos de Trabajo</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="catalog">
+                      <span class="text-3xl">🛍️</span><span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 text-center">Tienda de Productos</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-[#2a2a2a] hover:border-mint hover:bg-mint/5 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="reviews">
+                      <span class="text-3xl">⭐</span><span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 text-center">Testimonios</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-blue-500/20 bg-blue-500/5 hover:border-blue-400 hover:bg-blue-400/10 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="image_banner">
+                      <span class="text-3xl">🖼️</span><span class="text-[10px] font-bold uppercase tracking-wider text-blue-400 text-center">Banner Ancho (Imagen)</span>
+                    </button>
+                    <button class="add-type-btn p-4 border border-magenta/20 bg-magenta/5 hover:border-magenta hover:bg-magenta/10 rounded-2xl flex flex-col items-center gap-2 transition-all" data-type="rich_text">
+                      <span class="text-3xl">📝</span><span class="text-[10px] font-bold uppercase tracking-wider text-magenta text-center">Párrafo o Título Libre</span>
+                    </button>
                 </div>
               </div>
             </div>
@@ -785,11 +825,15 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- MOBILE BOTTOM NAV (ESTILO IOS)                      -->
   <!-- ─────────────────────────────────────────────────── -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#080810]/90 backdrop-blur-2xl border-t border-[#1f1f1f] flex justify-around items-end pb-7 pt-3 px-2 z-40 shadow-[0_-20px_40px_rgba(0,0,0,0.6)]">
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#080810]/90 backdrop-blur-2xl border-t border-[#1f1f1f] flex justify-around items-end pb-7 pt-3 px-2 z-40 shadow-[0_-20px_40px_rgba(0,0,0,0.6)] overflow-x-auto">
     <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mint/20 to-transparent"></div>
     
-    <button class="mobile-tab admin-tab active flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-products">
-      <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+    <button class="mobile-tab admin-tab flex flex-col items-center justify-center min-w-[50px] transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-guide">
+      <span class="text-xl mb-1 mt-0.5">📖</span>
+      <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Guía</span>
+    </button>
+    <button class="mobile-tab admin-tab active flex flex-col items-center justify-center min-w-[50px] transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-products">
+      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
       <span class="text-[9px] font-bold tracking-wide uppercase mt-0.5">Stock</span>
     </button>
     <button class="mobile-tab admin-tab flex flex-col items-center justify-center flex-1 transition-all text-gray-500 data-[active=true]:text-mint" data-target="tab-categories">
