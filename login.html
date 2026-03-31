@@ -16,10 +16,12 @@
         if(v && typeof v === 'object') {
           const root = document.documentElement.style;
           const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
-          if(isValidHex(v.mint)) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-          if(isValidHex(v.purp)) root.setProperty('--c-purp', v.purp);
-          if(isValidHex(v.magenta)) root.setProperty('--c-magenta', v.magenta);
-          if(isValidHex(v.bg)) root.setProperty('--c-bg', v.bg);
+          const isBugged = v.mint === '#000000' && v.purp === '#000000';
+          const valid = (hx, def) => isBugged ? def : (isValidHex(hx) ? hx : def);
+          root.setProperty('--c-mint', valid(v.mint, '#BFFF00')); root.setProperty('--c-mint-l', valid(v.mint, '#BFFF00')+'cc');
+          root.setProperty('--c-purp', valid(v.purp, '#8A2BE2'));
+          root.setProperty('--c-magenta', valid(v.magenta, '#FF00FF'));
+          root.setProperty('--c-bg', valid(v.bg, '#080810'));
         }
       } catch(e){}
     })();

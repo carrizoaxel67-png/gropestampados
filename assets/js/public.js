@@ -354,18 +354,23 @@ function applyPublicVisualConfig(v) {
   const root = document.documentElement.style;
   // Solo aplicar si el valor es un hex válido (#RRGGBB) — evita corrupción de colores
   const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
-  if(isValidHex(v.mint))    { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-  if(isValidHex(v.purp))    root.setProperty('--c-purp', v.purp);
-  if(isValidHex(v.magenta)) root.setProperty('--c-magenta', v.magenta);
-  if(isValidHex(v.bg))      root.setProperty('--c-bg', v.bg);
+  // Detectar el bug donde el admin guardó sin querer todo en #000000
+  const isBugged = v.mint === '#000000' && v.purp === '#000000';
+
+  const m   = isBugged ? '#BFFF00' : (isValidHex(v.mint) ? v.mint : '#BFFF00');
+  const p   = isBugged ? '#8A2BE2' : (isValidHex(v.purp) ? v.purp : '#8A2BE2');
+  const mag = isBugged ? '#FF00FF' : (isValidHex(v.magenta) ? v.magenta : '#FF00FF');
+  const bg  = isBugged ? '#080810' : (isValidHex(v.bg) ? v.bg : '#080810');
+
+  root.setProperty('--c-mint', m); 
+  root.setProperty('--c-mint-l', m+'cc');
+  root.setProperty('--c-purp', p);
+  root.setProperty('--c-magenta', mag);
+  root.setProperty('--c-bg', bg);
 
   // Update logos safely
   const logos = document.querySelectorAll(".flex span.font-black, header span.font-sans, nav span.font-sans");
   const subs  = document.querySelectorAll("header span.font-cursive, nav span.font-cursive, .flex span.font-cursive");
-
-  const m   = isValidHex(v.mint)    ? v.mint    : '#BFFF00';
-  const p   = isValidHex(v.purp)    ? v.purp    : '#8A2BE2';
-  const mag = isValidHex(v.magenta) ? v.magenta : '#FF00FF';
 
   logos.forEach(l => {
     if(v.logoPrimary) l.textContent = v.logoPrimary;

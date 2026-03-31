@@ -707,8 +707,13 @@ function syncVisualUI() {
   }
 
   // Colors
+  const defaultColors = { mint: '#BFFF00', purp: '#8A2BE2', magenta: '#FF00FF', bg: '#080810' };
   const bc = (id, hex) => {
-    const c = hex || '#000000';
+    let c = hex || defaultColors[id];
+    // Auto-reparación si se guardaron en negro por el bug anterior
+    if (c === '#000000' && id !== 'bg') c = defaultColors[id];
+    if (c === '#000000' && id === 'bg' && visualConfig.mint === '#000000') c = defaultColors[id];
+
     setVal('v-color-' + id, c);
     const pe = document.getElementById('v-preview-' + id);
     if (pe) pe.style.background = c;

@@ -1,16 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>GROPESTAMPADOS.UY — Tu diseño, en todo lo que imagines.</title>
-  <meta name="description" content="Remeras, canguros, gorros y artículos sublimados personalizados. Envío gratis en Montevideo. Contacto: 097 116 015.">
+  <title>GROPESTAMPADOS.UY ÔÇö Tu dise├▒o, en todo lo que imagines.</title>
+  <meta name="description" content="Remeras, canguros, gorros y art├¡culos sublimados personalizados. Env├¡o gratis en Montevideo. Contacto: 097 116 015.">
   <meta name="theme-color" content="#080810">
   <meta property="og:title" content="GROPESTAMPADOS.UY">
-  <meta property="og:description" content="Estampados & Sublimados premium en Uruguay. Producción a medida.">
-  <meta property="og:image" content="/favicon.png">
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="apple-touch-icon" href="/favicon.png">
+  <meta property="og:description" content="Estampados & Sublimados premium en Uruguay. Producci├│n a medida.">
   
   <!-- Tailwind CDN -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -19,18 +16,14 @@
     (function(){
       try {
         const v = JSON.parse(localStorage.getItem('grop_visual') || 'null');
-        if(v && typeof v === 'object') {
+        if(v) {
           const root = document.documentElement.style;
-          // Validar que los colores sean hex válidos antes de aplicar
-          const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
-          const isBugged = v.mint === '#000000' && v.purp === '#000000';
-          const valid = (hx, def) => isBugged ? def : (isValidHex(hx) ? hx : def);
-          root.setProperty('--c-mint', valid(v.mint, '#BFFF00')); root.setProperty('--c-mint-l', valid(v.mint, '#BFFF00')+'cc');
-          root.setProperty('--c-purp', valid(v.purp, '#8A2BE2'));
-          root.setProperty('--c-magenta', valid(v.magenta, '#FF00FF'));
-          root.setProperty('--c-bg', valid(v.bg, '#080810'));
+          if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+          if(v.purp) root.setProperty('--c-purp', v.purp);
+          if(v.magenta) root.setProperty('--c-magenta', v.magenta);
+          if(v.bg) root.setProperty('--c-bg', v.bg);
         }
-      } catch(e){ /* Si el localStorage está corrupto, ignorar silenciosamente */ }
+      } catch(e){}
     })();
     tailwind.config = {
       theme: {
@@ -53,9 +46,9 @@
   </script>
   <link rel="stylesheet" href="/assets/css/styles.css">
   <style>
-    /* CSS para los colores estáticos e inline SVG filters */
+    /* CSS para los colores est├íticos e inline SVG filters */
     body, .bg-\[\#080810\], .bg-bgMain { background-color: var(--c-bg, #080810) !important; }
-    /* NOTA: NO sobreescribimos el color de texto aquí para evitar conflictos con el tema */
+    .text-\[\#080810\], .text-bgMain { color: var(--c-bg, #080810) !important; }
   </style>
 </head>
 <body>
@@ -66,9 +59,9 @@
 
 <div class="page-content min-h-screen flex flex-col">
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- NAVBAR CLASSIC (Logo L, Menu R)                     -->
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <header class="navbar flex justify-center sticky top-0 z-50 transition-all duration-300 border-b border-transparent data-[scrolled=true]:border-white/10 data-[scrolled=true]:bg-[#080810]/90 data-[scrolled=true]:backdrop-blur-xl">
     <div class="w-full max-w-7xl px-4 h-20 flex items-center justify-between relative">
       
@@ -83,10 +76,10 @@
       <!-- Right Nav / CTA -->
       <div class="flex-1 flex justify-end items-center gap-8">
         <nav class="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-          <a href="/personalizar.html" class="nav-link !text-mint font-bold hover:scale-105 transition-transform">✨ Personalizar</a>
+          <a href="/personalizar.html" class="nav-link !text-mint font-bold hover:scale-105 transition-transform">Ô£¿ Personalizar</a>
           <a href="#servicios" class="nav-link">Servicios</a>
           <a href="#proceso" class="nav-link">Proceso</a>
-          <a href="#catalog" class="nav-link">Catálogo</a>
+          <a href="#catalog" class="nav-link">Cat├ílogo</a>
         </nav>
 
         <div class="flex items-center gap-4">
@@ -104,18 +97,18 @@
     <!-- Mobile menu -->
     <div id="mobile-menu" class="absolute top-[80px] left-0 w-full bg-[#080810]/95 backdrop-blur-xl border-t border-white/10 md:hidden" aria-hidden="true" style="max-height:0;overflow:hidden;transition:max-height 0.3s ease">
       <div class="px-6 py-8 flex flex-col gap-6">
-        <a href="/personalizar.html" class="text-xl font-bold text-mint hover:text-white transition-colors">✨ Personalizar</a>
+        <a href="/personalizar.html" class="text-xl font-bold text-mint hover:text-white transition-colors">Ô£¿ Personalizar</a>
         <a href="#servicios" class="text-xl font-bold text-white hover:text-mint transition-colors">Servicios</a>
         <a href="#proceso" class="text-xl font-bold text-white hover:text-mint transition-colors">Proceso</a>
-        <a href="#catalog" class="text-xl font-bold text-white hover:text-mint transition-colors">Catálogo</a>
+        <a href="#catalog" class="text-xl font-bold text-white hover:text-mint transition-colors">Cat├ílogo</a>
       </div>
     </div>
   </header>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- HERO (SYMMETRICAL)                                  -->
-  <!-- ─────────────────────────────────────────────────── -->
-  <section class="relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]" data-builder-id="hero">
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+  <section class="relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]">
     <!-- Ambient glowing orbs -->
     <div class="absolute top-0 right-[15%] w-[400px] h-[400px] bg-[#BFFF00] rounded-full mix-blend-screen filter blur-[120px] opacity-[0.10] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] left-[10%] w-[350px] h-[350px] bg-[#8A2BE2] rounded-full mix-blend-screen filter blur-[100px] opacity-[0.20] pointer-events-none"></div>
@@ -125,24 +118,24 @@
       <!-- Eyebrow removed -->
 
       <!-- Title -->
-      <h1 id="g-b-hero-title" class="font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl">
-        TU DISEÑO EN TODO<br class="hidden sm:block">
+      <h1 class="font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl">
+        TU DISE├æO EN TODO<br class="hidden sm:block">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint via-purp to-magenta">LO QUE IMAGINES.</span>
       </h1>
 
       <!-- Subtitle -->
-      <p id="g-b-hero-sub" class="text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10">
-        Especialistas en DTF, Sublimación y Vinilo. Desde una unidad hasta producciones corporativas con la máxima exigencia en cada detalle.
+      <p class="text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10">
+        Especialistas en DTF, Sublimaci├│n y Vinilo. Desde una unidad hasta producciones corporativas con la m├íxima exigencia en cada detalle.
       </p>
 
       <!-- Action Buttons -->
-      <div id="g-b-hero-btns" class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
-        <a id="g-b-hero-cta1" href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
-          ✨ Diseñar Ahora
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
+        <a href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
+          Ô£¿ Dise├▒ar Ahora
         </a>
-        <a id="g-b-hero-cta2-a" href="#catalog" class="w-full sm:w-auto">
-          <button id="g-b-hero-cta2" class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
-            Ver Catálogo
+        <a href="#catalog" class="w-full sm:w-auto">
+          <button class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
+            Ver Cat├ílogo
           </button>
         </a>
       </div>
@@ -150,113 +143,113 @@
       <!-- Trust grid centered -->
       <div class="grid grid-cols-3 gap-8 md:gap-16 mt-20 pt-10 border-t border-white/10 w-full max-w-3xl anim-fade-up stagger-4">
         <div class="flex flex-col items-center text-center gap-2 group">
-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">✨</div>
+          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">Ô£¿</div>
           <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Calidad Total</p>
         </div>
         <div class="flex flex-col items-center text-center gap-2 group">
-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">📦</div>
+          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">­ƒôª</div>
           <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Mayor / Menor</p>
         </div>
         <div class="flex flex-col items-center text-center gap-2 group">
-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">🚚</div>
-          <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Envío Gratis MVD</p>
+          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">­ƒÜÜ</div>
+          <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Env├¡o Gratis MVD</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- SERVICIOS (SYMMETRICAL GRID)                        -->
-  <!-- ─────────────────────────────────────────────────── -->
-  <section id="servicios" data-builder-id="servicios" class="py-24 bg-[#0a0a14] relative border-y border-white/5">
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+  <section id="servicios" class="py-24 bg-[#0a0a14] relative border-y border-white/5">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-16 reveal">
-        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Técnicas Integrales</h2>
-        <h3 id="g-b-svc-title" class="font-display text-5xl md:text-6xl text-white">Nuestros Servicios</h3>
+        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">T├®cnicas Integrales</h2>
+        <h3 class="font-display text-5xl md:text-6xl text-white">Nuestros Servicios</h3>
         <div class="w-16 h-1 bg-gradient-to-r from-transparent via-[#049B7A] to-transparent mx-auto mt-6"></div>
       </div>
 
-      <div id="g-b-svc-items" class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-3 gap-6">
         <!-- DTF -->
         <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-[#049B7A]/40 transition-colors reveal">
           <div class="absolute inset-0 bg-gradient-to-b from-[#049B7A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">🖨️</div>
+          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">­ƒû¿´©Å</div>
           <h4 class="text-lg font-bold text-white mb-3">DTF Premium</h4>
-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Alta definición a todo color. Colores vivos, resistencia extrema a los lavados y sin fondo. Perfecto para cualquier tejido y color de prenda.</p>
+          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Alta definici├│n a todo color. Colores vivos, resistencia extrema a los lavados y sin fondo. Perfecto para cualquier tejido y color de prenda.</p>
         </div>
 
-        <!-- Sublimación -->
+        <!-- Sublimaci├│n -->
         <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-purple-500/40 transition-colors reveal delay-100">
           <div class="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">☕</div>
-          <h4 class="text-lg font-bold text-white mb-3">Sublimación</h4>
-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">El estampado penetra en la fibra de la tela. Resultados imposibles de borrar al tacto. Exclusivo para poliéster claro y artículos cerámicos.</p>
+          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">Ôÿò</div>
+          <h4 class="text-lg font-bold text-white mb-3">Sublimaci├│n</h4>
+          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">El estampado penetra en la fibra de la tela. Resultados imposibles de borrar al tacto. Exclusivo para poli├®ster claro y art├¡culos cer├ímicos.</p>
         </div>
 
         <!-- Vinilo Textil -->
         <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-blue-500/40 transition-colors reveal delay-200">
           <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">✂️</div>
+          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">Ô£é´©Å</div>
           <h4 class="text-lg font-bold text-white mb-3">Vinilo Textil</h4>
-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Colores sólidos, flúor, metalizados o reflectantes. Precisión absoluta para siluetas vectoriales y números o nombres deportivos.</p>
+          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Colores s├│lidos, fl├║or, metalizados o reflectantes. Precisi├│n absoluta para siluetas vectoriales y n├║meros o nombres deportivos.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- PROCESS (SYMMETRICAL HORIZONTAL)                    -->
-  <!-- ─────────────────────────────────────────────────── -->
-  <section id="proceso" data-builder-id="proceso" class="py-24 bg-[#080810]">
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+  <section id="proceso" class="py-24 bg-[#080810]">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-20 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Flujo de trabajo</h2>
-        <h3 id="g-b-proc-title" class="font-display text-5xl md:text-6xl text-white drop-shadow-md">4 Pasos Simples</h3>
+        <h3 class="font-display text-5xl md:text-6xl text-white drop-shadow-md">4 Pasos Simples</h3>
       </div>
 
-      <div id="g-b-proc-steps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal">
         <!-- Connecting Line (hidden on mobile) -->
         <div class="hidden lg:block absolute top-[28px] left-[12.5%] right-[12.5%] h-px bg-white/10"></div>
 
         <div class="relative flex flex-col items-center text-center">
           <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 shadow-[0_0_20px_rgba(191,255,0,0.2)] mb-6">1</div>
-          <h4 class="text-white font-bold mb-2">Diseño</h4>
-          <p class="text-xs text-[#8b8ba8] px-4">Mandás tu idea, logo o foto en la mejor calidad posible.</p>
+          <h4 class="text-white font-bold mb-2">Dise├▒o</h4>
+          <p class="text-xs text-[#8b8ba8] px-4">Mand├ís tu idea, logo o foto en la mejor calidad posible.</p>
         </div>
 
         <div class="relative flex flex-col items-center text-center">
           <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">2</div>
           <h4 class="text-white font-bold mb-2">Presupuesto</h4>
-          <p class="text-xs text-[#8b8ba8] px-4">Aprobás el modelo digital, cotización y plazos de entrega.</p>
+          <p class="text-xs text-[#8b8ba8] px-4">Aprob├ís el modelo digital, cotizaci├│n y plazos de entrega.</p>
         </div>
 
         <div class="relative flex flex-col items-center text-center">
           <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">3</div>
-          <h4 class="text-white font-bold mb-2">Producción</h4>
+          <h4 class="text-white font-bold mb-2">Producci├│n</h4>
           <p class="text-xs text-[#8b8ba8] px-4">En el taller procesamos la orden bajo estrictos controles de calidad.</p>
         </div>
 
         <div class="relative flex flex-col items-center text-center">
           <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">4</div>
           <h4 class="text-white font-bold mb-2">Entrega</h4>
-          <p class="text-xs text-[#8b8ba8] px-4">Recibís en la puerta, con envío gratis en Montevideo.</p>
+          <p class="text-xs text-[#8b8ba8] px-4">Recib├¡s en la puerta, con env├¡o gratis en Montevideo.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- REVIEWS CAROUSEL                                    -->
-  <!-- ─────────────────────────────────────────────────── -->
-  <section id="reviews-section" data-builder-id="reviews" class="py-24 bg-[#080810] border-t border-white/5">
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+  <section id="reviews-section" class="py-24 bg-[#080810] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center mb-16 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-mint mb-3">Confiabilidad</h2>
-        <h3 class="font-display text-4xl md:text-5xl text-white tracking-widest drop-shadow-md">¿Qué dicen nuestros clientes?</h3>
+        <h3 class="font-display text-4xl md:text-5xl text-white tracking-widest drop-shadow-md">┬┐Qu├® dicen nuestros clientes?</h3>
         <div class="w-16 h-1 bg-gradient-to-r from-transparent via-mint to-transparent mx-auto mt-6 mb-8"></div>
         <button id="open-public-review-btn" style="display:inline-flex; align-items:center; gap:8px; background:transparent; border:2px solid #BFFF00; color:#BFFF00; padding:12px 28px; border-radius:999px; font-size:14px; font-weight:700; cursor:pointer; letter-spacing:0.05em; transition: background 0.2s;" onmouseover="this.style.background='rgba(191, 255, 0,0.1)'" onmouseout="this.style.background='transparent'">
-          ✨ Dejanos tu reseña
+          Ô£¿ Dejanos tu rese├▒a
         </button>
       </div>
 
@@ -269,41 +262,41 @@
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- CATALOG (CENTERED HEADER)                           -->
-  <!-- ─────────────────────────────────────────────────── -->
-  <section id="catalog" data-builder-id="catalog" class="py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+  <section id="catalog" class="py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
     <div class="max-w-7xl mx-auto px-4">
       
       <div class="text-center mb-16 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Inventario</h2>
-        <h3 class="font-display text-5xl md:text-6xl text-white">Catálogo de Base</h3>
-        <p class="text-sm text-[#4a4a62] mt-4">Nuestros artículos sin estampar, listos para tu diseño.</p>
+        <h3 class="font-display text-5xl md:text-6xl text-white">Cat├ílogo de Base</h3>
+        <p class="text-sm text-[#4a4a62] mt-4">Nuestros art├¡culos sin estampar, listos para tu dise├▒o.</p>
       </div>
 
       <!-- Categories Centered Pills -->
       <div class="flex flex-wrap justify-center gap-2 mb-12" id="catalog-filters">
         <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all active-filter" data-category="todos">Todos</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Remeras">👗 Remeras</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Canguros">🦘 Canguros</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Gorros">🧢 Gorros</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Tazas">☕ Tazas</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Anime">🔥 Anime</button>
-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Streetwear">🌆 Streetwear</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Remeras">­ƒæù Remeras</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Canguros">­ƒªÿ Canguros</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Gorros">­ƒºó Gorros</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Tazas">Ôÿò Tazas</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Anime">­ƒöÑ Anime</button>
+        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Streetwear">­ƒîå Streetwear</button>
       </div>
 
       <!-- Search (Centered minimalistic) -->
       <div class="max-w-md mx-auto mb-16 relative">
         <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a62] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="search" id="search-input" placeholder="Buscar por artículo..." class="w-full bg-[#080810] border border-white/10 rounded-full pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#049B7A] focus:ring-1 focus:ring-[#049B7A]/50 transition-all text-center placeholder:text-center">
+        <input type="search" id="search-input" placeholder="Buscar por art├¡culo..." class="w-full bg-[#080810] border border-white/10 rounded-full pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#049B7A] focus:ring-1 focus:ring-[#049B7A]/50 transition-all text-center placeholder:text-center">
       </div>
 
       <div id="loader" class="flex flex-col items-center gap-4 py-20">
         <div class="spinner"></div>
       </div>
       <div id="empty-state" class="hidden text-center py-20">
-        <p class="text-3xl mb-4">🔍</p>
-        <p class="text-lg font-bold text-[#8b8ba8]">Catálogo vacío o sin resultados.</p>
+        <p class="text-3xl mb-4">­ƒöì</p>
+        <p class="text-lg font-bold text-[#8b8ba8]">Cat├ílogo vac├¡o o sin resultados.</p>
       </div>
 
       <!-- Grid perfectly symmetric layout (cols-2 / 3 / 4) -->
@@ -312,9 +305,9 @@
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <!-- FOOTER (SYMMETRICAL)                                -->
-  <!-- ─────────────────────────────────────────────────── -->
+  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
   <footer class="py-16 bg-[#080810] border-t border-white/5 text-center flex flex-col flex-shrink-0">
     <div class="max-w-4xl mx-auto px-4 flex flex-col items-center gap-6">
       <a href="/" class="flex flex-col items-center">
@@ -329,7 +322,7 @@
       </div>
 
       <p class="text-[10px] uppercase tracking-widest text-[#4a4a62] mt-8">
-        © 2025 GROPESTAMPADOS.UY · Todos los derechos reservados. 
+        ┬® 2025 GROPESTAMPADOS.UY ┬À Todos los derechos reservados. 
       </p>
       <a href="admin.html" class="text-[10px] text-gray-500 hover:text-white transition-colors uppercase tracking-widest mt-2">Acceso Admin</a>
     </div>
@@ -345,7 +338,7 @@
 <!-- Modal Layer -->
 <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
   <div class="modal-box !rounded-3xl sm:!max-w-md !border-white/10 relative">
-    <button id="modal-close" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition-colors">✕</button>
+    <button id="modal-close" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition-colors">Ô£ò</button>
     <div id="modal-body"></div>
   </div>
 </div>
@@ -354,38 +347,38 @@
 <div id="public-review-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:16px;">
   <div style="background:#0f0f1a; border:1px solid rgba(255,255,255,0.15); border-radius:24px; width:100%; max-width:480px; position:relative; padding:32px; max-height:90vh; overflow-y:auto; box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
     <button id="close-public-review" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.1); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; line-height:1;">&#x2715;</button>
-    <h3 style="color:white; font-size:22px; font-weight:900; margin:0 0 8px 0;">Dejanos tu opinión ✨</h3>
-    <p style="color:#8b8ba8; font-size:13px; margin:0 0 24px 0;">Contanos cómo te fue. Tu comentario ayuda a otros clientes.</p>
+    <h3 style="color:white; font-size:22px; font-weight:900; margin:0 0 8px 0;">Dejanos tu opini├│n Ô£¿</h3>
+    <p style="color:#8b8ba8; font-size:13px; margin:0 0 24px 0;">Contanos c├│mo te fue. Tu comentario ayuda a otros clientes.</p>
     
     <form id="public-review-form">
       <div style="margin-bottom:16px;">
         <label style="display:block; color:#8b8ba8; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Nombre o apodo *</label>
-        <input type="text" id="pr-name" required maxlength="50" placeholder="Ej: María G." style="width:100%; box-sizing:border-box; background:#111; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 16px; color:white; font-size:14px; outline:none; font-family:inherit;">
+        <input type="text" id="pr-name" required maxlength="50" placeholder="Ej: Mar├¡a G." style="width:100%; box-sizing:border-box; background:#111; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 16px; color:white; font-size:14px; outline:none; font-family:inherit;">
       </div>
       
       <div style="margin-bottom:16px;">
-        <label style="display:block; color:#8b8ba8; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Puntuación *</label>
+        <label style="display:block; color:#8b8ba8; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Puntuaci├│n *</label>
         <select id="pr-stars" required style="width:100%; background:#111; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 16px; color:white; font-size:14px; outline:none; font-family:inherit;">
-          <option value="5">⭐⭐⭐⭐⭐ (5/5) ¡Excelente!</option>
-          <option value="4">⭐⭐⭐⭐ (4/5) Muy bueno</option>
-          <option value="3">⭐⭐⭐ (3/5) Bueno</option>
-          <option value="2">⭐⭐ (2/5) Regular</option>
-          <option value="1">⭐ (1/5) Malo</option>
+          <option value="5">Ô¡ÉÔ¡ÉÔ¡ÉÔ¡ÉÔ¡É (5/5) ┬íExcelente!</option>
+          <option value="4">Ô¡ÉÔ¡ÉÔ¡ÉÔ¡É (4/5) Muy bueno</option>
+          <option value="3">Ô¡ÉÔ¡ÉÔ¡É (3/5) Bueno</option>
+          <option value="2">Ô¡ÉÔ¡É (2/5) Regular</option>
+          <option value="1">Ô¡É (1/5) Malo</option>
         </select>
       </div>
       
       <div style="margin-bottom:24px;">
-        <label style="display:block; color:#8b8ba8; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Tu reseña *</label>
-        <textarea id="pr-text" required maxlength="500" rows="4" placeholder="¿Qué te pareció la calidad? ¿Y el servicio?" style="width:100%; box-sizing:border-box; background:#111; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 16px; color:white; font-size:14px; outline:none; resize:vertical; font-family:inherit;"></textarea>
+        <label style="display:block; color:#8b8ba8; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Tu rese├▒a *</label>
+        <textarea id="pr-text" required maxlength="500" rows="4" placeholder="┬┐Qu├® te pareci├│ la calidad? ┬┐Y el servicio?" style="width:100%; box-sizing:border-box; background:#111; border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 16px; color:white; font-size:14px; outline:none; resize:vertical; font-family:inherit;"></textarea>
       </div>
       
-      <button type="submit" id="pr-submit-btn" style="width:100%; background:#BFFF00; color:#080810; font-weight:900; font-size:15px; border:none; border-radius:12px; padding:14px; cursor:pointer; font-family:inherit; letter-spacing:0.03em;">Enviar Reseña</button>
+      <button type="submit" id="pr-submit-btn" style="width:100%; background:#BFFF00; color:#080810; font-weight:900; font-size:15px; border:none; border-radius:12px; padding:14px; cursor:pointer; font-family:inherit; letter-spacing:0.03em;">Enviar Rese├▒a</button>
     </form>
     
     <div id="pr-success-msg" style="display:none; text-align:center; padding:16px 0;">
-      <div style="width:48px; height:48px; background:rgba(191, 255, 0,0.15); border-radius:50%; color:#BFFF00; font-size:24px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">✓</div>
-      <h4 style="color:white; font-weight:700; margin:0 0 8px;">¡Gracias por tu opinión!</h4>
-      <p style="color:#8b8ba8; font-size:14px; margin:0;">Tu reseña fue enviada y está pendiente de aprobación.</p>
+      <div style="width:48px; height:48px; background:rgba(191, 255, 0,0.15); border-radius:50%; color:#BFFF00; font-size:24px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">Ô£ô</div>
+      <h4 style="color:white; font-weight:700; margin:0 0 8px;">┬íGracias por tu opini├│n!</h4>
+      <p style="color:#8b8ba8; font-size:14px; margin:0;">Tu rese├▒a fue enviada y est├í pendiente de aprobaci├│n.</p>
     </div>
   </div>
 </div>
@@ -437,9 +430,9 @@ window.closeMobileMenu = closeMobileMenu;
 
 <script src="/assets/js/public.js"></script>
 
-<!-- ═══════════════════════════════════════════════════════ -->
-<!-- MODAL DE PERSONALIZACIÓN                                -->
-<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
+<!-- MODAL DE PERSONALIZACI├ôN                                -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="custom-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
   <div style="background:#0f0f1a;border:1px solid rgba(191,255,0,0.2);border-radius:28px;width:100%;max-width:540px;position:relative;margin:auto;box-shadow:0 0 60px rgba(191,255,0,0.08),0 24px 80px rgba(0,0,0,0.9);">
     
@@ -449,7 +442,7 @@ window.closeMobileMenu = closeMobileMenu;
         <h3 style="color:white;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.06em;margin:0;line-height:1;">PERSONALIZAR PRENDA</h3>
         <p id="custom-product-name" style="color:#BFFF00;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:4px 0 0;"></p>
       </div>
-      <button id="close-custom-modal" style="background:rgba(255,255,255,0.08);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">✕</button>
+      <button id="close-custom-modal" style="background:rgba(255,255,255,0.08);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">Ô£ò</button>
     </div>
 
     <!-- Divider -->
@@ -464,7 +457,7 @@ window.closeMobileMenu = closeMobileMenu;
           <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Talle *</label>
           <select id="cf-talle" required style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:14px;font-weight:600;outline:none;cursor:pointer;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
             <option value="">Elegir...</option>
-            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>Único</option>
+            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>├Ünico</option>
           </select>
         </div>
         <div>
@@ -473,34 +466,34 @@ window.closeMobileMenu = closeMobileMenu;
         </div>
       </div>
 
-      <!-- Técnica de estampado -->
+      <!-- T├®cnica de estampado -->
       <div>
-        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Técnica de estampado *</label>
+        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">T├®cnica de estampado *</label>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" id="cf-tecnica-grid">
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;">
-            <input type="radio" name="cf-tecnica" value="DTF" style="display:none;"> 🖨️<br>DTF
+            <input type="radio" name="cf-tecnica" value="DTF" style="display:none;"> ­ƒû¿´©Å<br>DTF
           </label>
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;">
-            <input type="radio" name="cf-tecnica" value="Sublimación" style="display:none;"> ☀️<br>Sublimación
+            <input type="radio" name="cf-tecnica" value="Sublimaci├│n" style="display:none;"> ÔÿÇ´©Å<br>Sublimaci├│n
           </label>
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;">
-            <input type="radio" name="cf-tecnica" value="Vinilo" style="display:none;"> ✂️<br>Vinilo
+            <input type="radio" name="cf-tecnica" value="Vinilo" style="display:none;"> Ô£é´©Å<br>Vinilo
           </label>
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;">
-            <input type="radio" name="cf-tecnica" value="Bordado" style="display:none;"> 🪡<br>Bordado
+            <input type="radio" name="cf-tecnica" value="Bordado" style="display:none;"> ­ƒ¬í<br>Bordado
           </label>
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;" colspan="2">
-            <input type="radio" name="cf-tecnica" value="No sé / A definir" style="display:none;"> 🤔<br>No sé
+            <input type="radio" name="cf-tecnica" value="No s├® / A definir" style="display:none;"> ­ƒñö<br>No s├®
           </label>
           <label class="cf-option-card" style="cursor:pointer;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;font-size:11px;font-weight:700;color:#6b7280;">
-            <input type="radio" name="cf-tecnica" value="Serigrafía" style="display:none;"> 🎨<br>Serigrafia
+            <input type="radio" name="cf-tecnica" value="Serigraf├¡a" style="display:none;"> ­ƒÄ¿<br>Serigrafia
           </label>
         </div>
       </div>
 
-      <!-- Posición del estampado -->
+      <!-- Posici├│n del estampado -->
       <div>
-        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Posición del estampado (puede ser múltiple)</label>
+        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Posici├│n del estampado (puede ser m├║ltiple)</label>
         <div style="display:flex;flex-wrap:wrap;gap:8px;" id="cf-posicion-group">
           <label class="cf-check-card" style="cursor:pointer;display:flex;align-items:center;gap:6px;background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;color:#6b7280;transition:all 0.2s;">
             <input type="checkbox" name="cf-pos" value="Frente" style="display:none;"> Frente
@@ -523,13 +516,13 @@ window.closeMobileMenu = closeMobileMenu;
         </div>
       </div>
 
-      <!-- Fila 3: ¿Tenés diseño? + Cantidad -->
+      <!-- Fila 3: ┬┐Ten├®s dise├▒o? + Cantidad -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div>
-          <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">¿Tenés diseño?</label>
-          <select id="cf-diseño" style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:13px;font-weight:600;outline:none;cursor:pointer;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
-            <option value="Sí, lo mando">✅ Sí, lo mando</option>
-            <option value="No, lo hace el taller">🎨 No, lo hace Grop</option>
+          <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">┬┐Ten├®s dise├▒o?</label>
+          <select id="cf-dise├▒o" style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:13px;font-weight:600;outline:none;cursor:pointer;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
+            <option value="S├¡, lo mando">Ô£à S├¡, lo mando</option>
+            <option value="No, lo hace el taller">­ƒÄ¿ No, lo hace Grop</option>
           </select>
         </div>
         <div>
@@ -543,23 +536,23 @@ window.closeMobileMenu = closeMobileMenu;
         <p style="color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px;">Tus datos de contacto</p>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <input type="text" id="cf-nombre" required placeholder="Tu nombre *" style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
-          <input type="tel" id="cf-telefono" placeholder="WhatsApp / Teléfono (opcional)" style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
+          <input type="tel" id="cf-telefono" placeholder="WhatsApp / Tel├®fono (opcional)" style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'">
         </div>
       </div>
 
       <!-- Notas adicionales -->
       <div>
-        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Notas / descripción del diseño</label>
-        <textarea id="cf-notas" rows="3" placeholder="Describí tu idea, colores del diseño, referencias, etc..." style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:13px;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'"></textarea>
+        <label style="display:block;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Notas / descripci├│n del dise├▒o</label>
+        <textarea id="cf-notas" rows="3" placeholder="Describ├¡ tu idea, colores del dise├▒o, referencias, etc..." style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:white;font-size:13px;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;transition:border-color 0.2s;" onfocus="this.style.borderColor='#BFFF00'" onblur="this.style.borderColor='#2a2a2a'"></textarea>
       </div>
 
       <!-- Info del archivo -->
       <div style="background:rgba(191,255,0,0.05);border:1px solid rgba(191,255,0,0.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:20px;">📎</span>
-        <p style="color:#8b8ba8;font-size:11px;margin:0;line-height:1.5;">Si tenés el diseño listo, <strong style="color:#BFFF00;">adjuntalo directamente en el chat de WhatsApp</strong> después de confirmar el encargo.</p>
+        <span style="font-size:20px;">­ƒôÄ</span>
+        <p style="color:#8b8ba8;font-size:11px;margin:0;line-height:1.5;">Si ten├®s el dise├▒o listo, <strong style="color:#BFFF00;">adjuntalo directamente en el chat de WhatsApp</strong> despu├®s de confirmar el encargo.</p>
       </div>
 
-      <!-- Botón submit -->
+      <!-- Bot├│n submit -->
       <button type="submit" style="width:100%;background:#BFFF00;color:#080810;font-weight:900;font-size:15px;border:none;border-radius:14px;padding:16px;cursor:pointer;font-family:inherit;letter-spacing:0.03em;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 0 20px rgba(191,255,0,0.3);" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Enviar encargo al taller
@@ -569,7 +562,7 @@ window.closeMobileMenu = closeMobileMenu;
 </div>
 
 <style>
-  /* Tarjetas de opción: radio y checkbox personalizados */
+  /* Tarjetas de opci├│n: radio y checkbox personalizados */
   .cf-option-card:has(input:checked) {
     background: rgba(191,255,0,0.1) !important;
     border-color: #BFFF00 !important;
@@ -595,14 +588,14 @@ window.closeMobileMenu = closeMobileMenu;
 </style>
 
 <script>
-// ── Sistema de Personalización Grop ─────────────────────────────
+// ÔöÇÔöÇ Sistema de Personalizaci├│n Grop ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 (function() {
   const modal = document.getElementById('custom-modal');
   const closeBtn = document.getElementById('close-custom-modal');
   const form = document.getElementById('custom-form');
   let currentProduct = null;
 
-  // Abrir modal de personalización
+  // Abrir modal de personalizaci├│n
   window.openCustomModal = function(product) {
     currentProduct = product;
     document.getElementById('custom-product-name').textContent = product.name;
@@ -641,7 +634,7 @@ window.closeMobileMenu = closeMobileMenu;
     });
   });
 
-  // Submit — genera mensaje WhatsApp y guarda encargo
+  // Submit ÔÇö genera mensaje WhatsApp y guarda encargo
   form?.addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -650,13 +643,13 @@ window.closeMobileMenu = closeMobileMenu;
     const talle = document.getElementById('cf-talle').value;
     const color = document.getElementById('cf-color').value;
     const cantidad = document.getElementById('cf-cantidad').value;
-    const diseño = document.getElementById('cf-diseño').value;
+    const dise├▒o = document.getElementById('cf-dise├▒o').value;
     const nombre = document.getElementById('cf-nombre').value.trim();
     const telefono = document.getElementById('cf-telefono').value.trim();
     const notas = document.getElementById('cf-notas').value.trim();
 
     if (!talle || !color || !tecnica || !nombre) {
-      alert('Por favor completá los campos obligatorios (*)');
+      alert('Por favor complet├í los campos obligatorios (*)');
       return;
     }
 
@@ -672,7 +665,7 @@ window.closeMobileMenu = closeMobileMenu;
       tecnica,
       posiciones,
       cantidad: parseInt(cantidad),
-      diseño,
+      dise├▒o,
       notas,
       estado: 'nuevo'
     };
@@ -683,19 +676,19 @@ window.closeMobileMenu = closeMobileMenu;
 
     // Construir mensaje WhatsApp
     const msg = [
-      `🛍️ *NUEVO ENCARGO — GROPESTAMPADOS.UY*`,
+      `­ƒøì´©Å *NUEVO ENCARGO ÔÇö GROPESTAMPADOS.UY*`,
       ``,
-      `👤 *Cliente:* ${nombre}${telefono ? ` | ${telefono}` : ''}`,
+      `­ƒæñ *Cliente:* ${nombre}${telefono ? ` | ${telefono}` : ''}`,
       ``,
-      `👕 *Prenda:* ${encargo.producto}`,
-      `📐 *Talle:* ${talle}`,
-      `🎨 *Color de prenda:* ${color}`,
+      `­ƒæò *Prenda:* ${encargo.producto}`,
+      `­ƒôÉ *Talle:* ${talle}`,
+      `­ƒÄ¿ *Color de prenda:* ${color}`,
       ``,
-      `🖨️ *Técnica:* ${tecnica}`,
-      `📍 *Posición:* ${posiciones}`,
-      `📦 *Cantidad:* ${cantidad} unidad${parseInt(cantidad) > 1 ? 'es' : ''}`,
-      `🖼️ *Diseño propio:* ${diseño}`,
-      notas ? `\n📝 *Notas:* ${notas}` : '',
+      `­ƒû¿´©Å *T├®cnica:* ${tecnica}`,
+      `­ƒôì *Posici├│n:* ${posiciones}`,
+      `­ƒôª *Cantidad:* ${cantidad} unidad${parseInt(cantidad) > 1 ? 'es' : ''}`,
+      `­ƒû╝´©Å *Dise├▒o propio:* ${dise├▒o}`,
+      notas ? `\n­ƒôØ *Notas:* ${notas}` : '',
       ``,
       `_Pedido generado desde gropestampados.uy_`
     ].filter(l => l !== null).join('\n');
