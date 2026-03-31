@@ -654,92 +654,536 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ─── Visual Settings Logic ─────────────────────────────────
+const BLOCK_DEFS = {
+  hero: { icon: '🦸', label: 'Hero Portada' },
+  servicios: { icon: '🛠️', label: 'Servicios' },
+  proceso: { icon: '⚙️', label: 'Proceso' },
+  catalog: { icon: '🛍️', label: 'Catálogo Grid' },
+  reviews: { icon: '⭐', label: 'Testimonios' },
+  image_banner: { icon: '🖼️', label: 'Banner Imagen' },
+  rich_text: { icon: '📝', label: 'Texto Libre' }
+};
+
+let currentEditingSectionIndex = -1;
+
 function syncVisualUI() {
-  document.getElementById("v-logo-main").value = visualConfig.logoPrimary || "grop";
-  document.getElementById("v-logo-sub").value = visualConfig.logoSubtext || "Estampados";
+  // Logo
+  setVal('v-logo-main', visualConfig.logoPrimary || 'grop');
+  setVal('v-logo-sub',  visualConfig.logoSubtext  || 'Estampados');
 
-  const bindColor = (id, hex) => {
-    const color = hex || "#000000";
-    const el = document.getElementById("v-color-" + id);
-    if(el) el.value = color;
-    const pEl = document.getElementById("v-preview-" + id);
-    if(pEl) pEl.style.background = color;
-    const hEl = document.getElementById("v-hex-" + id);
-    if(hEl) hEl.textContent = color.toUpperCase();
+  const mode = visualConfig.logoMode || 'text';
+  const modeInp = document.getElementById('logo-mode-' + mode);
+  if (modeInp) modeInp.checked = true;
+  syncLogoModeUI(mode);
+
+  if (visualConfig.logoImage) {
+    const pi = document.getElementById('logo-img-preview-img');
+    const pw = document.getElementById('logo-img-preview');
+    const ph = document.getElementById('logo-img-placeholder');
+    const cb = document.getElementById('logo-img-clear');
+    if (pi)  pi.src = visualConfig.logoImage;
+    if (pw)  pw.classList.remove('hidden');
+    if (ph)  ph.classList.add('hidden');
+    if (cb)  cb.classList.remove('hidden');
+  }
+
+  // Colors
+  const bc = (id, hex) => {
+    const c = hex || '#000000';
+    setVal('v-color-' + id, c);
+    const pe = document.getElementById('v-preview-' + id);
+    if (pe) pe.style.background = c;
+    const he = document.getElementById('v-hex-' + id);
+    if (he) he.textContent = c.toUpperCase();
   };
+  bc('mint',    visualConfig.mint);
+  bc('purp',    visualConfig.purp);
+  bc('magenta', visualConfig.magenta);
+  bc('bg',      visualConfig.bg);
 
-  bindColor("mint", visualConfig.mint);
-  bindColor("purp", visualConfig.purp);
-  bindColor("magenta", visualConfig.magenta);
-  bindColor("bg", visualConfig.bg);
+  // WhatsApp & Footer
+  setVal('v-whatsapp', visualConfig.whatsapp || '59897116015');
+  setVal('v-footer-copyright', (visualConfig.footer || {}).copyright || '');
 
+  // Builder
+  initBuilderData();
+  renderPageBuilder();
   updateVisualPreviewDOM();
+  
+  if (visualConfig.favicon) {
+    const pFav = document.getElementById('fav-img-preview-img');
+    const vw = document.getElementById('fav-img-preview');
+    const vh = document.getElementById('fav-img-placeholder');
+    const vc = document.getElementById('fav-img-clear');
+    if(pFav) pFav.src = visualConfig.favicon;
+    if(vw) vw.classList.remove('hidden');
+    if(vh) vh.classList.add('hidden');
+    if(vc) vc.classList.remove('hidden');
+    setFavicon(visualConfig.favicon);
+  }
 }
 
-function updateVisualPreviewDOM() {
-  // Configs
-  const m = visualConfig.mint;
-  const p = visualConfig.purp;
-  const mag = visualConfig.magenta;
-  const hbg = visualConfig.bg;
+function setFavicon(url) {
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+  link.href = url;
+}
 
-  // Textos
-  document.getElementById("preview-logo-main").textContent = visualConfig.logoPrimary || "grop";
-  document.getElementById("preview-logo-sub").textContent = visualConfig.logoSubtext || "Estampados";
+function initBuilderData() {
+  if(!visualConfig.sections || !Array.isArray(visualConfig.sections)) {
+      visualConfig.sections = [
+          { type: 'hero', id: 'sec_old_1', config: visualConfig.hero || {}, visible: visualConfig.sectionVisible?.hero !== false },
+          { type: 'servicios', id: 'sec_old_2', config: visualConfig.servicios || {}, visible: visualConfig.sectionVisible?.servicios !== false },
+          { type: 'proceso', id: 'sec_old_3', config: visualConfig.proceso || {}, visible: visualConfig.sectionVisible?.proceso !== false },
+          { type: 'reviews', id: 'sec_old_4', config: {}, visible: visualConfig.sectionVisible?.reviews !== false },
+          { type: 'catalog', id: 'sec_old_5', config: {}, visible: visualConfig.sectionVisible?.catalog !== false }
+      ];
+      if (Array.isArray(visualConfig.sectionOrder) && visualConfig.sectionOrder.length > 0) {
+          visualConfig.sections.sort((a,b) => {
+              const ai = visualConfig.sectionOrder.indexOf(a.type);
+              const bi = visualConfig.sectionOrder.indexOf(b.type);
+              return (ai !== -1 ? ai : 99) - (bi !== -1 ? bi : 99);
+          });
+      }
+  }
+}
 
-  // Gradient
-  document.getElementById("preview-logo-main").style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
-
-  // Subtext color
-  document.getElementById("preview-logo-sub").style.color = m;
-
-  // Container bg
-  document.getElementById("preview-container").style.backgroundColor = hbg;
+function renderPageBuilder() {
+  const c = document.getElementById('builder-list');
+  if (!c) return;
   
-  // Real root variables (previsualiza hasta los botones del admin panel en vivo!)
+  if(visualConfig.sections.length === 0) {
+      c.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No hay secciones. Añadí una para comenzar.</p>';
+      return;
+  }
+
+  c.innerHTML = visualConfig.sections.map((sec, i) => {
+    const def = BLOCK_DEFS[sec.type] || { icon: '📄', label: 'Desconocido' };
+    const isV = sec.visible !== false;
+    return `
+    <div class="flex flex-col gap-2 bg-[#0a0a0a] border border-[#1a1a1a] rounded-2xl p-3 transition-all ${isV ? '' : 'opacity-50 grayscale'}">
+      <div class="flex items-center gap-3">
+        <span class="text-xl w-8 text-center shrink-0 cursor-move text-gray-600 hover:text-white" title="Arrastrar no disp. Usar flechas">⣿</span>
+        <span class="text-xl shrink-0">${def.icon}</span>
+        <span class="text-sm font-bold text-white flex-1 truncate">${def.label}</span>
+        
+        <div class="flex items-center gap-1 shrink-0">
+          <button onclick="moveBuilderSec(${i},-1)" ${i===0?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===0?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">↑</button>
+          <button onclick="moveBuilderSec(${i},1)"  ${i===visualConfig.sections.length-1?'disabled':''} class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${i===visualConfig.sections.length-1?'opacity-20 cursor-not-allowed':'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'}">↓</button>
+          <button onclick="toggleBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all ${isV?'bg-mint/10 text-mint':'bg-white/5 text-gray-600'} hover:scale-110" title="${isV?'Ocultar':'Mostrar'}">
+            ${isV?'👁️':'🙈'}
+          </button>
+          <button onclick="deleteBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-red-500/10 text-red-500 hover:bg-red-500/20" title="Eliminar">🗑️</button>
+          <button onclick="editBuilderSec(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-all bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" title="Editar Contenido">✍️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.moveBuilderSec = function(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= visualConfig.sections.length) return;
+  const temp = visualConfig.sections[i];
+  visualConfig.sections[i] = visualConfig.sections[j];
+  visualConfig.sections[j] = temp;
+  renderPageBuilder();
+};
+
+window.toggleBuilderSec = function(i) {
+  visualConfig.sections[i].visible = !(visualConfig.sections[i].visible !== false);
+  renderPageBuilder();
+};
+
+window.deleteBuilderSec = function(i) {
+  if(confirm('¿Seguro que deseas eliminar este bloque?')) {
+    visualConfig.sections.splice(i, 1);
+    renderPageBuilder();
+  }
+};
+
+window.editBuilderSec = function(i) {
+  currentEditingSectionIndex = i;
+  const sec = visualConfig.sections[i];
+  const def = BLOCK_DEFS[sec.type];
+  document.getElementById('editor-modal-title').innerHTML = `${def.icon} ${def.label}`;
+  
+  const body = document.getElementById('editor-modal-body');
+  body.innerHTML = '';
+  
+  const c = sec.config || {};
+  
+  if (sec.type === 'hero') {
+    body.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Título Principal</label>
+          <textarea id="b-hero-title" class="admin-input !bg-[#050505] resize-none" rows="2">${c.title||''}</textarea>
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Subtítulo</label>
+          <textarea id="b-hero-sub" class="admin-input !bg-[#050505] resize-none" rows="3">${c.subtitle||''}</textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Botón Principal (CTA 1)</label>
+            <input type="text" id="b-hero-cta1" class="admin-input !bg-[#050505]" value="${c.cta1Text||''}">
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Botón Secundario (CTA 2)</label>
+            <input type="text" id="b-hero-cta2" class="admin-input !bg-[#050505]" value="${c.cta2Text||''}">
+          </div>
+        </div>
+        <label class="flex items-center gap-2 mt-2 cursor-pointer">
+          <input type="checkbox" id="b-hero-hidecta2" ${c.hideCta2?'checked':''} class="w-4 h-4 rounded bg-[#222] border-[#333] text-mint focus:ring-mint">
+          <span class="text-sm text-gray-400">Ocultar Botón Secundario</span>
+        </label>
+      </div>
+    `;
+  } else if (sec.type === 'servicios') {
+    body.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Título de Sección</label>
+          <input type="text" id="b-svc-title" class="admin-input !bg-[#050505]" value="${c.title||''}">
+        </div>
+        <div id="b-svc-items" class="flex flex-col gap-3"></div>
+      </div>
+    `;
+    const itemsContainer = document.getElementById('b-svc-items');
+    const items = c.items && c.items.length ? c.items : [
+      {icon: '🖨️', title: 'Servicio 1', desc: 'Descripción'},
+      {icon: '☕', title: 'Servicio 2', desc: 'Descripción'}
+    ];
+    items.forEach((it, idx) => {
+        itemsContainer.innerHTML += `
+        <div class="bg-[#050505] border border-[#1a1a1a] rounded-xl p-3 flex flex-col gap-2 b-svc-item">
+            <div class="flex gap-2">
+                <input type="text" class="admin-input !bg-[#111] !py-2 text-xl text-center w-16 svc-i-icon" placeholder="Ícono" value="${it.icon||''}">
+                <input type="text" class="admin-input !bg-[#111] !py-2 flex-1 text-sm svc-i-title" placeholder="Título" value="${it.title||''}">
+            </div>
+            <textarea class="admin-input !bg-[#111] resize-none text-xs svc-i-desc" rows="2" placeholder="Descripción">${it.desc||''}</textarea>
+        </div>`;
+    });
+  } else if (sec.type === 'proceso') {
+      body.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Título de Sección</label>
+          <input type="text" id="b-proc-title" class="admin-input !bg-[#050505]" value="${c.title||''}">
+        </div>
+        <div id="b-proc-steps" class="flex flex-col gap-3"></div>
+      </div>
+    `;
+    const itemsContainer = document.getElementById('b-proc-steps');
+    const steps = c.steps && c.steps.length ? c.steps : [
+      {title: 'Paso 1', desc: 'Desc'}
+    ];
+    steps.forEach((it, idx) => {
+        itemsContainer.innerHTML += `
+        <div class="bg-[#050505] border border-[#1a1a1a] rounded-xl p-3 flex flex-col gap-2 b-proc-step">
+            <input type="text" class="admin-input !bg-[#111] !py-2 flex-1 text-sm proc-i-title" placeholder="Título" value="${it.title||''}">
+            <textarea class="admin-input !bg-[#111] resize-none text-xs proc-i-desc" rows="2" placeholder="Descripción">${it.desc||''}</textarea>
+        </div>`;
+    });
+  } else if (sec.type === 'image_banner') {
+     body.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">URL de la Imagen (Resolución 1920x800 recomendada)</label>
+          <input type="text" id="b-img-url" class="admin-input !bg-[#050505]" placeholder="https://..." value="${c.imageUrl||''}">
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Enlace de destino al hacer click (Opcional)</label>
+          <input type="text" id="b-img-link" class="admin-input !bg-[#050505]" placeholder="https://..." value="${c.link||''}">
+        </div>
+      </div>
+    `;
+  } else if (sec.type === 'rich_text') {
+     body.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Título Principal</label>
+          <input type="text" id="b-rt-title" class="admin-input !bg-[#050505]" placeholder="Escribe un título..." value="${c.title||''}">
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-gray-500 mb-2">Contenido</label>
+          <textarea id="b-rt-content" class="admin-input !bg-[#050505] min-h-[150px] resize-y" placeholder="Puedes escribir párrafos aquí...">${c.content||''}</textarea>
+        </div>
+      </div>
+    `;
+  } else {
+     body.innerHTML = `<p class="text-xs text-gray-500 text-center py-10">Este bloque funciona de forma automática y no requiere configuración manual desde aquí.</p>`;
+  }
+  
+  document.getElementById('section-editor-modal').classList.remove('hidden');
+};
+
+document.getElementById('save-section-editor').addEventListener('click', () => {
+    if(currentEditingSectionIndex === -1) return;
+    const sec = visualConfig.sections[currentEditingSectionIndex];
+    if(!sec.config) sec.config = {};
+    const c = sec.config;
+    
+    if (sec.type === 'hero') {
+        c.title = document.getElementById('b-hero-title').value;
+        c.subtitle = document.getElementById('b-hero-sub').value;
+        c.cta1Text = document.getElementById('b-hero-cta1').value;
+        c.cta2Text = document.getElementById('b-hero-cta2').value;
+        c.hideCta2 = document.getElementById('b-hero-hidecta2').checked;
+    } else if (sec.type === 'servicios') {
+        c.title = document.getElementById('b-svc-title').value;
+        const domItems = document.querySelectorAll('.b-svc-item');
+        c.items = Array.from(domItems).map(el => ({
+            icon: el.querySelector('.svc-i-icon').value,
+            title: el.querySelector('.svc-i-title').value,
+            desc: el.querySelector('.svc-i-desc').value
+        }));
+    } else if (sec.type === 'proceso') {
+        c.title = document.getElementById('b-proc-title').value;
+        const domItems = document.querySelectorAll('.b-proc-step');
+        c.steps = Array.from(domItems).map(el => ({
+            title: el.querySelector('.proc-i-title').value,
+            desc: el.querySelector('.proc-i-desc').value
+        }));
+    } else if (sec.type === 'image_banner') {
+        c.imageUrl = document.getElementById('b-img-url').value;
+        c.link = document.getElementById('b-img-link').value;
+    } else if (sec.type === 'rich_text') {
+        c.title = document.getElementById('b-rt-title').value;
+        c.content = document.getElementById('b-rt-content').value;
+    }
+    
+    document.getElementById('section-editor-modal').classList.add('hidden');
+    renderPageBuilder();
+});
+
+// Create Block Logic
+document.getElementById('add-section-btn').addEventListener('click', () => {
+    document.getElementById('section-picker-modal').classList.remove('hidden');
+});
+document.getElementById('close-section-picker').addEventListener('click', () => {
+    document.getElementById('section-picker-modal').classList.add('hidden');
+});
+document.getElementById('close-section-editor').addEventListener('click', () => {
+    document.getElementById('section-editor-modal').classList.add('hidden');
+});
+
+document.querySelectorAll('.add-type-btn').forEach(btn => {
+   btn.addEventListener('click', () => {
+       const type = btn.dataset.type;
+       visualConfig.sections.push({
+           type: type,
+           id: 'sec_' + Math.random().toString(36).substr(2, 9),
+           config: {},
+           visible: true
+       });
+       document.getElementById('section-picker-modal').classList.add('hidden');
+       renderPageBuilder();
+   });
+});
+
+function updateVisualPreviewDOM() {
+  const m   = visualConfig.mint    || '#BFFF00';
+  const p   = visualConfig.purp    || '#8A2BE2';
+  const mag = visualConfig.magenta || '#FF00FF';
+  const bg  = visualConfig.bg      || '#080810';
+
+  // Logo preview
+  const pImg  = document.getElementById('preview-logo-img');
+  const pWrap = document.getElementById('preview-logo-text-wrap');
+  if (visualConfig.logoMode === 'image' && visualConfig.logoImage) {
+    if (pImg)  { pImg.src = visualConfig.logoImage; pImg.classList.remove('hidden'); }
+    if (pWrap)   pWrap.classList.add('hidden');
+  } else {
+    if (pImg)    pImg.classList.add('hidden');
+    if (pWrap)   pWrap.classList.remove('hidden');
+    const mainEl = document.getElementById('preview-logo-main');
+    const subEl  = document.getElementById('preview-logo-sub');
+    if (mainEl) { mainEl.textContent = visualConfig.logoPrimary || 'grop'; mainEl.style.backgroundImage = `linear-gradient(to bottom right,${m},${p},${mag})`; }
+    if (subEl)  { subEl.textContent  = visualConfig.logoSubtext  || 'Estampados'; subEl.style.color = m; }
+  }
+
+  const pc = document.getElementById('preview-container');
+  if (pc) pc.style.background = bg;
+
   const root = document.documentElement.style;
-  root.setProperty('--c-mint', m);
-  root.setProperty('--c-mint-l', m+'cc');
-  root.setProperty('--c-purp', p);
+  root.setProperty('--c-mint',    m);
+  root.setProperty('--c-mint-l',  m + 'cc');
+  root.setProperty('--c-purp',    p);
   root.setProperty('--c-magenta', mag);
-  root.setProperty('--c-bg', hbg);
+  root.setProperty('--c-bg',      bg);
+}
+
+function collectVisualConfigFromUI() {
+  visualConfig.mint    = document.getElementById('v-color-mint')?.value    || visualConfig.mint;
+  visualConfig.purp    = document.getElementById('v-color-purp')?.value    || visualConfig.purp;
+  visualConfig.magenta = document.getElementById('v-color-magenta')?.value || visualConfig.magenta;
+  visualConfig.bg      = document.getElementById('v-color-bg')?.value      || visualConfig.bg;
+
+  const modeEl = document.querySelector('input[name="logo-mode"]:checked');
+  if (modeEl) visualConfig.logoMode = modeEl.value;
+
+  visualConfig.logoPrimary = document.getElementById('v-logo-main')?.value || visualConfig.logoPrimary;
+  visualConfig.logoSubtext = document.getElementById('v-logo-sub')?.value  || visualConfig.logoSubtext;
+  
+  visualConfig.footer = { copyright: document.getElementById('v-footer-copyright')?.value || '' };
+  visualConfig.whatsapp = document.getElementById('v-whatsapp')?.value || visualConfig.whatsapp;
+}
+
+function compressFaviconImage(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 64;
+      let width = MAX;
+      let height = MAX;
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      // Dibujar imagen centrada y recortada si no es perfectamente cuadrada
+      const minDimension = Math.min(img.width, img.height);
+      const sx = (img.width - minDimension) / 2;
+      const sy = (img.height - minDimension) / 2;
+      ctx.drawImage(img, sx, sy, minDimension, minDimension, 0, 0, width, height);
+      const b64 = canvas.toDataURL('image/png');
+      visualConfig.favicon = b64;
+      const pFav = document.getElementById('fav-img-preview-img');
+      const vw = document.getElementById('fav-img-preview');
+      const vh = document.getElementById('fav-img-placeholder');
+      const vc = document.getElementById('fav-img-clear');
+      if (pFav) pFav.src = b64; if (vw) vw.classList.remove('hidden');
+      if (vh) vh.classList.add('hidden'); if (vc) vc.classList.remove('hidden');
+      setFavicon(b64);
+      showToast('Favicon actualizado');
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function compressLogoImage(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 800;
+      let { width, height } = img;
+      const ratio = Math.min(MAX / width, MAX / height, 1);
+      width = Math.round(width * ratio); height = Math.round(height * ratio);
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      const b64 = canvas.toDataURL('image/webp', 0.85);
+      visualConfig.logoImage = b64;
+      const pi = document.getElementById('logo-img-preview-img');
+      const pw = document.getElementById('logo-img-preview');
+      const ph = document.getElementById('logo-img-placeholder');
+      const cb = document.getElementById('logo-img-clear');
+      if (pi) pi.src = b64; if (pw) pw.classList.remove('hidden');
+      if (ph) ph.classList.add('hidden'); if (cb) cb.classList.remove('hidden');
+      updateVisualPreviewDOM();
+      showToast(`Logo: ${width}×${height}px`);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function initVisualLivePreview() {
-  const tMain = document.getElementById("v-logo-main");
-  const tSub = document.getElementById("v-logo-sub");
+  // Sub-tabs
+  document.querySelectorAll('.visual-subtab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.visual-subtab').forEach(t => {
+        t.style.background = ''; t.style.color = ''; t.style.borderColor = '';
+        t.classList.add('border-[#2a2a2a]', 'bg-[#111]', 'text-gray-400');
+      });
+      tab.classList.remove('border-[#2a2a2a]', 'bg-[#111]', 'text-gray-400');
+      tab.style.background = 'rgba(191,255,0,0.1)';
+      tab.style.color = '#BFFF00';
+      tab.style.borderColor = 'rgba(191,255,0,0.3)';
+      document.querySelectorAll('.vtab-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById(tab.dataset.vtab)?.classList.remove('hidden');
+    });
+  });
 
-  if(tMain) tMain.addEventListener("input", (e) => { visualConfig.logoPrimary = e.target.value; updateVisualPreviewDOM(); });
-  if(tSub) tSub.addEventListener("input", (e) => { visualConfig.logoSubtext = e.target.value; updateVisualPreviewDOM(); });
+  // Favicon binding
+  const fa = document.getElementById('favicon-upload-area');
+  const fi = document.getElementById('fav-img-input');
+  const fc = document.getElementById('fav-img-clear');
+  fa?.addEventListener('click',    () => fi?.click());
+  fa?.addEventListener('dragover', e => { e.preventDefault(); fa.style.borderColor = '#BFFF00'; });
+  fa?.addEventListener('dragleave', () => { fa.style.borderColor = ''; });
+  fa?.addEventListener('drop', e => { e.preventDefault(); fa.style.borderColor = ''; const f = e.dataTransfer.files?.[0]; if (f?.type.startsWith('image/') || f?.name.endsWith('.ico')) compressFaviconImage(f); });
+  fi?.addEventListener('change', e => { const f = e.target.files?.[0]; if (f) compressFaviconImage(f); });
+  fc?.addEventListener('click', () => {
+    visualConfig.favicon = null;
+    const fw = document.getElementById('fav-img-preview');
+    const fh = document.getElementById('fav-img-placeholder');
+    if (fw) fw.classList.add('hidden'); if (fh) fh.classList.remove('hidden');
+    fc.classList.add('hidden'); if (fi) fi.value = '';
+    setFavicon('/favicon.ico');
+  });
 
-  const cBind = (id) => {
-    const el = document.getElementById("v-color-" + id);
-    if(!el) return;
-    el.addEventListener("input", (e) => {
+  // Logo mode cards
+  document.querySelectorAll('.logo-mode-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const inp = card.querySelector('input[name="logo-mode"]');
+      if (inp) inp.checked = true;
+      visualConfig.logoMode = card.dataset.mode;
+      syncLogoModeUI(card.dataset.mode);
+      updateVisualPreviewDOM();
+    });
+  });
+
+  // Logo image upload
+  const la = document.getElementById('logo-upload-area');
+  const li = document.getElementById('logo-img-input');
+  const lc = document.getElementById('logo-img-clear');
+  la?.addEventListener('click',    () => li?.click());
+  la?.addEventListener('dragover', e => { e.preventDefault(); la.style.borderColor = '#BFFF00'; });
+  la?.addEventListener('dragleave', () => { la.style.borderColor = ''; });
+  la?.addEventListener('drop', e => { e.preventDefault(); la.style.borderColor = ''; const f = e.dataTransfer.files?.[0]; if (f?.type.startsWith('image/')) compressLogoImage(f); });
+  li?.addEventListener('change', e => { const f = e.target.files?.[0]; if (f) compressLogoImage(f); });
+  lc?.addEventListener('click', () => {
+    visualConfig.logoImage = null;
+    const pw = document.getElementById('logo-img-preview');
+    const ph = document.getElementById('logo-img-placeholder');
+    if (pw) pw.classList.add('hidden'); if (ph) ph.classList.remove('hidden');
+    lc.classList.add('hidden'); if (li) li.value = '';
+    updateVisualPreviewDOM();
+  });
+
+  // Text logo live
+  document.getElementById('v-logo-main')?.addEventListener('input', e => { visualConfig.logoPrimary = e.target.value; updateVisualPreviewDOM(); });
+  document.getElementById('v-logo-sub')?.addEventListener('input',  e => { visualConfig.logoSubtext  = e.target.value; updateVisualPreviewDOM(); });
+
+  // Colors live
+  ['mint','purp','magenta','bg'].forEach(id => {
+    document.getElementById('v-color-' + id)?.addEventListener('input', e => {
       visualConfig[id] = e.target.value;
-      syncVisualUI(); // syncs the tiny hex displays
+      syncVisualUI();
     });
-  };
+  });
 
-  cBind("mint");
-  cBind("purp");
-  cBind("magenta");
-  cBind("bg");
-
-  const saveBtn = document.getElementById("save-visual-btn");
-  if(saveBtn) {
-    saveBtn.addEventListener("click", async () => {
-      saveBtn.disabled = true;
-      saveBtn.innerHTML = "Guardando...";
-      // Guardar localmente para FOUC y sync a Firebase
-      localStorage.setItem("grop_visual", JSON.stringify(visualConfig));
-      await saveProducts();
-      showToast("✨ Diseño Visual Actualizado");
-      saveBtn.disabled = false;
-      saveBtn.innerHTML = `<svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Aplicar y Guardar Diseño`;
-    });
-  }
+  // Save
+  document.getElementById('save-visual-btn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('save-visual-btn');
+    collectVisualConfigFromUI();
+    btn.disabled = true; btn.innerHTML = 'Guardando...';
+    localStorage.setItem('grop_visual', JSON.stringify(visualConfig));
+    await saveProducts();
+    showToast('✨ Sitio actualizado');
+    btn.disabled = false;
+    btn.innerHTML = `<svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Aplicar y Guardar Todo`;
+  });
 }
+
 
 // ─── Render Reviews ────────────────────────────────────────
 window.renderReviews = function() {

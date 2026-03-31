@@ -54,7 +54,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200, // Devolvemos 200 con arrays vacíos para que no rompa el frontend
       headers: corsHeaders,
-      body: JSON.stringify({ products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [], _error: err.message }),
+      body: JSON.stringify({ products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [], visual_config: {}, _error: err.message }),
     };
   }
 };

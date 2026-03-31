@@ -71,9 +71,9 @@ let activeCategory = "todos";
 let searchQuery = "";
 
 // ── DOM ───────────────────────────────────────────────────
-const grid     = () => document.getElementById("products-grid");
-const loader   = () => document.getElementById("loader");
-const empty    = () => document.getElementById("empty-state");
+const grid     = () => document.querySelector(".tpl-cat-grid");
+const loader   = () => document.querySelector(".tpl-cat-loader");
+const empty    = () => document.querySelector(".tpl-cat-empty");
 
 // ── Hamburger ─────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,25 +112,26 @@ function setCategory(cat) {
   renderProducts();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("[data-category]").forEach(el =>
-    el.addEventListener("click", () => setCategory(el.dataset.category))
-  );
-  document.querySelectorAll("[data-mobile-category]").forEach(el => {
-    el.addEventListener("click", () => {
-      setCategory(el.dataset.mobileCategory);
-      document.getElementById("hamburger")?.classList.remove("open");
-      document.getElementById("mobile-menu")?.classList.remove("open");
-    });
-  });
+document.addEventListener("click", (e) => {
+  const catBtn = e.target.closest("[data-category]");
+  if(catBtn) {
+    setCategory(catBtn.dataset.category);
+    return;
+  }
+  const mobCatBtn = e.target.closest("[data-mobile-category]");
+  if(mobCatBtn) {
+    setCategory(mobCatBtn.dataset.mobileCategory);
+    document.getElementById("hamburger")?.classList.remove("open");
+    document.getElementById("mobile-menu")?.classList.remove("open");
+  }
 });
 
 // ── Search ────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("search-input")?.addEventListener("input", e => {
+document.addEventListener("input", (e) => {
+  if(e.target.matches(".tpl-cat-search")) {
     searchQuery = e.target.value.toLowerCase().trim();
     renderProducts();
-  });
+  }
 });
 
 // ── Sort (neuromarketing) ─────────────────────────────────
@@ -330,44 +331,174 @@ async function loadProducts(){
 }
 
 function applyPublicVisualConfig(v) {
-  if(!v) return;
-  const root = document.documentElement.style;
-  if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-  if(v.purp) root.setProperty('--c-purp', v.purp);
-  if(v.magenta) root.setProperty('--c-magenta', v.magenta);
-  if(v.bg) root.setProperty('--c-bg', v.bg);
-  
-  // Update logos safely
-  const logos = document.querySelectorAll("header span.font-sans.text-\\[2\\.2rem\\], nav span.font-sans.text-\\[2\\.2rem\\], header span.font-sans, nav flex span.font-sans, .flex span.font-black.brand-gradient, .flex-1 span.font-sans");
-  const subs = document.querySelectorAll("header span.font-cursive, nav span.font-cursive, .flex span.font-cursive");
-  
-  // Set real gradient
-  const m = v.mint || '#BFFF00';
-  const p = v.purp || '#8A2BE2';
-  const mag = v.magenta || '#FF00FF';
+  if (!v) return;
 
-  logos.forEach(l => {
-    if(v.logoPrimary && l) l.textContent = v.logoPrimary;
-    if(l) l.style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
-  });
-
-  subs.forEach(s => {
-    if(v.logoSubtext && s) s.textContent = v.logoSubtext;
-    if(s) s.style.color = m;
-  });
-
-  if(v.logoPrimary) {
-    const isLogin = window.location.pathname.includes("login");
-    const isAdmin = window.location.pathname.includes("admin");
-    const isPers = window.location.pathname.includes("personalizar");
-    if(!isLogin && !isAdmin) {
-      document.title = `${v.logoPrimary} ${v.logoSubtext||''} — Catálogo Exclusivo`;
+  // Favicon Global
+  if (v.favicon) {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.getElementsByTagName('head')[0].appendChild(link);
     }
+    link.href = v.favicon;
   }
-}
 
+  // 1. CSS vars (colores)
+  const root = document.documentElement.style;
+  const m   = v.mint    || '#BFFF00';
+  const p   = v.purp    || '#8A2BE2';
+  const mag = v.magenta || '#FF00FF';
+  if (v.mint)    { root.setProperty('--c-mint', m); root.setProperty('--c-mint-l', m + 'cc'); }
+  if (v.purp)    root.setProperty('--c-purp', p);
+  if (v.magenta) root.setProperty('--c-magenta', mag);
+  if (v.bg)      root.setProperty('--c-bg', v.bg);
+
+  // 2. Logo
+  const logoImg     = document.getElementById('logo-img');
+  const logoTextWrap= document.getElementById('logo-text-wrap');
+  const logoPrimary = document.getElementById('logo-primary');
+  const logoSubtext = document.getElementById('logo-subtext');
+
+  if (v.logoMode === 'image' && v.logoImage) {
+    if (logoImg)      { logoImg.src = v.logoImage; logoImg.classList.remove('hidden'); }
+    if (logoTextWrap)   logoTextWrap.classList.add('hidden');
+  } else {
+    if (logoImg)        logoImg.classList.add('hidden');
+    if (logoTextWrap)   logoTextWrap.classList.remove('hidden');
+    if (logoPrimary && v.logoPrimary) {
+      logoPrimary.textContent = v.logoPrimary;
+      logoPrimary.style.backgroundImage = `linear-gradient(to bottom right,${m},${p},${mag})`;
+    }
+    if (logoSubtext && v.logoSubtext)  { logoSubtext.textContent = v.logoSubtext; logoSubtext.style.color = m; }
+  }
+
+  // Footer logo & Title
+  document.querySelectorAll('footer .font-sans.font-black').forEach(el => {
+    if (v.logoPrimary) el.textContent = v.logoPrimary;
+    el.style.backgroundImage = `linear-gradient(to bottom right,${m},${p},${mag})`;
+  });
+  document.querySelectorAll('footer .font-cursive').forEach(el => {
+    if (v.logoSubtext) el.textContent = v.logoSubtext;
+    el.style.color = m;
+  });
+  if (v.logoPrimary && !window.location.pathname.includes('admin') && !window.location.pathname.includes('login')) {
+    document.title = `${v.logoPrimary} ${v.logoSubtext || ''} — Catálogo Exclusivo`;
+  }
+  if (v.footer?.copyright) {
+    const fc = document.getElementById('footer-copyright');
+    if (fc) fc.textContent = v.footer.copyright;
+  }
+  if (v.whatsapp) {
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(a => {
+      const url = new URL(a.href);
+      const path = url.pathname.replace(/^\//, '');
+      const num = path.split('?')[0];
+      a.href = a.href.replace(num, v.whatsapp);
+    });
+  }
+
+  // 3. PAGE BUILDER ENGINE
+  const container = document.getElementById('dynamic-page-builder');
+  if(!container) return;
+  container.innerHTML = '';
+  
+  // Backwards compatibility for old config missing 'sections' array
+  let sections = v.sections;
+  if(!sections || !Array.isArray(sections)) {
+      sections = [
+          { type: 'hero', id: 'sec_old_1', config: v.hero, visible: v.sectionVisible?.hero !== false },
+          { type: 'servicios', id: 'sec_old_2', config: v.servicios, visible: v.sectionVisible?.servicios !== false },
+          { type: 'proceso', id: 'sec_old_3', config: v.proceso, visible: v.sectionVisible?.proceso !== false },
+          { type: 'reviews', id: 'sec_old_4', config: {}, visible: v.sectionVisible?.reviews !== false },
+          { type: 'catalog', id: 'sec_old_5', config: {}, visible: v.sectionVisible?.catalog !== false }
+      ];
+      // Apply old ordering if present
+      if (Array.isArray(v.sectionOrder) && v.sectionOrder.length > 0) {
+          sections.sort((a,b) => {
+              const ai = v.sectionOrder.indexOf(a.type);
+              const bi = v.sectionOrder.indexOf(b.type);
+              return (ai !== -1 ? ai : 99) - (bi !== -1 ? bi : 99);
+          });
+      }
+  }
+
+  sections.forEach(sec => {
+      if(sec.visible === false) return;
+      const tpl = document.getElementById('tpl-' + sec.type);
+      if(!tpl) return;
+      const clone = tpl.content.cloneNode(true);
+      const rootEl = clone.firstElementChild;
+      
+      // Inject data based on type
+      if(sec.type === 'hero' && sec.config) {
+          if(sec.config.title) clone.querySelector('.tpl-hero-title').textContent = sec.config.title;
+          if(sec.config.subtitle) clone.querySelector('.tpl-hero-subtitle').textContent = sec.config.subtitle;
+          if(sec.config.cta1Text) clone.querySelector('.tpl-hero-cta1').textContent = sec.config.cta1Text;
+          if(sec.config.cta2Text) clone.querySelector('.tpl-hero-cta2').textContent = sec.config.cta2Text;
+          if(sec.config.hideCta2) clone.querySelector('.tpl-hero-cta2-link').style.display = 'none';
+      }
+      else if(sec.type === 'servicios' && sec.config) {
+          if(sec.config.title) clone.querySelector('.tpl-svc-title').textContent = sec.config.title;
+          const grid = clone.querySelector('.tpl-svc-grid');
+          if(sec.config.items && Array.isArray(sec.config.items) && grid) {
+              sec.config.items.forEach(it => {
+                 grid.innerHTML += `
+                  <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-mint/40 transition-colors">
+                    <div class="absolute inset-0 bg-gradient-to-b from-mint/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">${it.icon || '✨'}</div>
+                    <h4 class="text-lg font-bold text-white mb-3">${it.title || ''}</h4>
+                    <p class="text-[13px] text-[#8b8ba8] leading-relaxed">${it.desc || ''}</p>
+                  </div>`;
+              });
+          }
+      }
+      else if(sec.type === 'proceso' && sec.config) {
+          if(sec.config.title) clone.querySelector('.tpl-proc-title').textContent = sec.config.title;
+          const grid = clone.querySelector('.tpl-proc-grid');
+          if(sec.config.steps && Array.isArray(sec.config.steps) && grid) {
+              sec.config.steps.forEach((it, idx) => {
+                 grid.innerHTML += `
+                  <div class="relative flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">${idx+1}</div>
+                    <h4 class="text-white font-bold mb-2">${it.title || ''}</h4>
+                    <p class="text-xs text-[#8b8ba8] px-4">${it.desc || ''}</p>
+                  </div>`;
+              });
+          }
+      }
+      else if(sec.type === 'image_banner' && sec.config) {
+          if(sec.config.imageUrl) clone.querySelector('.tpl-banner-img').src = sec.config.imageUrl;
+          if(sec.config.link) {
+              const a = document.createElement('a');
+              a.href = sec.config.link;
+              a.className = 'block w-full cursor-pointer';
+              a.appendChild(clone.querySelector('.tpl-banner-img').cloneNode(true));
+              clone.querySelector('.tpl-banner-img').replaceWith(a);
+          }
+      }
+      else if(sec.type === 'rich_text' && sec.config) {
+          if(sec.config.title) clone.querySelector('.tpl-rt-title').textContent = sec.config.title;
+          if(sec.config.content) clone.querySelector('.tpl-rt-content').innerHTML = sec.config.content.replace(/\n/g, '<br>');
+      }
+      else if(sec.type === 'reviews' && sec.config) {
+          // Additional config like title can be injected here
+      }
+      else if(sec.type === 'catalog' && sec.config) {
+          // Additional config for catalog injected here
+      }
+      
+      container.appendChild(clone);
+  });
+  
+  // Re-init intersection observers for dynamically added elements
+  setTimeout(() => {
+    const io = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible'); io.unobserve(x.target);}});},{threshold:0.1});
+    document.querySelectorAll('.tpl-reveal:not(.visible)').forEach(el=>io.observe(el));
+  }, 100);
+}
 function renderDynamicCategories(cats) {
-  const container = document.getElementById("catalog-filters");
+  const container = document.querySelector(".tpl-cat-filters");
   if (!container) return;
   
   // Guardamos el botón 'Todos'
@@ -400,8 +531,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ── Render Reviews Carousel ───────────────────────────────
 window.renderReviews = function(reviews) {
-  const section = document.getElementById("reviews-section");
-  const carousel = document.getElementById("reviews-carousel");
+  const section = document.querySelector(".grop-sec-reviews");
+  const carousel = document.querySelector(".tpl-rev-carousel");
   if (!section || !carousel) return;
 
   const approvedReviews = reviews ? reviews.filter(r => r.status === "approved") : [];
@@ -451,7 +582,7 @@ window.renderReviews = function(reviews) {
 // ── Public Review Submission ──────────────────────────────
 // Usamos style.display porque el modal usa inline styles, no clases Tailwind
 (function setupPublicReviews() {
-  const btn     = document.getElementById("open-public-review-btn");
+  const btn     = document.querySelector(".tpl-rev-btn");
   const modal   = document.getElementById("public-review-modal");
   const closeX  = document.getElementById("close-public-review");
   const form    = document.getElementById("public-review-form");
