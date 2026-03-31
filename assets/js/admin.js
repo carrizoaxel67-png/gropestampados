@@ -115,52 +115,63 @@ const DEMO_PRODUCTS_SEED = [
 // ─── Load Products ────────────────────────────────────────
 async function loadProducts() {
   showLoading(true);
+  let data = null;
+
+  // BLOQUE 1: Solo red. Si esto falla es un error real de conexión.
   try {
     const res = await fetch("/api/get-products");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    data = await res.json();
+  } catch (e) {
+    console.error('loadProducts [network] error:', e);
+    showToast("⚠️ No se pudo conectar. Reintentá en unos segundos.", "error");
+    if (products.length === 0) {
+      products = DEMO_PRODUCTS_SEED;
+      try { renderCategories(); renderList(); renderReviews(); } catch(_) {}
+    }
+    showLoading(false);
+    return;
+  }
 
+  // BLOQUE 2: Procesar datos y actualizar UI. Errores aquí NO son de conexión.
+  try {
     if (data && data.products) {
       products   = data.products || [];
       categories = data.categories || categories;
       reviews    = data.reviews || [];
 
       if (data.visual_config && Object.keys(data.visual_config).length > 0) {
-        // Nunca guardar favicon en visualConfig desde DB (era el causante del crash)
         const { favicon: _dbFav, ...cleanVC } = data.visual_config;
         visualConfig = { ...visualConfig, ...cleanVC };
       }
 
-      // Restaurar favicon desde localStorage (guardado localmente, no en DB)
       const savedFavicon = localStorage.getItem('grop_favicon');
       if (savedFavicon) {
         visualConfig.favicon = savedFavicon;
-        setFavicon(savedFavicon);
+        try { setFavicon(savedFavicon); } catch(_) {}
       }
 
-      // Siempre limpiar grop_visual en localStorage de datos pesados (base64)
       const { favicon: _lsFav, logoImage: _lsLogo, ...cleanForLS } = visualConfig;
-      localStorage.setItem('grop_visual', JSON.stringify(cleanForLS));
+      try { localStorage.setItem('grop_visual', JSON.stringify(cleanForLS)); } catch(_) {}
 
-      syncVisualUI();
+      try { syncVisualUI(); } catch(uiErr) {
+        console.warn('syncVisualUI error (non-critical):', uiErr);
+      }
     } else if (Array.isArray(data) && data.length > 0) {
       products = data;
     } else {
       products = DEMO_PRODUCTS_SEED;
       showToast("\uD83D\uDCE6 Cargando catálogo inicial...");
-      await saveProducts(true);
+      try { await saveProducts(true); } catch(_) {}
     }
 
     renderCategories();
     renderList();
     renderReviews();
   } catch (e) {
-    console.error('loadProducts error:', e);
-    showToast("⚠️ No se pudo conectar. Reintentá en unos segundos.", "error");
-    if (products.length === 0) {
-      products = DEMO_PRODUCTS_SEED;
-      renderList();
-    }
+    console.error('loadProducts [UI] error:', e);
+    // Intentar renderizar igualmente lo que tengamos
+    try { renderCategories(); renderList(); renderReviews(); } catch(_) {}
   } finally {
     showLoading(false);
   }
