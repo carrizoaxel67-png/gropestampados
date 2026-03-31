@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://gropestampados.uy/sitemap.xml
+
+# Performance hint
+Crawl-delay: 1

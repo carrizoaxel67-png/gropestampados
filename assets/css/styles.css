@@ -835,9 +835,119 @@ body {
 .divider { height: 1px; background: var(--border); }
 .no-select { user-select: none; }
 
-/* ── Mobile-first tweaks ────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   MOBILE-FIRST OPTIMIZATIONS
+   ══════════════════════════════════════════════════════════ */
+
+/* Touch targets mínimos WCAG 2.5.5 */
+.btn, button, [role="button"] {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevenir zoom en iOS al enfocar inputs */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Safe-area support (notch, Dynamic Island, home indicator) */
+.navbar {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+body { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Tap highlight suppress */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Smooth momentum scroll iOS */
+.overflow-y-auto { -webkit-overflow-scrolling: touch; }
+
+/* ── Float WA — no tape content mobile ───────────────────── */
+.float-wa {
+  position: fixed;
+  bottom: max(24px, calc(24px + env(safe-area-inset-bottom)));
+  right: 20px;
+  z-index: 200;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: #25d366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.float-wa:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37,211,102,0.6); }
+
+/* ── Product Grid: 2 columns even on tiny phones ────────── */
+#products-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 480px) {
+  #products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  #products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  #products-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 1280px) {
+  #products-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+/* ── Modal full-screen en mobile ────────────────────────── */
 @media (max-width: 640px) {
   .hero-title { line-height: 0.95; }
-  .modal-box  { border-radius: 20px 20px 0 0; }
   .stat-chip  { padding: 12px 16px; }
+
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .modal-box {
+    border-radius: 20px 20px 0 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    max-height: 90dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Cards más compactas en mobile */
+  .card-body { padding: 10px; }
+  .card-name { font-size: 12px; }
+  .card-price { font-size: 1.2rem; }
+  .status-badge { font-size: 9px; padding: 3px 8px; }
+
+  /* Hero más compacto en mobile */
+  .max-w-4xl { padding: 0 1rem; }
+
+  /* Grilla de estadísticas con padding correcto */
+  .grid.grid-cols-3 { gap: 1rem !important; }
+}
+
+/* ── Landscape mobile ────────────────────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  section[data-builder-id="hero"] { min-height: unset; padding-top: 80px; padding-bottom: 60px; }
+}
+
+/* ── High-DPI / Retina: texto nítido ────────────────────── */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+}
+
+/* ── Reduce motion: respetar accesibilidad ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
 }
