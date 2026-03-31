@@ -16,14 +16,16 @@
     (function(){
       try {
         const v = JSON.parse(localStorage.getItem('grop_visual') || 'null');
-        if(v) {
+        if(v && typeof v === 'object') {
           const root = document.documentElement.style;
-          if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-          if(v.purp) root.setProperty('--c-purp', v.purp);
-          if(v.magenta) root.setProperty('--c-magenta', v.magenta);
-          if(v.bg) root.setProperty('--c-bg', v.bg);
+          // Validar que los colores sean hex válidos antes de aplicar
+          const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
+          if(isValidHex(v.mint)) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+          if(isValidHex(v.purp)) root.setProperty('--c-purp', v.purp);
+          if(isValidHex(v.magenta)) root.setProperty('--c-magenta', v.magenta);
+          if(isValidHex(v.bg)) root.setProperty('--c-bg', v.bg);
         }
-      } catch(e){}
+      } catch(e){ /* Si el localStorage está corrupto, ignorar silenciosamente */ }
     })();
     tailwind.config = {
       theme: {
@@ -48,7 +50,7 @@
   <style>
     /* CSS para los colores estáticos e inline SVG filters */
     body, .bg-\[\#080810\], .bg-bgMain { background-color: var(--c-bg, #080810) !important; }
-    .text-\[\#080810\], .text-bgMain { color: var(--c-bg, #080810) !important; }
+    /* NOTA: NO sobreescribimos el color de texto aquí para evitar conflictos con el tema */
   </style>
 </head>
 <body>
@@ -108,7 +110,7 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- HERO (SYMMETRICAL)                                  -->
   <!-- ─────────────────────────────────────────────────── -->
-  <section class="relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]">
+  <section class="relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]" data-builder-id="hero">
     <!-- Ambient glowing orbs -->
     <div class="absolute top-0 right-[15%] w-[400px] h-[400px] bg-[#BFFF00] rounded-full mix-blend-screen filter blur-[120px] opacity-[0.10] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] left-[10%] w-[350px] h-[350px] bg-[#8A2BE2] rounded-full mix-blend-screen filter blur-[100px] opacity-[0.20] pointer-events-none"></div>
@@ -118,23 +120,23 @@
       <!-- Eyebrow removed -->
 
       <!-- Title -->
-      <h1 class="font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl">
+      <h1 id="g-b-hero-title" class="font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl">
         TU DISEÑO EN TODO<br class="hidden sm:block">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint via-purp to-magenta">LO QUE IMAGINES.</span>
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10">
+      <p id="g-b-hero-sub" class="text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10">
         Especialistas en DTF, Sublimación y Vinilo. Desde una unidad hasta producciones corporativas con la máxima exigencia en cada detalle.
       </p>
 
       <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
-        <a href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
+      <div id="g-b-hero-btns" class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
+        <a id="g-b-hero-cta1" href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
           ✨ Diseñar Ahora
         </a>
-        <a href="#catalog" class="w-full sm:w-auto">
-          <button class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
+        <a id="g-b-hero-cta2-a" href="#catalog" class="w-full sm:w-auto">
+          <button id="g-b-hero-cta2" class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
             Ver Catálogo
           </button>
         </a>
@@ -162,15 +164,15 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- SERVICIOS (SYMMETRICAL GRID)                        -->
   <!-- ─────────────────────────────────────────────────── -->
-  <section id="servicios" class="py-24 bg-[#0a0a14] relative border-y border-white/5">
+  <section id="servicios" data-builder-id="servicios" class="py-24 bg-[#0a0a14] relative border-y border-white/5">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-16 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Técnicas Integrales</h2>
-        <h3 class="font-display text-5xl md:text-6xl text-white">Nuestros Servicios</h3>
+        <h3 id="g-b-svc-title" class="font-display text-5xl md:text-6xl text-white">Nuestros Servicios</h3>
         <div class="w-16 h-1 bg-gradient-to-r from-transparent via-[#049B7A] to-transparent mx-auto mt-6"></div>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div id="g-b-svc-items" class="grid md:grid-cols-3 gap-6">
         <!-- DTF -->
         <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-[#049B7A]/40 transition-colors reveal">
           <div class="absolute inset-0 bg-gradient-to-b from-[#049B7A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
@@ -201,14 +203,14 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- PROCESS (SYMMETRICAL HORIZONTAL)                    -->
   <!-- ─────────────────────────────────────────────────── -->
-  <section id="proceso" class="py-24 bg-[#080810]">
+  <section id="proceso" data-builder-id="proceso" class="py-24 bg-[#080810]">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-20 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Flujo de trabajo</h2>
-        <h3 class="font-display text-5xl md:text-6xl text-white drop-shadow-md">4 Pasos Simples</h3>
+        <h3 id="g-b-proc-title" class="font-display text-5xl md:text-6xl text-white drop-shadow-md">4 Pasos Simples</h3>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal">
+      <div id="g-b-proc-steps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal">
         <!-- Connecting Line (hidden on mobile) -->
         <div class="hidden lg:block absolute top-[28px] left-[12.5%] right-[12.5%] h-px bg-white/10"></div>
 
@@ -242,7 +244,7 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- REVIEWS CAROUSEL                                    -->
   <!-- ─────────────────────────────────────────────────── -->
-  <section id="reviews-section" class="py-24 bg-[#080810] border-t border-white/5">
+  <section id="reviews-section" data-builder-id="reviews" class="py-24 bg-[#080810] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center mb-16 reveal">
         <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-mint mb-3">Confiabilidad</h2>
@@ -265,7 +267,7 @@
   <!-- ─────────────────────────────────────────────────── -->
   <!-- CATALOG (CENTERED HEADER)                           -->
   <!-- ─────────────────────────────────────────────────── -->
-  <section id="catalog" class="py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
+  <section id="catalog" data-builder-id="catalog" class="py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
     <div class="max-w-7xl mx-auto px-4">
       
       <div class="text-center mb-16 reveal">

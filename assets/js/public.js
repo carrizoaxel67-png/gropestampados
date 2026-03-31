@@ -327,7 +327,9 @@ async function loadProducts(){
         renderDynamicCategories(data.categories);
       }
       if (data.visual_config) {
-        localStorage.setItem("grop_visual", JSON.stringify(data.visual_config));
+        // Limpiar favicon del config antes de guardarlo en localStorage (demasiado pesado)
+        const { favicon: _fav, ...cleanConfig } = data.visual_config;
+        localStorage.setItem("grop_visual", JSON.stringify(cleanConfig));
         applyPublicVisualConfig(data.visual_config);
       }
       // Siempre llamar a renderReviews para que la UI vacía se inicialice si hace falta
