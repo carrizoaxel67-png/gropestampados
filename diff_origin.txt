@@ -1,0 +1,14 @@
+﻿diff --git a/index.html b/index.html
+index c58bedd..1d05c87 100644
+--- a/index.html
++++ b/index.html
+@@ -14,7 +14,8 @@
+   <meta property="og:url" content="https://gropsublimados.uy/">
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:title" content="Grop Estampados | Sublimaci├│n y DTF">
+-  <meta name="twitter:description" content="Tu idea plasmada en ropa de excelente calidad. Conoc├® nuestro cat├ílogo interactivo.">\n  <!-- Tailwind CDN -->
++  <meta name="twitter:description" content="Tu idea plasmada en ropa de excelente calidad. Conoc├® nuestro cat├ílogo interactivo.">
++  <!-- Tailwind CDN -->
+   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>

@@ -1,0 +1,354 @@
+﻿diff --git a/index.html b/index.html
+index 04187ea..c58bedd 100644
+--- a/index.html
++++ b/index.html
+@@ -2,14 +2,19 @@
+ <html lang="es">
+ <head>
+   <meta charset="UTF-8">
+-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+-  <title>GROPESTAMPADOS.UY ÔÇö Tu dise├▒o, en todo lo que imagines.</title>
+-  <meta name="description" content="Remeras, canguros, gorros y art├¡culos sublimados personalizados. Env├¡o gratis en Montevideo. Contacto: 097 116 015.">
++  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
++  <title>Grop Estampados | Remeras, Canguros y Sublimaci├│n DTF en Uruguay</title>
++  <meta name="description" content="Personaliza tu ropa y art├¡culos en Montevideo. Sublimaci├│n, DTF Premium y Vinilo Textil en remeras, canguros, gorros y tazas. Calidad Streetwear, sin m├¡nimos.">
++  <meta name="keywords" content="estampados montevideo, sublimacion uruguay, ropa streetwear personalizada, impresion dtf montevideo, vinilo textil, uniformes empresariales, gorros trucker, tazas magicas, remeras oversize estampadas">
+   <meta name="theme-color" content="#080810">
+-  <meta property="og:title" content="GROPESTAMPADOS.UY">
+-  <meta property="og:description" content="Estampados & Sublimados premium en Uruguay. Producci├│n a medida.">
+-  
+-  <!-- Tailwind CDN -->
++  <meta property="og:type" content="website">
++  <meta property="og:title" content="Grop Estampados ÔÇö Estilo a Medida">
++  <meta property="og:description" content="Dise├▒o, personalizaci├│n y confecci├│n de streetwear, uniformes y merchandising con calidad premium. Env├¡o gratis en MVD.">
++  <meta property="og:image" content="https://gropsublimados.uy/facebook-cover.jpg">
++  <meta property="og:url" content="https://gropsublimados.uy/">
++  <meta name="twitter:card" content="summary_large_image">
++  <meta name="twitter:title" content="Grop Estampados | Sublimaci├│n y DTF">
++  <meta name="twitter:description" content="Tu idea plasmada en ropa de excelente calidad. Conoc├® nuestro cat├ílogo interactivo.">\n  <!-- Tailwind CDN -->
+   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>
+@@ -68,8 +73,11 @@
+       <!-- Left Logo -->
+       <div class="flex-none flex justify-start">
+         <a href="/" class="flex flex-col justify-center group" aria-label="GROPESTAMPADOS.UY Home">
+-          <span class="font-sans font-black text-[2.2rem] tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-br from-mint via-purp to-magenta drop-shadow-md group-hover:opacity-80 transition-opacity">grop</span>
+-          <span class="-mt-1 ml-5 text-[1.2rem] font-cursive font-bold text-mint tracking-wide lowercase drop-shadow-sm">Estampados</span>
++          <img id="logo-img" src="" alt="Logo" class="hidden max-h-12 object-contain">
++          <div id="logo-text-wrap">
++            <span id="logo-primary" class="font-sans font-black text-[2.2rem] tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-br from-mint via-purp to-magenta drop-shadow-md group-hover:opacity-80 transition-opacity">grop</span>
++            <span id="logo-subtext" class="-mt-1 ml-5 text-[1.2rem] font-cursive font-bold text-mint tracking-wide lowercase drop-shadow-sm">Estampados</span>
++          </div>
+         </a>
+       </div>
+ 
+@@ -105,205 +113,113 @@
+     </div>
+   </header>
+ 
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <!-- HERO (SYMMETRICAL)                                  -->
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <section class="relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]">
+-    <!-- Ambient glowing orbs -->
+-    <div class="absolute top-0 right-[15%] w-[400px] h-[400px] bg-[#BFFF00] rounded-full mix-blend-screen filter blur-[120px] opacity-[0.10] pointer-events-none"></div>
+-    <div class="absolute bottom-[-10%] left-[10%] w-[350px] h-[350px] bg-[#8A2BE2] rounded-full mix-blend-screen filter blur-[100px] opacity-[0.20] pointer-events-none"></div>
+-
+-    <div class="max-w-4xl px-4 flex flex-col items-center z-10">
+-      
+-      <!-- Eyebrow removed -->
+-
+-      <!-- Title -->
+-      <h1 class="font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl">
+-        TU DISE├æO EN TODO<br class="hidden sm:block">
+-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint via-purp to-magenta">LO QUE IMAGINES.</span>
+-      </h1>
+-
+-      <!-- Subtitle -->
+-      <p class="text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10">
+-        Especialistas en DTF, Sublimaci├│n y Vinilo. Desde una unidad hasta producciones corporativas con la m├íxima exigencia en cada detalle.
+-      </p>
+-
+-      <!-- Action Buttons -->
+-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
+-        <a href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
+-          Ô£¿ Dise├▒ar Ahora
+-        </a>
+-        <a href="#catalog" class="w-full sm:w-auto">
+-          <button class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
+-            Ver Cat├ílogo
+-          </button>
+-        </a>
+-      </div>
+-
+-      <!-- Trust grid centered -->
+-      <div class="grid grid-cols-3 gap-8 md:gap-16 mt-20 pt-10 border-t border-white/10 w-full max-w-3xl anim-fade-up stagger-4">
+-        <div class="flex flex-col items-center text-center gap-2 group">
+-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">Ô£¿</div>
+-          <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Calidad Total</p>
+-        </div>
+-        <div class="flex flex-col items-center text-center gap-2 group">
+-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">­ƒôª</div>
+-          <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Mayor / Menor</p>
+-        </div>
+-        <div class="flex flex-col items-center text-center gap-2 group">
+-          <div class="w-12 h-12 rounded-full border border-[#049B7A]/30 bg-[#049B7A]/5 flex items-center justify-center text-xl group-hover:bg-[#049B7A]/20 transition-colors">­ƒÜÜ</div>
+-          <p class="text-xs uppercase tracking-widest text-[#4a4a62] font-semibold">Env├¡o Gratis MVD</p>
++  <!-- CONTENEDOR DIN├üMICO E INICIO DE TEMPLATES -->
++  <div id="dynamic-page-builder" class="flex-grow flex flex-col w-full relative z-10"></div>
++
++  <!-- SECTION TEMPLATES -->
++  <template id="tpl-hero">
++    <section class="grop-sec-hero relative pt-24 pb-32 flex flex-col items-center justify-center text-center min-h-[85vh]">
++      <div class="absolute top-0 right-[15%] w-[400px] h-[400px] bg-[#BFFF00] rounded-full mix-blend-screen filter blur-[120px] opacity-[0.10] pointer-events-none"></div>
++      <div class="absolute bottom-[-10%] left-[10%] w-[350px] h-[350px] bg-[#8A2BE2] rounded-full mix-blend-screen filter blur-[100px] opacity-[0.20] pointer-events-none"></div>
++      <div class="max-w-4xl px-4 flex flex-col items-center z-10 mx-auto">
++        <h1 class="tpl-hero-title font-display text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-widest text-white anim-fade-up stagger-1 mt-6 mb-8 drop-shadow-2xl"></h1>
++        <p class="tpl-hero-subtitle text-lg md:text-xl text-[#8b8ba8] max-w-2xl font-light leading-relaxed anim-fade-up stagger-2 mb-10"></p>
++        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up stagger-3 w-full sm:w-auto">
++          <a href="/personalizar.html" class="btn btn-mint group w-full sm:w-auto text-[15px] px-10 py-4 rounded-full border border-transparent hover:border-white/20 transition-all shadow-[0_0_20px_rgba(191,255,0,0.2)]">
++            <span class="tpl-hero-cta1"></span>
++          </a>
++          <a href="#catalog" class="w-full sm:w-auto tpl-hero-cta2-link">
++            <button class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 group w-full sm:w-auto text-sm px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2">
++              <span class="tpl-hero-cta2"></span>
++            </button>
++          </a>
+         </div>
+       </div>
+-
+-    </div>
+-  </section>
+-
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <!-- SERVICIOS (SYMMETRICAL GRID)                        -->
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <section id="servicios" class="py-24 bg-[#0a0a14] relative border-y border-white/5">
+-    <div class="max-w-6xl mx-auto px-4">
+-      <div class="text-center mb-16 reveal">
+-        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">T├®cnicas Integrales</h2>
+-        <h3 class="font-display text-5xl md:text-6xl text-white">Nuestros Servicios</h3>
+-        <div class="w-16 h-1 bg-gradient-to-r from-transparent via-[#049B7A] to-transparent mx-auto mt-6"></div>
+-      </div>
+-
+-      <div class="grid md:grid-cols-3 gap-6">
+-        <!-- DTF -->
+-        <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-[#049B7A]/40 transition-colors reveal">
+-          <div class="absolute inset-0 bg-gradient-to-b from-[#049B7A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">­ƒû¿´©Å</div>
+-          <h4 class="text-lg font-bold text-white mb-3">DTF Premium</h4>
+-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Alta definici├│n a todo color. Colores vivos, resistencia extrema a los lavados y sin fondo. Perfecto para cualquier tejido y color de prenda.</p>
++    </section>
++  </template>
++
++  <template id="tpl-servicios">
++    <section class="grop-sec-servicios py-24 bg-[#0a0a14] relative border-y border-white/5">
++      <div class="max-w-6xl mx-auto px-4">
++        <div class="text-center mb-16 reveal tpl-reveal">
++          <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3 tpl-svc-eyebrow">T├®cnicas Integrales</h2>
++          <h3 class="tpl-svc-title font-display text-5xl md:text-6xl text-white"></h3>
++          <div class="w-16 h-1 bg-gradient-to-r from-transparent via-[#049B7A] to-transparent mx-auto mt-6"></div>
+         </div>
+-
+-        <!-- Sublimaci├│n -->
+-        <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-purple-500/40 transition-colors reveal delay-100">
+-          <div class="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">Ôÿò</div>
+-          <h4 class="text-lg font-bold text-white mb-3">Sublimaci├│n</h4>
+-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">El estampado penetra en la fibra de la tela. Resultados imposibles de borrar al tacto. Exclusivo para poli├®ster claro y art├¡culos cer├ímicos.</p>
++        <div class="tpl-svc-grid grid md:grid-cols-3 gap-6"></div>
++      </div>
++    </section>
++  </template>
++
++  <template id="tpl-proceso">
++    <section class="grop-sec-proceso py-24 bg-[#080810]">
++      <div class="max-w-6xl mx-auto px-4">
++        <div class="text-center mb-20 reveal tpl-reveal">
++          <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3 tpl-proc-eyebrow">Flujo de trabajo</h2>
++          <h3 class="tpl-proc-title font-display text-5xl md:text-6xl text-white drop-shadow-md"></h3>
+         </div>
+-
+-        <!-- Vinilo Textil -->
+-        <div class="group relative bg-[#0f0f1a] border border-white/5 p-10 rounded-2xl flex flex-col items-center text-center hover:border-blue-500/40 transition-colors reveal delay-200">
+-          <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+-          <div class="w-16 h-16 rounded-2xl bg-[#13131f] border border-white/10 flex items-center justify-center text-2xl mb-6 shadow-xl">Ô£é´©Å</div>
+-          <h4 class="text-lg font-bold text-white mb-3">Vinilo Textil</h4>
+-          <p class="text-[13px] text-[#8b8ba8] leading-relaxed">Colores s├│lidos, fl├║or, metalizados o reflectantes. Precisi├│n absoluta para siluetas vectoriales y n├║meros o nombres deportivos.</p>
++        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal tpl-reveal tpl-proc-grid">
++          <div class="hidden lg:block absolute top-[28px] left-[12.5%] right-[12.5%] h-px bg-white/10"></div>
+         </div>
+       </div>
+-    </div>
+-  </section>
+-
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <!-- PROCESS (SYMMETRICAL HORIZONTAL)                    -->
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <section id="proceso" class="py-24 bg-[#080810]">
+-    <div class="max-w-6xl mx-auto px-4">
+-      <div class="text-center mb-20 reveal">
+-        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Flujo de trabajo</h2>
+-        <h3 class="font-display text-5xl md:text-6xl text-white drop-shadow-md">4 Pasos Simples</h3>
+-      </div>
+-
+-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative reveal">
+-        <!-- Connecting Line (hidden on mobile) -->
+-        <div class="hidden lg:block absolute top-[28px] left-[12.5%] right-[12.5%] h-px bg-white/10"></div>
+-
+-        <div class="relative flex flex-col items-center text-center">
+-          <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 shadow-[0_0_20px_rgba(191,255,0,0.2)] mb-6">1</div>
+-          <h4 class="text-white font-bold mb-2">Dise├▒o</h4>
+-          <p class="text-xs text-[#8b8ba8] px-4">Mand├ís tu idea, logo o foto en la mejor calidad posible.</p>
++    </section>
++  </template>
++
++  <template id="tpl-reviews">
++    <section class="grop-sec-reviews py-24 bg-[#080810] border-t border-white/5">
++      <div class="max-w-7xl mx-auto px-4">
++        <div class="text-center mb-16 reveal tpl-reveal">
++          <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-mint mb-3 tpl-rev-eyebrow">Confiabilidad</h2>
++          <h3 class="tpl-rev-title font-display text-4xl md:text-5xl text-white tracking-widest drop-shadow-md"></h3>
++          <div class="w-16 h-1 bg-gradient-to-r from-transparent via-mint to-transparent mx-auto mt-6 mb-8"></div>
++          <button class="tpl-rev-btn" style="display:inline-flex; align-items:center; gap:8px; background:transparent; border:2px solid #BFFF00; color:#BFFF00; padding:12px 28px; border-radius:999px; font-size:14px; font-weight:700; cursor:pointer; letter-spacing:0.05em; transition: background 0.2s;" onmouseover="this.style.background=\'rgba(191, 255, 0,0.1)\'" onmouseout="this.style.background=\'transparent\'">
++            Ô£¿ Dejanos tu rese├▒a
++          </button>
+         </div>
+-
+-        <div class="relative flex flex-col items-center text-center">
+-          <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">2</div>
+-          <h4 class="text-white font-bold mb-2">Presupuesto</h4>
+-          <p class="text-xs text-[#8b8ba8] px-4">Aprob├ís el modelo digital, cotizaci├│n y plazos de entrega.</p>
++        <div class="relative w-full reveal tpl-reveal">
++          <div class="tpl-rev-carousel flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scroll-smooth px-4 md:px-2" style="scrollbar-width: none;"></div>
+         </div>
+-
+-        <div class="relative flex flex-col items-center text-center">
+-          <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">3</div>
+-          <h4 class="text-white font-bold mb-2">Producci├│n</h4>
+-          <p class="text-xs text-[#8b8ba8] px-4">En el taller procesamos la orden bajo estrictos controles de calidad.</p>
++      </div>
++    </section>
++  </template>
++
++  <template id="tpl-catalog">
++    <section class="grop-sec-catalog py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
++      <div class="max-w-7xl mx-auto px-4">
++        <div class="text-center mb-16 reveal tpl-reveal">
++          <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3 tpl-cat-eyebrow">Inventario</h2>
++          <h3 class="tpl-cat-title font-display text-5xl md:text-6xl text-white"></h3>
++          <p class="tpl-cat-subtitle text-sm text-[#4a4a62] mt-4"></p>
+         </div>
+-
+-        <div class="relative flex flex-col items-center text-center">
+-          <div class="w-14 h-14 bg-[#0f0f1a] border border-[#049B7A]/40 rounded-full flex items-center justify-center text-[#049B7A] font-display text-2xl z-10 box-shadow mb-6">4</div>
+-          <h4 class="text-white font-bold mb-2">Entrega</h4>
+-          <p class="text-xs text-[#8b8ba8] px-4">Recib├¡s en la puerta, con env├¡o gratis en Montevideo.</p>
++        <div class="flex flex-wrap justify-center gap-2 mb-12 tpl-cat-filters"></div>
++        <div class="max-w-md mx-auto mb-16 relative">
++          <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a62] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
++          <input type="search" class="tpl-cat-search w-full bg-[#080810] border border-white/10 rounded-full pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#049B7A] focus:ring-1 focus:ring-[#049B7A]/50 transition-all text-center placeholder:text-center" placeholder="Buscar por art├¡culo...">
+         </div>
+-      </div>
+-    </div>
+-  </section>
+-
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <!-- REVIEWS CAROUSEL                                    -->
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <section id="reviews-section" class="py-24 bg-[#080810] border-t border-white/5">
+-    <div class="max-w-7xl mx-auto px-4">
+-      <div class="text-center mb-16 reveal">
+-        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-mint mb-3">Confiabilidad</h2>
+-        <h3 class="font-display text-4xl md:text-5xl text-white tracking-widest drop-shadow-md">┬┐Qu├® dicen nuestros clientes?</h3>
+-        <div class="w-16 h-1 bg-gradient-to-r from-transparent via-mint to-transparent mx-auto mt-6 mb-8"></div>
+-        <button id="open-public-review-btn" style="display:inline-flex; align-items:center; gap:8px; background:transparent; border:2px solid #BFFF00; color:#BFFF00; padding:12px 28px; border-radius:999px; font-size:14px; font-weight:700; cursor:pointer; letter-spacing:0.05em; transition: background 0.2s;" onmouseover="this.style.background='rgba(191, 255, 0,0.1)'" onmouseout="this.style.background='transparent'">
+-          Ô£¿ Dejanos tu rese├▒a
+-        </button>
+-      </div>
+-
+-      <!-- Carousel Container -->
+-      <div class="relative w-full reveal">
+-        <div id="reviews-carousel" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scroll-smooth px-4 md:px-2" style="scrollbar-width: none;">
+-          <!-- JS Render -->
++        <div class="tpl-cat-loader flex flex-col items-center gap-4 py-20"><div class="spinner"></div></div>
++        <div class="tpl-cat-empty hidden text-center py-20">
++          <p class="text-3xl mb-4">­ƒöì</p>
++          <p class="text-lg font-bold text-[#8b8ba8]">Cat├ílogo vac├¡o o sin resultados.</p>
+         </div>
++        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 tpl-cat-grid"></div>
+       </div>
+-    </div>
+-  </section>
+-
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <!-- CATALOG (CENTERED HEADER)                           -->
+-  <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+-  <section id="catalog" class="py-24 bg-[#0a0a14] border-t border-white/5 flex-grow">
+-    <div class="max-w-7xl mx-auto px-4">
+-      
+-      <div class="text-center mb-16 reveal">
+-        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-[#049B7A] mb-3">Inventario</h2>
+-        <h3 class="font-display text-5xl md:text-6xl text-white">Cat├ílogo de Base</h3>
+-        <p class="text-sm text-[#4a4a62] mt-4">Nuestros art├¡culos sin estampar, listos para tu dise├▒o.</p>
+-      </div>
+-
+-      <!-- Categories Centered Pills -->
+-      <div class="flex flex-wrap justify-center gap-2 mb-12" id="catalog-filters">
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all active-filter" data-category="todos">Todos</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Remeras">­ƒæù Remeras</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Canguros">­ƒªÿ Canguros</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Gorros">­ƒºó Gorros</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Tazas">Ôÿò Tazas</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Anime">­ƒöÑ Anime</button>
+-        <button class="px-5 py-2 rounded-full border border-transparent bg-white/5 text-[#8b8ba8] text-sm font-semibold hover:bg-white/10 hover:text-white transition-all" data-category="Streetwear">­ƒîå Streetwear</button>
++    </section>
++  </template>
++
++  <template id="tpl-image_banner">
++    <section class="grop-sec-banner relative w-full overflow-hidden reveal tpl-reveal flex items-center justify-center p-0 m-0">
++      <img src="" alt="Banner" class="tpl-banner-img w-full h-auto object-cover max-h-[600px]">
++    </section>
++  </template>
++
++  <template id="tpl-rich_text">
++    <section class="grop-sec-richtext py-16 bg-transparent">
++      <div class="max-w-4xl mx-auto px-4 text-center reveal tpl-reveal">
++        <h3 class="tpl-rt-title font-display text-4xl md:text-5xl text-white tracking-widest mb-6"></h3>
++        <p class="tpl-rt-content text-lg text-[#8b8ba8] leading-relaxed"></p>
+       </div>
+-
+-      <!-- Search (Centered minimalistic) -->
+-      <div class="max-w-md mx-auto mb-16 relative">
+-        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a62] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+-        <input type="search" id="search-input" placeholder="Buscar por art├¡culo..." class="w-full bg-[#080810] border border-white/10 rounded-full pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#049B7A] focus:ring-1 focus:ring-[#049B7A]/50 transition-all text-center placeholder:text-center">
+-      </div>
+-
+-      <div id="loader" class="flex flex-col items-center gap-4 py-20">
+-        <div class="spinner"></div>
+-      </div>
+-      <div id="empty-state" class="hidden text-center py-20">
+-        <p class="text-3xl mb-4">­ƒöì</p>
+-        <p class="text-lg font-bold text-[#8b8ba8]">Cat├ílogo vac├¡o o sin resultados.</p>
+-      </div>
+-
+-      <!-- Grid perfectly symmetric layout (cols-2 / 3 / 4) -->
+-      <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+-
+-    </div>
+-  </section>
++    </section>
++  </template>
+ 
+   <!-- ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ -->
+   <!-- FOOTER (SYMMETRICAL)                                -->
+@@ -321,7 +237,7 @@
+         <a href="https://wa.me/59897116015" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#25d366]/70 hover:text-[#25d366] hover:border-[#25d366]/50 transition-all">WA</a>
+       </div>
+ 
+-      <p class="text-[10px] uppercase tracking-widest text-[#4a4a62] mt-8">
++      <p id="footer-copyright" class="text-[10px] uppercase tracking-widest text-[#4a4a62] mt-8">
+         ┬® 2025 GROPESTAMPADOS.UY ┬À Todos los derechos reservados. 
+       </p>
+       <a href="admin.html" class="text-[10px] text-gray-500 hover:text-white transition-colors uppercase tracking-widest mt-2">Acceso Admin</a>

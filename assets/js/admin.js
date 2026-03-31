@@ -4,12 +4,18 @@
  */
 
 // ─── Redirección instantánea si no hay sesión ─────────────
-// Evita que se muestre el panel ni un frame antes de verificar auth.
+// Comprobación suave que no crashea en Safari privado.
 ;(function immediateAuthGuard() {
-  const stored = localStorage.getItem('gotrue.user') ||
-                 sessionStorage.getItem('gotrue.user');
-  if (!stored) {
-    window.location.replace('/login.html');
+  try {
+    const stored = localStorage.getItem('gotrue.user') ||
+                   localStorage.getItem('gotrue-js.user') ||
+                   sessionStorage.getItem('gotrue.user');
+    const hasAnyGoTrueKey = Object.keys(localStorage).some(k => k.startsWith('gotrue'));
+    if (!stored && !hasAnyGoTrueKey) {
+      window.location.replace('/login.html');
+    }
+  } catch(e) {
+    // Safari privado: no redirigir para no romper el flujo
   }
 })();
 
@@ -111,39 +117,50 @@ async function loadProducts() {
   showLoading(true);
   try {
     const res = await fetch("/api/get-products");
-    if (!res.ok) throw new Error("Failed to load");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
     if (data && data.products) {
-      // Blobs ya tiene data estructurada
-      products = data.products || [];
+      products   = data.products || [];
       categories = data.categories || categories;
-      reviews = data.reviews || [];
-      if(data.visual_config && Object.keys(data.visual_config).length > 0) {
-        visualConfig = { ...visualConfig, ...data.visual_config };
+      reviews    = data.reviews || [];
+
+      if (data.visual_config && Object.keys(data.visual_config).length > 0) {
+        // Nunca guardar favicon en visualConfig desde DB (era el causante del crash)
+        const { favicon: _dbFav, ...cleanVC } = data.visual_config;
+        visualConfig = { ...visualConfig, ...cleanVC };
       }
-      // Restaurar favicon desde localStorage (no va a la DB por ser pesado)
+
+      // Restaurar favicon desde localStorage (guardado localmente, no en DB)
       const savedFavicon = localStorage.getItem('grop_favicon');
       if (savedFavicon) {
         visualConfig.favicon = savedFavicon;
         setFavicon(savedFavicon);
       }
+
+      // Siempre limpiar grop_visual en localStorage de datos pesados (base64)
+      const { favicon: _lsFav, logoImage: _lsLogo, ...cleanForLS } = visualConfig;
+      localStorage.setItem('grop_visual', JSON.stringify(cleanForLS));
+
       syncVisualUI();
     } else if (Array.isArray(data) && data.length > 0) {
-      // Formato viejo (solo array)
       products = data;
     } else {
-      // Primer acceso: sembrar con productos demo
       products = DEMO_PRODUCTS_SEED;
-      showToast("\u{1F4E6} Cargando catálogo inicial...");
-      await saveProducts(true); // true = silencioso
+      showToast("\uD83D\uDCE6 Cargando catálogo inicial...");
+      await saveProducts(true);
     }
-    
+
     renderCategories();
     renderList();
     renderReviews();
   } catch (e) {
-    showToast("Error cargando datos", "error");
+    console.error('loadProducts error:', e);
+    showToast("⚠️ No se pudo conectar. Reintentá en unos segundos.", "error");
+    if (products.length === 0) {
+      products = DEMO_PRODUCTS_SEED;
+      renderList();
+    }
   } finally {
     showLoading(false);
   }
@@ -741,23 +758,29 @@ function setFavicon(url) {
 }
 
 function initBuilderData() {
-  if(!visualConfig.sections || !Array.isArray(visualConfig.sections)) {
-      visualConfig.sections = [
-          { type: 'hero', id: 'sec_old_1', config: visualConfig.hero || {}, visible: visualConfig.sectionVisible?.hero !== false },
-          { type: 'servicios', id: 'sec_old_2', config: visualConfig.servicios || {}, visible: visualConfig.sectionVisible?.servicios !== false },
-          { type: 'proceso', id: 'sec_old_3', config: visualConfig.proceso || {}, visible: visualConfig.sectionVisible?.proceso !== false },
-          { type: 'reviews', id: 'sec_old_4', config: {}, visible: visualConfig.sectionVisible?.reviews !== false },
-          { type: 'catalog', id: 'sec_old_5', config: {}, visible: visualConfig.sectionVisible?.catalog !== false }
-      ];
-      if (Array.isArray(visualConfig.sectionOrder) && visualConfig.sectionOrder.length > 0) {
-          visualConfig.sections.sort((a,b) => {
-              const ai = visualConfig.sectionOrder.indexOf(a.type);
-              const bi = visualConfig.sectionOrder.indexOf(b.type);
-              return (ai !== -1 ? ai : 99) - (bi !== -1 ? bi : 99);
-          });
-      }
+  // Resetear si no existe O si llegó como array vacío (ej: DB guardó [])
+  const needsReset = !visualConfig.sections ||
+                     !Array.isArray(visualConfig.sections) ||
+                     visualConfig.sections.length === 0;
+
+  if (needsReset) {
+    visualConfig.sections = [
+      { type: 'hero',      id: 'sec_default_1', config: visualConfig.hero      || {}, visible: visualConfig.sectionVisible?.hero      !== false },
+      { type: 'servicios', id: 'sec_default_2', config: visualConfig.servicios  || {}, visible: visualConfig.sectionVisible?.servicios  !== false },
+      { type: 'proceso',   id: 'sec_default_3', config: visualConfig.proceso    || {}, visible: visualConfig.sectionVisible?.proceso    !== false },
+      { type: 'catalog',   id: 'sec_default_4', config: {},                            visible: visualConfig.sectionVisible?.catalog    !== false },
+      { type: 'reviews',   id: 'sec_default_5', config: {},                            visible: visualConfig.sectionVisible?.reviews    !== false },
+    ];
+    if (Array.isArray(visualConfig.sectionOrder) && visualConfig.sectionOrder.length > 0) {
+      visualConfig.sections.sort((a, b) => {
+        const ai = visualConfig.sectionOrder.indexOf(a.type);
+        const bi = visualConfig.sectionOrder.indexOf(b.type);
+        return (ai !== -1 ? ai : 99) - (bi !== -1 ? bi : 99);
+      });
+    }
   }
 }
+
 
 function renderPageBuilder() {
   const c = document.getElementById('builder-list');

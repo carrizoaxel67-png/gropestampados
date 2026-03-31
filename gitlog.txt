@@ -1,0 +1,5 @@
+﻿289d1fe feat(seo): Page Builder full, SEO y favicon dinamico
+9b2be91 feat: optimizar panel visual para movil + responsive grids
+e61a5e8 fix(admin): implementa 100dvh y espaciador fisico para safari/chrome ios bottom nav bug
+0e2184e fix(admin): solapamiento del scroll con navbar inferior en moviles + mejoras UI navbar
+35f8f78 fix: optimizacion responsive extrema estilo app para personalizar.html

@@ -350,49 +350,43 @@ async function loadProducts(){
 }
 
 function applyPublicVisualConfig(v) {
-  if(!v) return;
+  if(!v || typeof v !== 'object') return;
   const root = document.documentElement.style;
-  if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-  if(v.purp) root.setProperty('--c-purp', v.purp);
-  if(v.magenta) root.setProperty('--c-magenta', v.magenta);
-  if(v.bg) root.setProperty('--c-bg', v.bg);
-  
+  // Solo aplicar si el valor es un hex válido (#RRGGBB) — evita corrupción de colores
+  const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
+  if(isValidHex(v.mint))    { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+  if(isValidHex(v.purp))    root.setProperty('--c-purp', v.purp);
+  if(isValidHex(v.magenta)) root.setProperty('--c-magenta', v.magenta);
+  if(isValidHex(v.bg))      root.setProperty('--c-bg', v.bg);
+
   // Update logos safely
-  const logos = document.querySelectorAll("header span.font-sans.text-\\[2\\.2rem\\], nav span.font-sans.text-\\[2\\.2rem\\], header span.font-sans, nav flex span.font-sans, .flex span.font-black.brand-gradient, .flex-1 span.font-sans");
-  const subs = document.querySelectorAll("header span.font-cursive, nav span.font-cursive, .flex span.font-cursive");
-  
-  // Set real gradient
-  const m = v.mint || '#BFFF00';
-  const p = v.purp || '#8A2BE2';
-  const mag = v.magenta || '#FF00FF';
+  const logos = document.querySelectorAll(".flex span.font-black, header span.font-sans, nav span.font-sans");
+  const subs  = document.querySelectorAll("header span.font-cursive, nav span.font-cursive, .flex span.font-cursive");
+
+  const m   = isValidHex(v.mint)    ? v.mint    : '#BFFF00';
+  const p   = isValidHex(v.purp)    ? v.purp    : '#8A2BE2';
+  const mag = isValidHex(v.magenta) ? v.magenta : '#FF00FF';
 
   logos.forEach(l => {
-    if(v.logoPrimary && l) l.textContent = v.logoPrimary;
-    if(l) l.style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
+    if(v.logoPrimary) l.textContent = v.logoPrimary;
+    l.style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
   });
-
   subs.forEach(s => {
-    if(v.logoSubtext && s) s.textContent = v.logoSubtext;
-    if(s) s.style.color = m;
+    if(v.logoSubtext) s.textContent = v.logoSubtext;
+    s.style.color = m;
   });
 
   if(v.logoPrimary) {
-    const isLogin = window.location.pathname.includes("login");
     const isAdmin = window.location.pathname.includes("admin");
-    const isPers = window.location.pathname.includes("personalizar");
-    if(!isLogin && !isAdmin) {
+    if(!isAdmin) {
       document.title = `${v.logoPrimary} ${v.logoSubtext||''} — Catálogo Exclusivo`;
     }
   }
 
-  // Dynamic progressive enhancement for sections
-  if (v.sections) {
-    applyDynamicSections(v.sections);
-  }
+  if (v.sections) applyDynamicSections(v.sections);
 
-  // Theme Decor
   const activeTheme = v.activeTheme || 'none';
-  window._visualActiveTheme = activeTheme; // Export for renderProducts
+  window._visualActiveTheme = activeTheme;
   applyFestiveTheme(activeTheme);
 }
 

@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar Sesión — GROPESTAMPADOS.UY Admin</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     (function(){
       try {
         const v = JSON.parse(localStorage.getItem('grop_visual') || 'null');
-        if(v) {
+        if(v && typeof v === 'object') {
           const root = document.documentElement.style;
-          if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
-          if(v.purp) root.setProperty('--c-purp', v.purp);
-          if(v.magenta) root.setProperty('--c-magenta', v.magenta);
-          if(v.bg) root.setProperty('--c-bg', v.bg);
+          const isValidHex = c => typeof c === 'string' && /^#[0-9A-Fa-f]{6}$/.test(c);
+          if(isValidHex(v.mint)) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+          if(isValidHex(v.purp)) root.setProperty('--c-purp', v.purp);
+          if(isValidHex(v.magenta)) root.setProperty('--c-magenta', v.magenta);
+          if(isValidHex(v.bg)) root.setProperty('--c-bg', v.bg);
         }
       } catch(e){}
     })();
