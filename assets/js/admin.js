@@ -122,6 +122,12 @@ async function loadProducts() {
       if(data.visual_config && Object.keys(data.visual_config).length > 0) {
         visualConfig = { ...visualConfig, ...data.visual_config };
       }
+      // Restaurar favicon desde localStorage (no va a la DB por ser pesado)
+      const savedFavicon = localStorage.getItem('grop_favicon');
+      if (savedFavicon) {
+        visualConfig.favicon = savedFavicon;
+        setFavicon(savedFavicon);
+      }
       syncVisualUI();
     } else if (Array.isArray(data) && data.length > 0) {
       // Formato viejo (solo array)
@@ -152,11 +158,15 @@ async function saveProducts(silent = false) {
 
   if (!silent) showLoading(true);
   try {
+    // Excluir favicon del payload: es un base64 pesado que no
+    // necesita ir a la DB (el navegador ya lo cachea en localStorage).
+    const { favicon: _f, ...visualConfigLight } = visualConfig;
+    
     const payload = {
       products: products,
       categories: categories,
       reviews: reviews,
-      visual_config: visualConfig
+      visual_config: visualConfigLight
     };
     
     const res = await fetch("/api/save-products", {
@@ -1049,18 +1059,17 @@ function compressFaviconImage(file) {
     const img = new Image();
     img.onload = () => {
       const MAX = 64;
-      let width = MAX;
-      let height = MAX;
       const canvas = document.createElement('canvas');
-      canvas.width = width; canvas.height = height;
+      canvas.width = MAX; canvas.height = MAX;
       const ctx = canvas.getContext('2d');
-      // Dibujar imagen centrada y recortada si no es perfectamente cuadrada
-      const minDimension = Math.min(img.width, img.height);
-      const sx = (img.width - minDimension) / 2;
-      const sy = (img.height - minDimension) / 2;
-      ctx.drawImage(img, sx, sy, minDimension, minDimension, 0, 0, width, height);
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, MAX, MAX);
       const b64 = canvas.toDataURL('image/png');
+      // Guardar solo en localStorage y en memoria, NO en DB (demasiado pesado)
       visualConfig.favicon = b64;
+      localStorage.setItem('grop_favicon', b64);
       const pFav = document.getElementById('fav-img-preview-img');
       const vw = document.getElementById('fav-img-preview');
       const vh = document.getElementById('fav-img-placeholder');
@@ -1068,7 +1077,7 @@ function compressFaviconImage(file) {
       if (pFav) pFav.src = b64; if (vw) vw.classList.remove('hidden');
       if (vh) vh.classList.add('hidden'); if (vc) vc.classList.remove('hidden');
       setFavicon(b64);
-      showToast('Favicon actualizado');
+      showToast('✅ Favicon actualizado y guardado localmente');
     };
     img.src = ev.target.result;
   };
