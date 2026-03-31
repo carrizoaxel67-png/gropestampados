@@ -34,12 +34,22 @@ exports.handler = async (event) => {
         body: JSON.stringify({ error: "Invalid data format" }),
       };
     }
-    if (!data.reviews || !Array.isArray(data.reviews)) {
-      data.reviews = [];
+    
+    // Safety check on server side (5.8MB max)
+    const payloadStr = JSON.stringify(data);
+    if (Buffer.byteLength(payloadStr, 'utf8') > 5.8 * 1024 * 1024) {
+      return { statusCode: 413, headers: corsHeaders, body: JSON.stringify({ error: "Payload too large, max 5.8MB allowed" }) };
     }
-    if (!data.visual_config || typeof data.visual_config !== 'object') {
-      data.visual_config = {};
-    }
+
+    if (!data.reviews || !Array.isArray(data.reviews)) data.reviews = [];
+    if (!data.visual_config || typeof data.visual_config !== 'object') data.visual_config = {};
+
+    // Basic structural length limits
+    data.products = data.products.map(p => ({
+      ...p,
+      name: p.name ? String(p.name).substring(0, 150) : "",
+      category: p.category ? String(p.category).substring(0, 50) : ""
+    }));
 
     const dbUrl = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
     if (!dbUrl) throw new Error("Neon Database URL missing");

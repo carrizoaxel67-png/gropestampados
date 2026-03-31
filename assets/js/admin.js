@@ -186,13 +186,22 @@ async function saveProducts(silent = false) {
       visual_config: visualConfigLight
     };
     
+    const payloadStr = JSON.stringify(payload);
+    const sizeMB = (new Blob([payloadStr]).size / (1024 * 1024)).toFixed(2);
+    
+    if (sizeMB > 5.5) {
+      if(!silent) showLoading(false);
+      showToast(`⚠️ Demasiado peso (${sizeMB}MB). Achica fotos o elimina productos obsoletos.`, "error");
+      return;
+    }
+    
     const res = await fetch("/api/save-products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${authToken}`,
       },
-      body: JSON.stringify(payload),
+      body: payloadStr,
     });
 
     if (!res.ok) throw new Error("Save failed");
@@ -477,7 +486,7 @@ function compressImageToWebP(file) {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, width, height);
 
-      const webpB64 = canvas.toDataURL("image/webp", 0.8);
+      const webpB64 = canvas.toDataURL("image/webp", 0.65);
       compressedImageB64 = webpB64;
 
       if (imgPreview) {
@@ -1117,14 +1126,14 @@ function compressLogoImage(file) {
   reader.onload = ev => {
     const img = new Image();
     img.onload = () => {
-      const MAX = 800;
+      const MAX = 600;
       let { width, height } = img;
       const ratio = Math.min(MAX / width, MAX / height, 1);
       width = Math.round(width * ratio); height = Math.round(height * ratio);
       const canvas = document.createElement('canvas');
       canvas.width = width; canvas.height = height;
       canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      const b64 = canvas.toDataURL('image/webp', 0.85);
+      const b64 = canvas.toDataURL('image/webp', 0.65);
       visualConfig.logoImage = b64;
       const pi = document.getElementById('logo-img-preview-img');
       const pw = document.getElementById('logo-img-preview');

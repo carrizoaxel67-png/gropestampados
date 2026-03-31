@@ -173,40 +173,37 @@ function renderProducts(){
     card.style.animationDelay = `${i * 0.04}s`;
     card.setAttribute("role", "button");
     card.setAttribute("tabindex", "0");
-    card.setAttribute("aria-label", `Ver ${p.name}`);
+    card.setAttribute("aria-label", `Ver ${esc(p.name)}`);
     card.addEventListener("click", () => openModal(p));
     card.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " ") openModal(p); });
 
     const imgContent = p.image
-      ? `<img class="card-img" src="${p.image}" alt="${esc(p.name)}" loading="lazy">`
+      ? `<img class="card-img" src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`
       : `<div class="card-img-placeholder">👕</div>`;
 
     const priceCurrent = p.price ? `$${Number(p.price).toLocaleString("es-UY")}` : "";
     const priceOriginal = p.originalPrice ? `$${Number(p.originalPrice).toLocaleString("es-UY")}` : "";
     
-    // Si hay precio original, lo mostramos tachado arriba/al lado del precio actual
     let priceHTML = `<span></span>`;
     if (p.price) {
       if (p.originalPrice) {
         priceHTML = `
           <div class="flex flex-col">
-            <span class="text-[10px] text-gray-500 line-through leading-none">${priceOriginal}</span>
-            <span class="card-price text-mint">${priceCurrent}</span>
+            <span class="text-[10px] text-gray-500 line-through leading-none">${esc(priceOriginal)}</span>
+            <span class="card-price text-mint">${esc(priceCurrent)}</span>
           </div>
         `;
       } else {
-        priceHTML = `<span class="card-price">${priceCurrent}</span>`;
+        priceHTML = `<span class="card-price">${esc(priceCurrent)}</span>`;
       }
     }
 
-    const stockHTML = (p.stock !== undefined && p.stock !== null) ? `<span class="card-stock">${p.stock} u.</span>` : "";
+    const stockHTML = (p.stock !== undefined && p.stock !== null) ? `<span class="card-stock">${esc(p.stock)} u.</span>` : "";
     
-    // Badge de oferta
     const discountBadge = (p.discount && p.discount > 0) 
-      ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg z-10">-${p.discount}%</span>`
+      ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg z-10">-${esc(p.discount)}%</span>`
       : "";
 
-    // Sticker por temática
     let themeSticker = '';
     const activeTheme = window._visualActiveTheme || 'none';
     if(activeTheme === 'halloween') {
@@ -227,7 +224,7 @@ function renderProducts(){
       <div class="card-img-wrap relative">
         ${themeSticker}
         ${imgContent}
-        <span class="status-badge ${cfg.badge}">${shortLabel}</span>
+        <span class="status-badge ${cfg.badge}">${esc(shortLabel)}</span>
         ${discountBadge}
       </div>
       <div class="card-body">
@@ -258,17 +255,17 @@ function openModal(p){
   const shortLabel = cfg.label.replace(/^\S+\s/, "");
 
   const imgHTML = p.image
-    ? `<img src="${p.image}" alt="${esc(p.name)}" style="width:100%;max-height:280px;object-fit:contain;border-radius:16px 16px 0 0;background:var(--bg-card)">`
+    ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" style="width:100%;max-height:280px;object-fit:contain;border-radius:16px 16px 0 0;background:var(--bg-card)">`
     : `<div style="width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--bg-card);border-radius:16px 16px 0 0">👕</div>`;
 
   const discountBadge = (p.discount && p.discount > 0) 
-    ? `<span style="position:absolute;top:12px;right:12px;background:var(--mint);padding:4px 8px;border-radius:6px;font-weight:bold;font-size:12px;color:#fff">-${p.discount}%</span>`
+    ? `<span style="position:absolute;top:12px;right:12px;background:var(--mint);padding:4px 8px;border-radius:6px;font-weight:bold;font-size:12px;color:#fff">-${esc(p.discount)}%</span>`
     : "";
 
   body.innerHTML = `
     <div style="position:relative">
       ${imgHTML}
-      <span class="status-badge ${cfg.badge}" style="position:absolute;top:12px;left:12px">${shortLabel}</span>
+      <span class="status-badge ${cfg.badge}" style="position:absolute;top:12px;left:12px">${esc(shortLabel)}</span>
       ${discountBadge}
     </div>
     <div style="padding:20px 20px 24px">
@@ -285,7 +282,7 @@ function openModal(p){
         </div>` : "<div></div>"}
         ${p.stock !== undefined && p.stock !== null ? `<div style="text-align:right">
           <p style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px">Stock</p>
-          <p style="font-size:1.3rem;font-weight:800;color:var(--text)">${p.stock} u.</p>
+          <p style="font-size:1.3rem;font-weight:800;color:var(--text)">${esc(p.stock)} u.</p>
         </div>` : ""}
       </div>
 
@@ -312,13 +309,27 @@ function openModal(p){
 window.openModal = openModal;
 
 // ── Fetch products & Categories ───────────────────────────
-async function loadProducts(){
-  loader()?.classList.remove("hidden");
-  empty()?.classList.add("hidden");
+async function loadProducts() {
+  const g = grid();
+  const loading = document.getElementById("loading-state");
+  const failed = document.getElementById("error-state");
+  const emptySt = empty();
+
+  if(loading) loading.classList.remove("hidden");
+  if(failed) failed.classList.add("hidden");
+  if(emptySt) emptySt.classList.add("hidden");
+  if(g) g.innerHTML = "";
+
+  const fetchWithTimeout = (url, options, timeout = 8000) => {
+    return Promise.race([
+      fetch(url, options),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout))
+    ]);
+  };
 
   try {
-    const res = await fetch("/api/get-products");
-    if(!res.ok) throw new Error();
+    const res = await fetchWithTimeout("/api/get-products", { cache: "no-store" });
+    if (!res.ok) throw new Error("Load failed");
     const data = await res.json();
     
     if (data && data.products) {
