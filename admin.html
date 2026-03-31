@@ -9,14 +9,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    (function(){
+      try {
+        const v = JSON.parse(localStorage.getItem('grop_visual') || 'null');
+        if(v) {
+          const root = document.documentElement.style;
+          if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+          if(v.purp) root.setProperty('--c-purp', v.purp);
+          if(v.magenta) root.setProperty('--c-magenta', v.magenta);
+          if(v.bg) root.setProperty('--c-bg', v.bg);
+        }
+      } catch(e){}
+    })();
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            mint: { DEFAULT: '#BFFF00', light: '#d4ff66' },
-            purple: { DEFAULT: '#8A2BE2', light: '#FF00FF' },
-            magenta: { DEFAULT: '#FF00FF', light: '#ff66ff' },
+            mint: { DEFAULT: 'var(--c-mint, #BFFF00)', light: 'var(--c-mint-l, #d4ff66)' },
+            purple: { DEFAULT: 'var(--c-purp, #8A2BE2)', light: 'var(--c-magenta, #FF00FF)' },
+            magenta: { DEFAULT: 'var(--c-magenta, #FF00FF)', light: 'var(--c-magenta, #ff66ff)' },
+            bgMain: 'var(--c-bg, #080810)'
           },
           fontFamily: {
             cursive: ['"Dancing Script"', 'cursive'],
@@ -25,6 +38,9 @@
       }
     }
   </script>
+  <style>
+    body, .bg-\[\#0a0a0a\], .bg-bgMain { background-color: var(--c-bg, #0a0a0a) !important; }
+  </style>
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <style>
@@ -128,6 +144,10 @@
         <button class="admin-tab active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-products">
           <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
           <span class="font-medium text-sm text-gray-400">Catálogo</span>
+        </button>
+        <button class="admin-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-visual">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          <span class="font-medium text-sm text-gray-400">Diseño</span>
         </button>
         <button class="admin-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left" data-target="tab-categories">
           <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
@@ -236,6 +256,106 @@
             </div>
           </div>
 
+          <!-- ─── TAB: VISUAL CONFIG ─── -->
+          <div id="tab-visual" class="tab-content hidden animate-fade-in">
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight mb-1">Diseño Visual</h2>
+            <p class="text-gray-500 text-sm mb-8">Personalizá tu marca, logo y colores en tiempo real.</p>
+            
+            <!-- LIVE PREVIEW HEADER -->
+            <div class="mb-8 rounded-[2rem] border border-[#2a2a2a] bg-[#000] overflow-hidden shadow-2xl relative">
+              <div class="px-4 py-2 bg-[#1a1a1a] border-b border-[#2a2a2a] flex items-center gap-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                <p class="text-[10px] text-gray-500 font-bold tracking-widest ml-2 uppercase">Previsualización Web</p>
+              </div>
+              <div class="relative bg-bgMain" id="preview-container" style="min-height:100px; display:flex; align-items:center; justify-content:center; padding:2rem;">
+                  <!-- Imitación del header de index.html -->
+                  <div class="flex flex-col items-center">
+                    <div class="flex items-center justify-center group pointer-events-none relative transition-all duration-300">
+                      <span class="font-sans font-black text-[2.2rem] tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-br from-mint via-purp to-magenta drop-shadow-md" id="preview-logo-main">grop</span>
+                      <span class="-mt-1 ml-5 text-[1.2rem] font-cursive font-bold text-mint tracking-wide lowercase drop-shadow-sm" id="preview-logo-sub">Estampados</span>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+              
+              <!-- FORM TEXTOS -->
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 md:p-8 flex flex-col gap-5">
+                <h3 class="text-lg font-black text-white mb-2 flex items-center gap-2">
+                  <svg class="w-5 h-5 text-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> 
+                  Textos del Logo
+                </h3>
+                
+                <div>
+                  <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Nombre Principal</label>
+                  <input type="text" id="v-logo-main" class="admin-input !bg-[#0a0a0a] !py-3.5" placeholder="grop">
+                </div>
+                <div>
+                  <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Subtítulo (Cursiva)</label>
+                  <input type="text" id="v-logo-sub" class="admin-input !bg-[#0a0a0a] !py-3.5" placeholder="Estampados">
+                </div>
+              </div>
+
+              <!-- FORM COLORES -->
+              <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 md:p-8 flex flex-col gap-6">
+                <h3 class="text-lg font-black text-white mb-2 flex items-center gap-2">
+                  <svg class="w-5 h-5 text-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg> 
+                  Paleta de Colores
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Principal (Mint)</label>
+                    <div class="flex gap-2 items-center bg-[#0a0a0a] border border-[#222] rounded-xl p-2 cursor-pointer hover:border-[#333] transition-colors relative">
+                      <input type="color" id="v-color-mint" class="w-full h-10 opacity-0 absolute inset-0 cursor-pointer text-input-color-overlay z-10">
+                      <div id="v-preview-mint" class="w-8 h-8 rounded-lg outline outline-1 outline-[#333] shrink-0" style="background:#BFFF00"></div>
+                      <span id="v-hex-mint" class="text-xs font-mono font-bold text-gray-400">#BFFF00</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Secundario (Púrpura)</label>
+                    <div class="flex gap-2 items-center bg-[#0a0a0a] border border-[#222] rounded-xl p-2 cursor-pointer hover:border-[#333] transition-colors relative">
+                      <input type="color" id="v-color-purp" class="w-full h-10 opacity-0 absolute inset-0 cursor-pointer text-input-color-overlay z-10">
+                      <div id="v-preview-purp" class="w-8 h-8 rounded-lg outline outline-1 outline-[#333] shrink-0" style="background:#8A2BE2"></div>
+                      <span id="v-hex-purp" class="text-xs font-mono font-bold text-gray-400">#8A2BE2</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Acento (Magenta)</label>
+                    <div class="flex gap-2 items-center bg-[#0a0a0a] border border-[#222] rounded-xl p-2 cursor-pointer hover:border-[#333] transition-colors relative">
+                      <input type="color" id="v-color-magenta" class="w-full h-10 opacity-0 absolute inset-0 cursor-pointer text-input-color-overlay z-10">
+                      <div id="v-preview-magenta" class="w-8 h-8 rounded-lg outline outline-1 outline-[#333] shrink-0" style="background:#FF00FF"></div>
+                      <span id="v-hex-magenta" class="text-xs font-mono font-bold text-gray-400">#FF00FF</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Fondo del Sitio</label>
+                    <div class="flex gap-2 items-center bg-[#0a0a0a] border border-[#222] rounded-xl p-2 cursor-pointer hover:border-[#333] transition-colors relative">
+                      <input type="color" id="v-color-bg" class="w-full h-10 opacity-0 absolute inset-0 cursor-pointer text-input-color-overlay z-10">
+                      <div id="v-preview-bg" class="w-8 h-8 rounded-lg outline outline-1 outline-[#333] shrink-0" style="background:#080810"></div>
+                      <span id="v-hex-bg" class="text-xs font-mono font-bold text-gray-400">#080810</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <button id="save-visual-btn" class="btn-primary !py-4 px-10 shadow-mint text-lg font-black rounded-2xl w-full sm:w-auto hover:scale-105 transition-transform active:scale-95">
+                <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Aplicar y Guardar Diseño
+              </button>
+            </div>
+            
+          </div>
+
           <!-- ─── TAB: CATEGORIES ─── -->
           <div id="tab-categories" class="tab-content hidden animate-fade-in">
             <h2 class="text-2xl md:text-3xl font-black tracking-tight mb-1">Categorías</h2>
@@ -262,7 +382,7 @@
               
               <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-mint/5 blur-3xl rounded-full -z-10 pointer-events-none"></div>
 
-              <div class="grid grid-cols-2 gap-4 text-left">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
                 <div>
                   <label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-2">Costo de Producción</label>
                   <div class="relative">
@@ -302,7 +422,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <!-- INPUTS -->
               <div class="bg-[#111] border border-[#2a2a2a] rounded-3xl p-6 space-y-5">
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] uppercase tracking-widest font-black text-gray-500 mb-2">Costo Base ($UYU)</label>
                     <div class="relative">
@@ -318,7 +438,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] uppercase tracking-widest font-black text-gray-500 mb-2">IVA (%)</label>
                     <div class="relative">
@@ -334,7 +454,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] uppercase tracking-widest font-black text-gray-500 mb-2">Otros Gastos ($UYU)</label>
                     <div class="relative">

@@ -308,6 +308,10 @@ async function loadProducts(){
       if (data.categories && data.categories.length > 0) {
         renderDynamicCategories(data.categories);
       }
+      if (data.visual_config) {
+        localStorage.setItem("grop_visual", JSON.stringify(data.visual_config));
+        applyPublicVisualConfig(data.visual_config);
+      }
       // Siempre llamar a renderReviews para que la UI vacía se inicialice si hace falta
       renderReviews(data.reviews || []);
     } else {
@@ -322,6 +326,43 @@ async function loadProducts(){
     const stat = document.getElementById("hero-stat-products");
     if(stat) stat.textContent = allProducts.length + "+";
     renderProducts();
+  }
+}
+
+function applyPublicVisualConfig(v) {
+  if(!v) return;
+  const root = document.documentElement.style;
+  if(v.mint) { root.setProperty('--c-mint', v.mint); root.setProperty('--c-mint-l', v.mint+'cc'); }
+  if(v.purp) root.setProperty('--c-purp', v.purp);
+  if(v.magenta) root.setProperty('--c-magenta', v.magenta);
+  if(v.bg) root.setProperty('--c-bg', v.bg);
+  
+  // Update logos safely
+  const logos = document.querySelectorAll("header span.font-sans.text-\\[2\\.2rem\\], nav span.font-sans.text-\\[2\\.2rem\\], header span.font-sans, nav flex span.font-sans, .flex span.font-black.brand-gradient, .flex-1 span.font-sans");
+  const subs = document.querySelectorAll("header span.font-cursive, nav span.font-cursive, .flex span.font-cursive");
+  
+  // Set real gradient
+  const m = v.mint || '#BFFF00';
+  const p = v.purp || '#8A2BE2';
+  const mag = v.magenta || '#FF00FF';
+
+  logos.forEach(l => {
+    if(v.logoPrimary && l) l.textContent = v.logoPrimary;
+    if(l) l.style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
+  });
+
+  subs.forEach(s => {
+    if(v.logoSubtext && s) s.textContent = v.logoSubtext;
+    if(s) s.style.color = m;
+  });
+
+  if(v.logoPrimary) {
+    const isLogin = window.location.pathname.includes("login");
+    const isAdmin = window.location.pathname.includes("admin");
+    const isPers = window.location.pathname.includes("personalizar");
+    if(!isLogin && !isAdmin) {
+      document.title = `${v.logoPrimary} ${v.logoSubtext||''} — Catálogo Exclusivo`;
+    }
   }
 }
 

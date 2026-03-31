@@ -31,7 +31,7 @@ exports.handler = async (event) => {
     const result = await sql`SELECT data FROM store_table WHERE id = 'catalog'`;
     let catalogData = result.length > 0 ? result[0].data : null;
 
-    let finalData = { products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [] };
+    let finalData = { products: [], categories: ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos"], reviews: [], visual_config: {} };
     
     if (catalogData) {
       if (Array.isArray(catalogData)) {
@@ -40,6 +40,7 @@ exports.handler = async (event) => {
         finalData.products = catalogData.products || [];
         finalData.categories = catalogData.categories || finalData.categories;
         finalData.reviews = catalogData.reviews || [];
+        finalData.visual_config = catalogData.visual_config || {};
       }
     }
 

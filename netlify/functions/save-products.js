@@ -37,6 +37,9 @@ exports.handler = async (event) => {
     if (!data.reviews || !Array.isArray(data.reviews)) {
       data.reviews = [];
     }
+    if (!data.visual_config || typeof data.visual_config !== 'object') {
+      data.visual_config = {};
+    }
 
     const dbUrl = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL;
     if (!dbUrl) throw new Error("Neon Database URL missing");

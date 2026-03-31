@@ -24,6 +24,7 @@ const STATUS_OPTIONS = [
 let products = [];
 let categories = ["Remeras", "Canguros", "Gorros", "Sublimados", "Regalos", "Otro"];
 let reviews = [];
+let visualConfig = { mint: '#BFFF00', purp: '#8A2BE2', magenta: '#FF00FF', bg: '#080810', logoPrimary: 'grop', logoSubtext: 'Estampados' };
 
 let authToken = "";
 let editingId = null;
@@ -118,6 +119,10 @@ async function loadProducts() {
       products = data.products || [];
       categories = data.categories || categories;
       reviews = data.reviews || [];
+      if(data.visual_config && Object.keys(data.visual_config).length > 0) {
+        visualConfig = { ...visualConfig, ...data.visual_config };
+      }
+      syncVisualUI();
     } else if (Array.isArray(data) && data.length > 0) {
       // Formato viejo (solo array)
       products = data;
@@ -150,7 +155,8 @@ async function saveProducts(silent = false) {
     const payload = {
       products: products,
       categories: categories,
-      reviews: reviews
+      reviews: reviews,
+      visual_config: visualConfig
     };
     
     const res = await fetch("/api/save-products", {
@@ -644,7 +650,96 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   initIdentity();
+  initVisualLivePreview();
 });
+
+// ─── Visual Settings Logic ─────────────────────────────────
+function syncVisualUI() {
+  document.getElementById("v-logo-main").value = visualConfig.logoPrimary || "grop";
+  document.getElementById("v-logo-sub").value = visualConfig.logoSubtext || "Estampados";
+
+  const bindColor = (id, hex) => {
+    const color = hex || "#000000";
+    const el = document.getElementById("v-color-" + id);
+    if(el) el.value = color;
+    const pEl = document.getElementById("v-preview-" + id);
+    if(pEl) pEl.style.background = color;
+    const hEl = document.getElementById("v-hex-" + id);
+    if(hEl) hEl.textContent = color.toUpperCase();
+  };
+
+  bindColor("mint", visualConfig.mint);
+  bindColor("purp", visualConfig.purp);
+  bindColor("magenta", visualConfig.magenta);
+  bindColor("bg", visualConfig.bg);
+
+  updateVisualPreviewDOM();
+}
+
+function updateVisualPreviewDOM() {
+  // Configs
+  const m = visualConfig.mint;
+  const p = visualConfig.purp;
+  const mag = visualConfig.magenta;
+  const hbg = visualConfig.bg;
+
+  // Textos
+  document.getElementById("preview-logo-main").textContent = visualConfig.logoPrimary || "grop";
+  document.getElementById("preview-logo-sub").textContent = visualConfig.logoSubtext || "Estampados";
+
+  // Gradient
+  document.getElementById("preview-logo-main").style.backgroundImage = `linear-gradient(to bottom right, ${m}, ${p}, ${mag})`;
+
+  // Subtext color
+  document.getElementById("preview-logo-sub").style.color = m;
+
+  // Container bg
+  document.getElementById("preview-container").style.backgroundColor = hbg;
+  
+  // Real root variables (previsualiza hasta los botones del admin panel en vivo!)
+  const root = document.documentElement.style;
+  root.setProperty('--c-mint', m);
+  root.setProperty('--c-mint-l', m+'cc');
+  root.setProperty('--c-purp', p);
+  root.setProperty('--c-magenta', mag);
+  root.setProperty('--c-bg', hbg);
+}
+
+function initVisualLivePreview() {
+  const tMain = document.getElementById("v-logo-main");
+  const tSub = document.getElementById("v-logo-sub");
+
+  if(tMain) tMain.addEventListener("input", (e) => { visualConfig.logoPrimary = e.target.value; updateVisualPreviewDOM(); });
+  if(tSub) tSub.addEventListener("input", (e) => { visualConfig.logoSubtext = e.target.value; updateVisualPreviewDOM(); });
+
+  const cBind = (id) => {
+    const el = document.getElementById("v-color-" + id);
+    if(!el) return;
+    el.addEventListener("input", (e) => {
+      visualConfig[id] = e.target.value;
+      syncVisualUI(); // syncs the tiny hex displays
+    });
+  };
+
+  cBind("mint");
+  cBind("purp");
+  cBind("magenta");
+  cBind("bg");
+
+  const saveBtn = document.getElementById("save-visual-btn");
+  if(saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = "Guardando...";
+      // Guardar localmente para FOUC y sync a Firebase
+      localStorage.setItem("grop_visual", JSON.stringify(visualConfig));
+      await saveProducts();
+      showToast("✨ Diseño Visual Actualizado");
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `<svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Aplicar y Guardar Diseño`;
+    });
+  }
+}
 
 // ─── Render Reviews ────────────────────────────────────────
 window.renderReviews = function() {
